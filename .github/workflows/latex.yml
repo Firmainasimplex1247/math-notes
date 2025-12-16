@@ -1,7 +1,7 @@
 name: Build LaTeX (Functional Analysis)
 
 on:
-  workflow_dispatch: # 只能手动触发编译
+  workflow_dispatch: # 只能手动触发
 
 concurrency:
   group: latex-${{ github.ref }}
