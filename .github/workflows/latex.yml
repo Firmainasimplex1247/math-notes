@@ -22,13 +22,15 @@ jobs:
           cache: true
 
       - name: Upload PDF artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Functional-Analysis-PDF
           path: tex/Functional_Analysis/Functional_Analysis.pdf
-          if-no-files-found: error
-
+          if-no-files-found: ignore
+          
       - name: Upload build logs
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Functional-Analysis-Logs
