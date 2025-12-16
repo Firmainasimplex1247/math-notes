@@ -1,0 +1,3264 @@
+\chapter{作业汇总}
+%\begin{center}
+%    “泛函分析心泛寒”，说明泛函是一门很难的课，但是泛函其实并没有比数分、线代、实分析更难。
+%    这是一门很抽象的课，由于前面的课没学好，很多同学学到这里学崩了。泛函是压死骆驼的最后一根稻草。
+%\end{center}
+%\rightline{——刘聪文老师，2023.09.04}
+%\vspace{-5pt}
+%\begin{center}
+%    \pgfornament[width=0.36\linewidth,color=lsp]{88}
+%\end{center}
+
+    部分作业是课上某个定理、推论、命题或其中一个步骤的证明，
+    就直接抄录在笔记里了。本章内容$=$课后作业$\cap $课本习题。
+\section{第一章}
+    \begin{ex}{\rm (1.1.1)}
+        完备度量空间的闭子空间也是完备的；任一度量空间的完备子空间一定是闭子空间。
+    \end{ex}
+\begin{solve}
+        \begin{enumerate}[$(1)$]
+            \item 设$E$是完备度量空间$X$的闭子集，由于$X$是完备的，所以$E$上任意柯西列都在$X$上收敛，且由$E$是闭集
+            $\Rightarrow \forall \{x_n\}_{n=1}^\infty \subset E$，如果
+            $x_n\rightarrow x_0$，则$x_0\in E$，所以$E$上任意柯西列都在$E$上收敛，故$E$是完备子空间。
+            \item 设$E$是度量空间$X$的完备子空间，设$\{x_n\}_{n=1}^\infty$是$X$上的收敛列，且$\{x_n\}_{n=1}^\infty\subset E$，
+            那也一定是柯西列，故在$E$上收敛，即$x_n\rightarrow x_0\in E$，故$E$是闭集。
+        \end{enumerate}
+\end{solve}
+
+    \begin{ex}{\rm (1.2.1)}
+        $S$为复数列全体构成的集合，定义距离为
+        \begin{equation*}
+            \rho(x,y)=\sum_{k=1}^n \frac{1}{2^k}\cdot \frac{|\xi_k-\eta_k|}{1+|\xi_k-\eta_k|}
+        \end{equation*}
+        其中$x=(\xi_1,\cdots,\xi_k,\cdots)$，$y=(\eta_1,\cdots,\eta_k,\cdots)$.
+        求证：$(S,\rho)$为完备度量空间。
+    \end{ex}
+\begin{solve}
+    先验证$\rho$是距离函数：
+    \begin{enumerate}[$1^\circ$]
+        \item 非负性：$\forall x,y,\rho(x,y)\geqslant 0$成立，因为每一项都非负。
+        \item 唯一性：$\rho(x,y)=0\Rightarrow \forall k,|\xi_k-\eta_k|=0\Rightarrow x=y$.
+        \item 对称性：由$|\xi_k-\eta_k|=|\eta_k-\xi_k|$可得。
+        \item 三角不等式：设$z=(\zeta_1,\zeta_2,\cdots)$，
+            \begin{align*}
+                \frac{t}{1+t}\nearrow {\rm\ on\ }(0,\infty)\Rightarrow\frac{|a+b|}{1+|a+b|}&\leqslant \frac{ |a|+|b| }{1+|a|+|b|}\\
+                &=\frac{ |a| }{1+|a|+|b|}+\frac{ |b| }{1+|a|+|b|}\leqslant \frac{ |a| }{1+|a|}+\frac{ |b| }{1+|b|}
+            \end{align*}
+            所以
+            \begin{align*}
+                \rho(x,y)&=\sum_{k=1}^\infty \frac{1}{2^k}\frac{|\xi_k-\eta_k|}{1+|\xi_k-\eta_k|}
+                =\sum_{k=1}^\infty \frac{1}{2^k}\frac{|(\xi_k-\zeta_k)+(\zeta_k-\eta_k)|}{1+|(\xi_k-\zeta_k)+(\zeta_k-\eta_k)|}\\
+                &\leqslant
+                \sum_{k=1}^\infty \frac{1}{2^k}\frac{|\xi_k-\zeta_k|}{1+|\xi_k-\zeta_k|}+\sum_{k=1}^\infty \frac{1}{2^k}\frac{|\zeta_k-\eta_k|}{1+|\zeta_k-\eta_k|}\\
+                &=\rho(x,z)+\rho(y,z)
+            \end{align*}
+    \end{enumerate}
+
+    下面证明完备性：设$\{x^{(n)}\}$是$S$中的柯西列，其中$x^{(n)}=(x_1^{(n)},x_2^{(n)},\cdots)$，则
+    \begin{equation*}
+        \rho(x^{(n+p)}-x^{(n)})=\sum_{k=1}^\infty \frac{1}{2^k}\frac{ |x^{(n+p)}_k-x^{(n)}_k| }{1+|x^{(n+p)}_k-x^{(n)}_k|}\rightarrow 0{\rm\ as\ }n\rightarrow\infty,\forall p\in\mathbb{N}
+    \end{equation*}
+    对于每个$k$，取$N_k$使得$n>N_k$时有
+    \begin{equation*}
+        \sum_{i=1}^\infty \frac{1}{2^i}\frac{|x^{(n+p)}_i-x^{(n)}_i|}{1+|x^{(n+p)}_i-x^{(n)}_i|}<\frac{1}{2^{k+1}}\varepsilon
+    \end{equation*}
+    左侧取级数的第$k$项，
+    \begin{equation*}
+        \frac{1}{2^k}\frac{|x^{(n+p)}_k-x^{(n)}_k|}{1+|x^{(n+p)}_k-x^{(n)}_k|}
+        <\frac{1}{2^{k+1}}\varepsilon
+    \end{equation*}
+    $\Rightarrow |x^{(n+p)}_k-x^{(n)}_k|<\frac{\varepsilon}{2-\varepsilon}\rightarrow 0{\rm\ as\ }\varepsilon\rightarrow0$，可知
+    \begin{equation*}
+        |x^{(n+p)}_k-x^{(n)}_k|\rightarrow 0{\rm\ as\ }n\rightarrow 0,\forall p,k\in\mathbb{N}
+    \end{equation*}
+    这意味着每个$x^{(n)}$的第$k$个坐标组成$\mathbb{C}$上的柯西列，由$\mathbb{C}$的完备性可知其收敛，并设$x_k^{(n)}\rightarrow x_k^*$，令
+    \begin{equation*}
+        x^*=(x_1^*,x_2^*,\cdots)\in S
+    \end{equation*}
+    下面证明$x^{(n)}\rightarrow x^*$，
+    \begin{align*}
+        \rho(x^{(n)},x^*)&=\sum_{k=1}^\infty \frac{1}{2^k}\frac{ |x_k^{(n)}-x_k^*| }{1+|x_k^{(n)}-x_k^*|}\\
+        &=\sum_{k=1}^{k_0} \frac{1}{2^k}\frac{ |x_k^{(n)}-x_k^*| }{1+|x_k^{(n)}-x_k^*|}+\sum_{k=n_0+1}^\infty \frac{1}{2^k}\frac{ |x_k^{(n)}-x_k^*| }{1+|x_k^{(n)}-x_k^*|}\\
+        &<\sum_{k=1}^{k_0} \frac{1}{2^k}|x_k^{(n)}-x_k^*|+\sum_{k=n_0+1}^\infty \frac{1}{2^k}\\
+        &=\sum_{k=1}^{k_0} \frac{1}{2^k}|x_k^{(n)}-x_k^*|+2^{-n_0}
+    \end{align*}
+    对每个$k$，存在$N_k$使得$n>N_k$时$|x_k^{(n)}-x_k^*|< \frac{\varepsilon}{2}$，
+    于是取$N={\rm max}\{N_1,\cdots,N_{k_0}\}$，$n>N$时
+    \begin{equation*}
+        \sum_{k=1}^{k_0} \frac{1}{2^k}|x_k^{(n)}-x_k^*|<\sum_{k=1}^{k_0} \frac{1}{2^k}\frac{\varepsilon}{2}<\frac{\varepsilon}{2}
+    \end{equation*}
+    再取充分大的$n_0$使得$2^{-n_0}<\frac{\varepsilon}{2}$，得到$\rho(x^{(n)},x^*)<\varepsilon$，由$\varepsilon$的任意性可知$\rho(x^{(n)},x^*)\rightarrow 0$，完备性得证。
+\end{solve}
+
+    \begin{ex}{\rm (1.2.2)}
+        度量空间上的基本列是收敛列当且仅当它存在一列收敛子列。
+    \end{ex}
+    \begin{solve}
+        必要性显然，只说明充分性：设$\{x_n\}$是基本列，且存在收敛子列$\{x_{n_k}\}$，并设$x_{n_k}\rightarrow x$.任意$\varepsilon>0$，存在
+        $N$使得$n,m>N$时
+        \begin{equation*}
+            \rho(x_n,x_m)<\varepsilon
+        \end{equation*}
+        存在$K$使得$k>K$时$n_k>N$，故
+        \begin{equation*}
+            \rho(x_n,x_{n_k})<\varepsilon,\forall n>N,k>K
+        \end{equation*}
+        上式中$k\rightarrow \infty$可得$\rho(x_n,x)\leqslant \varepsilon$，由$\varepsilon$任意性可知$x_n\rightarrow x$，故
+        $\{x_n\}$为收敛列。
+    \end{solve}
+
+    \begin{ex}{\rm (1.2.3)}
+        $F$是只有有限项不为0的实数列全体构成的集合，定义距离为
+        \begin{equation*}
+            \rho(x,y)=\fun{sup}{k\geqslant 1}|\xi_k-\eta_k|
+        \end{equation*}
+        其中$x=(\xi_1,\cdots,\xi_k,\cdots)$，$y=(\eta_1,\cdots,\eta_k,\cdots)$.
+        求证：$(F,\rho)$不是完备度量空间，并指出其完备化。
+    \end{ex}
+    \begin{solve}
+        令$x^{(n)}=(1,\frac{1}{2},\cdots,\frac{1}{n},0,0,\cdots)\in F$，
+    $m>n$时，
+    \begin{equation*}
+        x^{(n)}-x^{(m)}=(0,0,\cdots,0,\frac{1}{n+1},\frac{1}{n+2},\cdots,\frac{1}{m},0,0,\cdots)
+    \end{equation*}
+    所以
+    \begin{equation*}
+        \rho(x^{(n)},x^{(m)})=\frac{1}{n+1}\rightarrow 0{\rm\ as\ }n\rightarrow\infty
+    \end{equation*}
+    于是$\{x^{(n)}\}$是柯西列，假设它收敛到$x\in F$，$x$只有有限项不为零，假设其从第$N$项开始全部是$0$，
+    则$\rho(x^{(n)},x)\geqslant \frac{1}{N},\forall n>N$，矛盾。所以$F$不完备。
+
+    收敛到$0$的实数列全体为$F$的完备化，记作$l^\infty_0$，证明如下：
+    
+    先证明完备性，$l^\infty_0$上的距离也定义为
+    \begin{equation*}
+        \rho(x,y)=\mathop{\rm sup}\limits_{k\geqslant 1}|\xi_k-\eta_k|
+    \end{equation*}
+    设$\{x^{(n)}\}$是柯西列，其中$x^{(n)}=(\xi_1^{(n)},\xi_2^{(n)},\cdots)$，$\xi_k^{(n)}\rightarrow 0{\rm\ as\ }k\rightarrow 0$.
+    注意到
+    \begin{equation*}
+        \rho(x^{(n)},x^{(m)})=\mathop{\rm sup}\limits_{k\geqslant 1}|\xi_k^{(n)}-\xi_k^{(m)}|<\varepsilon
+        \Rightarrow\forall k\geqslant 1,|\xi_k^{(n)}-\xi_k^{(m)}|<\varepsilon
+    \end{equation*}
+    因此对于每个$k$，$\{\xi_k^{(n)}\}_{n=1}^\infty$是$\mathbb{R}$上的柯西列，由$\mathbb{R}$的完备性可知其为收敛列，设
+    $\xi_k^{(n)}\rightarrow \xi_k$，并令$x=(\xi_1,\xi_2,\cdots,\xi_k,\cdots)$.
+    \begin{equation*}
+        |\xi_k|\leqslant |\xi_k-\xi_k^{(n)}|+|\xi_k^{(n)}-\xi_j^{(n)}|+|\xi_j^{(N)}|
+    \end{equation*}
+    由于$\xi_k^{(n)}\rightarrow \xi_k$，
+    可以取充分大的$n$使得
+    右边第一项$<\varepsilon/3$；
+    $\{\xi_{k}^{(n)}\}$是柯西列，可以取充分大的$k,j$使得
+    右边第二项$<\varepsilon/3$；
+    有定义$\xi_j^{(N)}\rightarrow 0{\rm\ as\ }j\rightarrow 0$，可以取充分大的$j$
+    使得右边第三项$<\varepsilon/3$.因此得到$|\xi_k|<\varepsilon$，由$\varepsilon$的任意性可得
+    $\xi_k\rightarrow0\Rightarrow x\in F$，现只需说明$x_n\rightarrow x$.
+    \begin{equation*}
+        \rho(x_n,x)=\mathop{\rm sup}\limits_{k\geqslant 1}|\xi_k^{(n)}-\xi_k|
+    \end{equation*}
+    由于$\xi_k^{(n)}\rightarrow 0$，$\xi_k\rightarrow 0$，任意$\varepsilon>0$，可以取充分大的$K$，使得$k>K$时
+    $|\xi_k^{(n)}-\xi_k|\leqslant |\xi_k^{(n)}|+|\xi_k|\leqslant 2\varepsilon$，不妨设$|\xi_1^{(n)}-\xi_1|=\varepsilon>0$，
+    则$\rho(x_n,x)=\mathop{\rm max}\limits_{1\leqslant k\leqslant K}|\xi_k^{(n)}-\xi_k|$，而这有限的$K$项每一项都趋于$0$，$\forall \varepsilon_0>0$，
+    可以取充分大的$N$使得$n>N$时
+    \begin{equation*}
+        \rho(x_n,x)=\mathop{\rm max}\limits_{1\leqslant k\leqslant K}|\xi_k^{(n)}-\xi_k|<\varepsilon_0
+    \end{equation*}
+    因此$x_n\rightarrow x$.
+
+    最后说明$F$是稠密子空间，实际上$\forall x=(\xi_1,\cdots,\xi_k,\cdots)\in l_\infty^0$，令
+    $x_n\in F$的前$n$项与$x$相同，其余为$0$，则
+    \begin{equation*}
+        \mathop{\rm lim}\limits_{n\rightarrow\infty}\rho(x_n,x)=
+        \mathop{\rm lim}\limits_{n\rightarrow\infty}\mathop{\rm sup}\limits_{k\geqslant n+1}|\xi_k|=0
+    \end{equation*}
+    \end{solve}
+
+    \begin{ex}{\rm (1.2.4)}
+        $[0,1]$上的多项式全体记作$P[0,1]$，定义距离
+        \begin{equation*}
+            \rho(p,q)=\int_0^1 p(x)q(x)\d x
+        \end{equation*}
+        求证：$(P[0,1],\rho)$不是完备度量空间，并指出其完备化。
+    \end{ex}
+    \begin{solve}
+        设
+    \begin{equation*}
+        p_n(x)=1+x+\frac{x^2}{2}+\cdots+\frac{x^{n}}{n!},n\in\mathbb{N}_+
+    \end{equation*}
+    则
+    \begin{equation*}
+        \rho(p_n(x),p_{n+k}(x))
+        =\int_0^1 \sum_{i=n+1}^{n+k}\frac{x^i}{i!}{\rm d}x
+        =\sum_{i=n+1}^{n+k}\frac{1}{(i+1)!}\leqslant \sum_{i=n+1}^\infty \frac{1}{i(i+1)}=\frac{1}{n+1}\rightarrow 0
+    \end{equation*}
+    所以$p_n(x)$是基本列，而
+    \begin{equation*}
+        \rho(p_n(x),{\rm e^x})
+        =\int_0^1 \sum_{i=n+1}^{\infty}\frac{x^i}{i!}{\rm d}x
+        =\sum_{i=n+1}^{\infty}\frac{1}{(i+1)!}\leqslant \sum_{i=n+1}^\infty \frac{1}{i(i+1)}=\frac{1}{n+1}\rightarrow 0
+    \end{equation*}
+    说明$p_n(x)\mathop{\rightarrow}\limits^{\rho}{\rm e}^x$，这意味着如果$P[0,1]$完备，则${\rm e}^x$是有限次多项式，矛盾。
+
+    $L^1[0,1]$是$P[0,1]$的完备化。
+    \end{solve}
+
+    \begin{ex}{\rm (1.3.1)}
+        在完备度量空间中，子集$A$列紧的充要条件是：$\forall \varepsilon>0$，存在$A$的列紧的$\varepsilon$网。
+    \end{ex}
+    \begin{solve}
+        必要性：列紧$\Rightarrow $完全有界，所以$\forall \varepsilon>0$，存在$A$的有限$\varepsilon$网，有限集是列紧的（因为有限集的无穷点列中一定能取出全由某个特定元素组成的点列，进而收敛），所以也是列紧$\varepsilon$网。
+
+    充分性：设$N$为$A$的列紧的$\frac{\varepsilon}{2}$网，
+    \begin{equation*}
+        \forall x\in A,\exists \xi\in N{\rm\ s.t.\ }\rho(x,\xi)<\frac{\varepsilon}{2}
+    \end{equation*}
+    $N$列紧$\Rightarrow$完全有界，设$N_0$是$N$的有限$\frac{\varepsilon}{2}$网，则对于$\xi$，
+    $\exists x_0\in N_0{\rm\ s.t.\ }\rho(\xi,x_0)<\frac{\varepsilon}{2}$，于是
+    \begin{equation*}
+        \rho(x,x_0)\leqslant \rho(x,\xi)+\rho(\xi,x_0)<\varepsilon
+    \end{equation*}
+    所以$N_0$是$A$的有穷$\varepsilon$网，所以$A$完全有界，完备度量空间所以$A$列紧。
+    \end{solve}
+
+    \begin{ex}{\rm (1.3.2)}
+        度量空间中，紧集上的连续函数一定有界，且能够达到上、下确界。
+    \end{ex}
+    \begin{solve}
+        假设$f(x)$无上界，则存在$\{x_n\}\subset M$使得$f(x_n)>n$，由于$M$是紧集，所以自列紧，
+        所以存在子列$x_{n_k}\rightarrow x_0\in M$，$f$连续所以
+        $f(x_{n_k})\rightarrow f(x_0)$，这与$f(x_n)\rightarrow\infty$矛盾。
+        所以$f(x)$有上界，
+        同理可证$f(x)$有下界，故$f$有界。
+    
+        设$\beta=\mathop{\rm sup}\limits_{x\in M}f(x)$，$\forall \varepsilon>0$，存在$x_\varepsilon\in M$，$f(x_\varepsilon)>\beta-\varepsilon$，
+        取$\varepsilon_n=\frac{1}{n}$，得到点列$\{x_n\}$，
+        有收敛子列$\{x_{n_k}\}$，设其收敛到$x_0\in M$，于是
+        \begin{equation*}
+            \beta-\frac{1}{n_k}<f(x_{n_k})\leqslant \beta
+        \end{equation*}
+        上式$k\rightarrow\infty$可得
+        \begin{equation*}
+            \mathop{\rm lim}\limits_{k\rightarrow\infty}f(x_{n_k})=\beta
+        \end{equation*}
+        同时，因为$f$连续，
+        \begin{equation*}
+            \mathop{\rm lim}\limits_{k\rightarrow\infty}f(x_{n_k})=f(x_0)
+        \end{equation*}
+        因此$f(x_0)=\beta$，能达到上确界。下确界同理。
+    \end{solve}
+
+    \begin{ex}{\rm (1.3.4)}
+        $(X,\rho)$是度量空间，$F_1,F_2$是$X$的两个紧子集，求证：
+        $\exists x_i\in F_i$，使得$\rho(F_1,F_2)=\rho(x_1,x_2)$，其中
+        \begin{equation*}
+            \rho(F_1,F_2):={\rm inf}\{ \rho(x,y)|x\in F_1,y\in F_2 \}
+        \end{equation*}
+    \end{ex}
+    \begin{solve}
+        设$\rho(F_1,F_2)=d$，由inf的定义，
+        \begin{equation*}
+            \forall n\in\mathbb{N},\exists x_n\in F_1,y_n\in F_2{\rm\ s.t.\ }
+            d\leqslant \rho(x_n,y_n)<d+\frac{1}{n}
+        \end{equation*}
+        $F_1$紧则自列紧，$\{x_n\}$存在子列$\{x_{n_k}\}$收敛到$x'\in F_1$，
+        相应的$\{ y_{n_k} \}$有子列$\{ y_{n_{k_j}} \}$收敛到$y'\in F_2$，于是
+        \begin{equation*}
+            d\leqslant \rho( x_{n_{k_j}},y_{n_{k_j}} )<d+\frac{1}{n_{k_j}}
+        \end{equation*}
+        令$j\rightarrow 0$，得$d=\rho(x',y')$.  
+    \end{solve}
+
+    \begin{ex}{\rm (1.3.6)}
+        $E=\{ \sin{nt} \}_{n=1}^\infty$，证明$E\subset C[0,\pi]$不是列紧的。
+    \end{ex}
+    \begin{solve}
+        只需证明$\{ \sin{nt} \}_{n=1}^\infty$不是等度连续的。对$\varepsilon_0=1$，
+        $\forall \delta>0$，取$k\in\N$使得$\frac{1}{k}<\delta$，设$n_k=2k$，$t_k=\frac{\pi}{4k}\in[0,\pi]$，于是
+        \begin{equation*}
+            |t_k-t_0|=|t_k|=\frac{\pi}{4k}<\frac{1}{k}<\delta
+        \end{equation*}
+        \begin{equation*}
+            |\sin{n_kt_k}-\sin{n_kt_0}|=\sin{\frac{\pi}{2}}=1=\varepsilon_0
+        \end{equation*}
+        所以$\{ \sin{nt} \}_{n=1}^\infty$不是等度连续的。
+    \end{solve}
+    
+    \begin{ex}{\rm (1.3.7)}
+        $S$空间的子集$A$列紧的充要条件是$\forall n\in\N,\exists C_n>0{\rm\ s.t.\ }\forall x=\{\xi_n\}_{n=1}^\infty\in A,|\xi_n|\leqslant C_n $.
+    \end{ex}
+    \begin{solve}
+        必要性：$A$在$S$中列紧，
+        任取无穷点列$\{\xi^{(m)}\}_{m=1}^\infty\subset A$
+        有收敛子列$ \{\xi^{(m_k)}\}_{k=1}^\infty $，
+        而$S$中的收敛与按坐标收敛等价，
+        所以固定$m$，
+        点列$\{\xi^{(m)}\}_{m=1}^\infty$中的每一个点的坐标序列
+        $\{\xi_n^{(m)}\}_{n=1}^\infty$
+        也可以从其任意无穷子集中取出收敛子列。
+        固定$n$，$A$中所有点的第$n$个坐标构成$\C$上的集合，
+        要从其任意无穷子集中取出收敛子序列要求该集合有界，
+        此即为要求所证。
+    
+        充分性：只需构造$A$的列紧$\varepsilon$网。
+        对$\forall \varepsilon>0$，
+        选取充分大的$n$使得$\frac{1}{2^n}<\varepsilon$，考虑
+        \begin{equation*}
+            H=\{h_n=(\xi_1,\xi_2,\cdots,\xi_n,0,\cdots):(\xi_1,\xi_2,\cdots,\xi_n,\xi_{n+1},\cdots)\in A\}
+        \end{equation*}
+        因为
+        \begin{equation*}
+            \rho(x,h_n)=\sum_{k=n+1}^\infty \frac{1}{2^k}\frac{|\xi_k|}{1+|\xi_k|}
+            \leqslant \sum_{k=n+1}^\infty \frac{1}{2^k}=\frac{1}{2^n}<\varepsilon
+        \end{equation*}
+        所以$H$是$A$的$\varepsilon$网。由假设
+        \begin{equation*}
+            |\xi_k|\leqslant C_k,\ k=1,2,\cdots,n
+        \end{equation*}
+        即每个坐标都是有界的，
+        所以$H$可看做是$n$维空间中的有界集，从而是列紧的.
+    \end{solve}
+    
+    \begin{ex}{\rm (1.3.9)}
+        $(M,\rho)$是紧度量空间，$E\subset C(M)$，$E$中的函数一致有界并且满足：
+        \begin{equation*}
+            |x(t_1)-x(t_2)|\leqslant C\rho(t_1,t_2)^\alpha\ (\forall x\in E,\forall t_1,t_2\in M)
+        \end{equation*}
+        其中$0<\alpha\leqslant 1,C>0$，求证$E\subset C(M)$是列紧集。
+    \end{ex}
+    \begin{solve}
+        $\forall \varepsilon>0$，取$\delta=\left( \frac{\varepsilon}{C} \right)^{\frac{1}{\alpha}}$，
+        当$\rho(t_1,t_2)<\delta$时，
+        $|x(t_1)-x(t_2)|\leqslant C\rho(t_1,t_2)^\alpha<\varepsilon$，
+        所以$E$是等度连续的，再由{\rm Argela‑Ascoli}定理可得列紧。
+    \end{solve}
+    
+    \begin{ex}{\rm (1.4.2)}
+        $\forall x\in C(0,1]$，令$||x||=\fun{sup}{0<t\leqslant 1}|x(t)|$，求证：
+        \begin{enumerate}
+            \item $||\cdot||$是$C(0,1]$上的范数；
+            \item $l^\infty$与$C(0,1]$的一个子空间是等距同构的。
+        \end{enumerate}
+    \end{ex}
+    \begin{solve}
+        $||\cdots ||$是$C(0,1]$上的范数：
+        \begin{enumerate}[$(1)$]
+            \item 正定性：绝对值非负所以$||x||\geqslant 0$，等号成立当且仅当$x(t)=0{\rm\ on\ }(0,1]$.
+            \item 齐次性：$||Cx||=\fun{sup}{0<t\leqslant 1}|Cx(t)|=C\fun{sup}{0<t\leqslant 1}|x(t)|=C||x||$.
+            \item 三角不等式：
+                \begin{align*}
+                    ||x+y||=&\fun{sup}{0<t\leqslant 1} |x(t)+y(t)|\\
+                    \leqslant& \fun{sup}{0<t\leqslant 1} (|x(t)|+|y(t)|)\\
+                    \leqslant& \fun{sup}{0<t\leqslant 1}|x(t)|+\fun{sup}{0<t\leqslant 1}|y(t)|=||x||+||y||
+                \end{align*}
+        \end{enumerate}
+        以$1,\frac{1}{2},\frac{1}{3},\cdots,\frac{1}{n},\cdots$为节点的全体折线函数，构成
+        $C(0,1]$的子空间，记作$C'(0,1]$.
+        \begin{equation*}
+            \forall f\in C'(0,1],x_f\defeq\{ f(\frac{1}{n}) \}_{n=1}^\infty\in l^\infty,
+            ||x_f||_\infty=\fun{max}{n\geqslant 1}||f(\frac{1}{n})||\leqslant ||f||
+        \end{equation*}
+        反之，设$x=(\xi_1,\xi_2,\cdots,\xi_n,\cdots)\in l^\infty$，取一个以
+        $1,\frac{1}{2},\frac{1}{3},\cdots,\frac{1}{n},\cdots$
+        为节点的折线函数$f_x\in C(0,1]$，并令
+        $f_x(\frac{1}{n})=\xi_n$，于是
+        \begin{equation*}
+            ||f_x||\leqslant \fun{max}{n\geqslant 1}||\xi_n||=||x||_\infty
+        \end{equation*}
+    \end{solve}
+    
+    \begin{ex}{\rm (1.4.3)}
+        $\forall f\in C^1[a,b]$，令
+        \begin{equation*}
+            ||f||_1=\left( \int_a^b ( |f|^2+|f'|^2 )\d x \right)^\frac{1}{2}
+        \end{equation*}
+        证明$||\cdot||_1$是$C^1[a,b]$上的范数，在该范数下是否完备？
+    \end{ex}
+    \begin{solve}
+        $||\cdot||_1$是$C^1[a,b]$上的范数：
+        \begin{enumerate}[$(1)$]
+            \item 正定性：$||f||_1\geqslant 0$，等号成立当且仅当
+                $|f(x)|^2=0,\forall x\in [a,b]$当且仅当
+                $f(x)=0,\forall x\in [a,b]$.
+            \item 齐次性：
+                \begin{equation*}
+                    ||Cf||_1=\left( \int_a^b ( |Cf|^2+|Cf'|^2 ) \right)^{\frac{1}{2}}=C||f||_1
+                \end{equation*}
+            \item 三角不等式：
+                \begin{align*}
+                    ||f+g||_1^2&=\int_a^b ( |f|^2+|f'|^2 )+\int_a^b ( |g|^2+|g'|^2 )\\
+                    &\leqslant \int_a^b ( |f|^2+|f'|^2 )+\int_a^b ( |g|^2+|g'|^2 )+2\left(\int_a^b ( |f|^2+|f'|^2 )\right)^{\frac{1}{2}}\left(\int_a^b ( |g|^2+|g'|^2 )\right)^{\frac{1}{2}}\\
+                    &=(||f||_1+||g||_1)^2
+                \end{align*}
+            $(C^1[a,b],||\cdot ||_1)$不完备，取
+            \begin{equation*}
+                f_n(x)=\sqrt{x^2+\frac{1}{n^2}}\in C^1[-1,1]
+            \end{equation*}
+            设$f_n\mathop{\rightarrow }\limits^{||\cdot||_1}f\in C^1[a,b]$，则
+            $f'n\mathop{\rightarrow }\limits^{L_2}f'$，又有：$||f_n-|x|||_1\rightarrow 0$，故
+            \begin{equation*}
+                f_n'\mathop{\rightarrow }\limits^{L_2}-\chi_{[-1,0)}+\chi_{[0,1]}
+            \end{equation*}
+            $L_p$收敛则存在子列{\rm a.e.}收敛，于是$f'\eq{a.e.}-\chi_{[-1,0)}+\chi_[0,1]$，
+            这与$f'$连续矛盾。
+        \end{enumerate}
+    \end{solve}
+    
+    \begin{ex}{\rm (1.4.4)}
+        $\forall f\in C[0,1]$，令：
+        \begin{equation*}
+            ||f||_1=\left( \int_0^1 |f(x)|^2\d x \right)^\frac{1}{2}
+        \end{equation*}
+        \begin{equation*}
+            ||f||_2=\left( \int_0^1 (1+x)|f(x)|^2\d x \right)^\frac{1}{2}
+        \end{equation*}
+        证明两个范数等价。
+    \end{ex}
+    \begin{solve}
+        $1\leqslant 1+x\leqslant 2\Rightarrow ||f||_1\leqslant ||f||_2\leqslant \sqrt{2}||f||_1$，故为等价范数。
+    \end{solve}
+    
+    \begin{ex}{\rm (1.4.5)}
+        $BC[0,\infty)$代表$[0,\infty)$上连续有界函数全体，$\forall x\in BC[0,\infty),a>0$，
+        定义
+        \begin{equation*}
+            ||f||_a=\left( \int_0^\infty {\rm e}^{-ax}|f(x)|^2\d x \right)^\frac{1}{2}
+        \end{equation*}
+        求证：
+        \begin{enumerate}
+            \item $||\cdot ||_a$是$BC[0,\infty)$上的范数；
+            \item 若$a,b>0,a\neq b$，求证两个范数不等价。
+        \end{enumerate}
+    \end{ex}
+    \begin{solve}
+        $||\cdot ||_a$是$BC[0,+\infty)$上的范数：
+        \begin{enumerate}[$(1)$]
+            \item 正定性：$||f||_a\geqslant 0$，等号成立当且仅当（因为${\rm e}^{-ax}|f(x)|^2$非负连续）
+                ${\rm e}^{-ax}|f(x)|^2=0\Leftrightarrow f(x)=0$.
+            \item 齐次性：
+                \begin{align*}
+                    ||Cf||_a=\left( C^2\int_0^{\infty}{\rm e}^{-ax}|f(x)|^2\d x \right)^{\frac{1}{2}}
+                    =C||f||_a
+                \end{align*}
+            \item 三角不等式：
+                \begin{align*}
+                    ||f+g||_a=||{\rm e}^{-ax}(f+g)||_{L_2}
+                    \leqslant ||{\rm e}^{-ax}f||_{L_2}+||{\rm e}^{-ax}g||_{L_2}
+                    \leqslant ||f||_a+||g||_a
+                \end{align*}
+        \end{enumerate}
+        不妨设$b>a>0$，设
+        \begin{equation*}
+            f_n(x)=\left\{ \begin{array}{ll}
+                {\rm e}^{-\frac{ax}{2}}&,x\in [0,n]\\
+                \sqrt{-x+n+{\rm e}^{-an}}&,x\in (n,n+{\rm e}^{-an}]\\
+                0&, x\in (n+{\rm e}^{-\frac{an}{2}},+\infty)
+            \end{array} \right.
+        \end{equation*}
+        则$||f_n(x)||_a\geqslant n$发散，而
+        \begin{align*}
+            ||f_n(x)||_b&=\int_0^n {\rm e}^{-(a+b)x}\d x
+            +\int_n^{n+{\rm e}^{-an}} {\rm e}^{-bx}(-x+b+{\rm e}^{-an})\d x\\
+            &=-\frac{1}{a+b}( {\rm e}^{-(a+b)n}-1 )+\mathop{\int_n^{n+{\rm e}^{-an}} {\rm e}^{-bx}(-x+b+{\rm e}^{-an})\d x}\limits_{\leqslant {\rm e}^{-an}\fun{max}{n\leqslant x\leqslant n+{\rm e}^{-an}}
+            {\rm e}^{-bx}(-x+b+{\rm e}^{-an})\rightarrow 0}\\
+            &\rightarrow \frac{1}{a+b}
+        \end{align*}
+        所以两个范数不等价。
+    \end{solve}
+    
+    \begin{ex}{\rm (1.4.6)}
+        两个Banach空间$(X_1,X_2)$的乘积空间上赋予范数
+        \begin{equation*}
+            ||(x_1,x_2)||={\rm max}( ||x_1||_1,||x_2||_2 )
+        \end{equation*}
+        证明乘积空间仍然是Banach空间。
+    \end{ex}
+    \begin{solve}
+        任取$\mathfrak{X}$中的柯西列$\{x^{(n)}\}_{n=1}^\infty$，
+        则$\{x_i^{(n)}\}_{n=1}^\infty$是$\mathfrak{X}_i$中的柯西列$(i=1,2)$，
+        存在唯一$x_i\in \mathfrak{X}_i$使得$x_i^{(n)}\mathop{\rightarrow}\limits^{||\cdot||_i}x_i$，于是
+        \begin{equation*}
+            ||x^{(n)}-(x_1,x_2)||={\rm max}( ||x_1^{(n)}-x_1||_1,||x_2^{(n)}-x_2||_2 )\rightarrow 0
+        \end{equation*}
+        即$x^{(n)}\mathop{\rightarrow}\limits^{||\cdot||}(x_1,x_2)$.
+    \end{solve}
+
+    \begin{ex}{\rm (1.4.7)}
+        $X$是$B^*$空间，求证：$X$是Banach空间的充要条件为：
+        \begin{equation*}
+            \forall \{x_n\}_{n=1}^\infty \subset X,\sum_{n=1}^\infty ||x_n||<\infty\Rightarrow \sum_{n=1}^\infty x_n\mbox{收敛}
+        \end{equation*}
+    \end{ex}
+    \begin{solve}
+        必要性：设$a_n=\sum_{k=1}^n x_k$，如果$\sum_{n=1}^\infty||x_n||<\infty$，
+        则$\forall \varepsilon>0$，存在$N$，使得
+        \begin{equation*}
+            \sum_{n=N+1}^\infty ||x_n||<\varepsilon
+        \end{equation*}
+        则$n>N$时，任意正整数$p$，
+        \begin{equation*}
+            ||a_{n+p}-a_{n}||
+            =\left|\left| \sum_{n+1\leqslant k\leqslant n+p}x_k \right|\right|
+            \leqslant \sum_{n+1\leqslant k\leqslant n+p}||x_k||
+            \leqslant \sum_{n=N+1}^\infty ||x_n||<\varepsilon
+        \end{equation*}
+        所以$\{a_n\}$是柯西列，进而收敛。
+    
+        充分性：任取柯西列$\{x_n\}$，由习题$1.2.2$，只需证明其存在收敛子列。由柯西列的定义，
+        \begin{equation*}
+            \forall k\in\N_+,\exists n_k{\rm\ s.t.\ }
+            ||x_{n_k+1}-x_{n_k}||<\frac{1}{2^k}
+        \end{equation*}
+        令$y_k=x_{n_k}$，则
+        \begin{equation*}
+            \sum_{i=1}^\infty ||y_{i+1}-y_i||<\sum_{i=1}^\infty \frac{1}{2^k}=1<\infty
+        \end{equation*}
+        故$\sum_{i=1}^\infty y_{i+1}-y_i$收敛，于是
+        $y_k=y_1+\sum_{i=1}^k y_{i+1}-y_i$在$k\rightarrow\infty$时收敛，
+        此即为$\{x_n\}$的收敛子列。
+    \end{solve}
+    
+    \begin{ex}{\rm (1.4.14)}
+        $C_0$为以0为极限的实数全体，赋予范数：
+        \begin{equation*}
+            ||x||=\fun{max}{n\geqslant 1}|\xi_n|,\ \forall x=\{\xi_n\}_{n=1}^\infty\in C_0 
+        \end{equation*}
+        设
+        \begin{equation*}
+            M=\left\{ x=\{\xi_n\}_{n=1}^\infty\in C_0\left|  \sum_{n=1}^\infty \frac{\xi_n}{2^n}=0 \right.\right\}
+        \end{equation*}
+        证明：
+        \begin{enumerate}
+            \item $M$是$C_0$的闭线性子空间；
+            \item $x_0=(2,0,\cdots,0,\cdots)$，求证：
+                \begin{equation*}
+                    \fun{inf}{z\in M}||x_0-z||=1
+                \end{equation*}
+                但是$\forall y\in M$有$||x_0-y||>1$.
+        \end{enumerate}
+    \end{ex}
+    \begin{solve}
+        \begin{enumerate}[$(1)$]
+            \item 先证明$M$是线性子空间，只需说明$M$中的元素关于$\R$上的加法和数乘封闭：
+            $\forall x=\{x_n\}_{n=1}^\infty,y=\{y_n\}_{n=1}^\infty\in M,\lambda\in\R$，
+            \begin{equation*}
+                    \sum_{n=1}^\infty \frac{x_n+y_n}{2^n}=\sum_{n=1}^\infty \frac{x_n}{2^n}+\sum_{n=1}^\infty \frac{y_n}{2^n}=0\Rightarrow x+y\in M
+            \end{equation*}
+            \begin{equation*}
+                    \sum_{n=1}^\infty \frac{\lambda x_n}{2^n}
+                    =\lambda \sum_{n=1}^\infty \frac{x_n}{2^n}=0\Rightarrow \lambda x\in M
+            \end{equation*}
+    
+            再证明$M$是闭子空间：设$x^{(n)}=(\xi_1^{(n)},\cdots,\xi_k^{(n)},\cdots)\in M$，$x=(\xi_1,\cdots,\xi_k,\cdots)$，
+            且$x^{(n)}\rightarrow x$，则
+            \begin{align*}
+                    &\fun{lim}{n\rightarrow\infty}\fun{sup}{k\geqslant 1}
+                    |\xi_k^{(n)}-\xi_k|=0\\
+                    \Rightarrow&\forall\varepsilon>0,\exists N{\rm\ s.t.\ }\forall n>N,
+                    \fun{sup}{k\geqslant 1}|\xi_k^{(n)}-\xi_k|<\varepsilon
+            \end{align*}
+            则
+            \begin{align*}
+                    \ms{\sum_{k=1}^\infty \frac{\xi_k}{2^k}}
+                    &=\ms{ \sum_{k=1}^\infty \frac{\xi_k-\xi_k^{(N)}}{2^k}+\sum_{k=1}^\infty \frac{\xi_k^{(N)}}{2^k} }\\
+                    &=\ms{ \sum_{k=1}^\infty \frac{\xi_k-\xi_k^{(N)}}{2^k} }<\varepsilon
+            \end{align*}
+            令$\varepsilon\rightarrow 0$，$\sum_{k=1}^\infty \frac{\xi_k}{2^k}=0\Rightarrow x\in M$，从而$M$是$C_0$的闭线性子空间。
+            \item $\forall y=(y_1,\cdots,y_k,\cdots)\in M$，
+            假设$||x_0-y||\geqslant 1$，即
+            \begin{equation*}
+                    |2-y_1|\leqslant 1,|y_2|\leqslant 1,\cdots,|y_n|\leqslant 1,\cdots
+            \end{equation*}
+            于是$y_1\geqslant 1$，
+            \begin{align*}
+                    \sum_{k=1}^\infty \frac{y_k}{2^k}
+                    = \frac{y_1}{2}+\sum_{k=2}^\infty \frac{y_k}{2^k} \geqslant \frac{1}{2}-\sum_{k=2}^\infty \frac{1}{2^k}=0
+            \end{align*}
+            $y\in M$则上述不等式等号成立，意味着$y_1=1,y_k=-1,k\geqslant 2$，则$y\notin C_0$，矛盾。所以
+            $\forall y\in M$，$||x_0-y||<1$.
+            取$x^{(m)}=(\mathop{1-\frac{1}{2^{m-1}}}\limits_{1},\mathop{-1}\limits_{2},\cdots,\mathop{-1}\limits_{m},0,0,\cdots)\in M$，
+            则$\rho(x_0,x^{(m)})=1+\frac{1}{2^{m-1}}$，于是
+            \begin{equation*}
+                    1\leqslant\fun{inf}{z\in M}||x_0-z||\leqslant 1+\frac{1}{2^{m-1}}
+            \end{equation*}
+            令$m\rightarrow\infty$得到
+            \begin{equation*}
+                    \fun{inf}{z\in M}||x_0-z||=1
+            \end{equation*}
+        \end{enumerate}
+    \end{solve}
+    
+    \begin{ex}{\rm (1.4.15)}
+        设$X$是$B^*$空间，$M$是$X$的有限维真子空间，求证：
+        $\exists y\in X,||y||=1$，使得$\forall x\in M,||y-x||\geqslant 1$.
+    \end{ex}
+    \begin{solve}
+        $M$是有限维子空间，所以闭，进而$\forall y_0\in X\backslash M$，
+        $d\defeq \fun{inf}{x\in M}\ms{y_0-x}>0$，于是
+        \begin{equation*}
+            \forall n\in\N_+,\exists x_n\in M{\rm\ s.t.\ }d\leqslant \ms{y_0-x_n}<d+\frac{1}{n}
+        \end{equation*}
+        那么$\ms{x_n}\leqslant \ms{y_0-x_n}+\ms{y_0}\leqslant \ms{y_0}+d+1$，即$\{x_n\}$有界，$M$有限维所以有收敛子列
+        ${x_{n_k}}$，设$x_{n_k}\rightarrow x_0\in M$，
+        \begin{equation*}
+            d\leqslant ||y_0-x_{n_k}||<d+\frac{1}{n_k}\Rightarrow ||y_0-x_0||=d
+        \end{equation*}
+        令$y=\frac{y_0-x_0}{d}$，则$||y||=1$，对于$\forall x\in M$，
+        \begin{equation*}
+            \ms{y-x}=\ms{\frac{y_0-x_0}{d}-x}=\frac{1}{d}
+            \ms{y_0-\mathop{(x_0+dx)}\limits_{\in M}}\geqslant \frac{d}{d}=1
+        \end{equation*}
+    \end{solve}
+    
+    \begin{ex}{\rm (1.6.2)}
+        求证$C[a,b]$中的范数：
+        \begin{equation*}
+            ||f||=\fun{max}{a\leqslant x\leqslant b}|f(x)|
+        \end{equation*}
+        不可能由内积诱导。
+    \end{ex}
+    \begin{solve}
+        只需给出不满足平行四边形法则的例子，如下：取
+        $[a,b]=[0,1]$，$f(x)=\frac{1}{2}$，$g(x)=x$，则
+        \begin{equation*}
+            ||f+g||^2+||f-g||^2=\frac{5}{2}
+        \end{equation*}
+        \begin{equation*}
+            2(||f||^2+||g||^2)=3
+        \end{equation*}
+    \end{solve}
+    
+    \begin{ex}{\rm (1.6.4)}
+        $M,N$是内积空间中的两个子集，求证：
+        \begin{equation*}
+            M\subset N\Rightarrow N^\perp \subset M^\perp
+        \end{equation*}
+    \end{ex}
+    \begin{solve}
+        $\forall x\in N^\perp,m\in M\subset N\Rightarrow\agl{x,m}=0\Rightarrow x\in M^\perp$，故$N^\perp\subset M^\perp$.
+    \end{solve}
+    
+    \begin{ex}{\rm (1.6.5)}
+        $M$是Hilbert空间的子集，求证：
+        \begin{equation*}
+            (M^\perp)^\perp=\overline{ {\rm span}(M) }
+        \end{equation*}
+    \end{ex}
+    \begin{solve}
+        $x\in M^\perp\Leftrightarrow x\perp {\rm span}(M)\Leftrightarrow x\perp \overline{ {\rm span}(M) }\Leftrightarrow x\in ( {\rm span}(M) )^\perp$，
+        所以$M^\perp=( {\rm span}(M) )^\perp$，即证
+        \begin{equation*}
+            [( {\rm span}(M) )^\perp]^\perp=\overline{ {\rm span}(M) }
+        \end{equation*}
+        只需证明，对于闭子空间$M$，有$(M^\perp)^\perp=M$.假设$M\subsetneqq (M^\perp)^\perp$，
+        对于$x\in (M^\perp)^\perp\backslash M$，由正交分解
+        \begin{equation*}
+            x=y+z,\ y\in M,\ z\in M^\perp
+        \end{equation*}
+        对于$m\in M^\perp$，$y\in M\Rightarrow \agl{y}{m}=0$，$x\in (M^\perp)^\perp\Rightarrow\agl{x}{m}=0$，
+        所以$\agl{z}{m}=0\Rightarrow z\in (M^\perp)^\perp$，
+        于是$z\in M^\perp\cap (M^\perp)^\perp\Rightarrow z=0\Rightarrow x\in M$，矛盾。
+    \end{solve}
+    
+    \begin{ex}{\rm (1.6.6)}
+        $L^2[-1,1]$中，偶函数集的正交补是什么？
+    \end{ex}
+    \begin{solve}
+        偶函数集记作$X$，奇函数集记作$Y$.
+    
+        所有的奇函数$g\in Z$都垂直于$X$，因为
+        \begin{equation*}
+            \forall f\in X,f(x)g(x)\mbox{为奇函数}\Rightarrow \agl{f}{g}=\int_{-1}^{1} f(x)g(x)\d x=0\Rightarrow f\perp g
+        \end{equation*}
+        所以$Y\subset X^\perp$
+    
+        对于$h\in X^\perp$，可以分解为$h=h_1+h_2$，其中
+        \begin{equation*}
+            h_1(x)=\frac{h(x)+h(-x)}{2}\in X,\ h_2(x)=\frac{h(x)-h(-x)}{2}\in Y
+        \end{equation*}
+        则有
+        \begin{equation*}
+            \agl{h}{h_1}=0\Rightarrow \agl{h_1}{h_1}=0\Rightarrow h_1\eq{a.e.} 0 
+        \end{equation*}
+        所以$h\in Y\Rightarrow X^\perp\subset Y$，于是$Y=X^\perp$得证。
+    \end{solve}
+    
+    \begin{ex}{\rm (1.6.9)}
+        Hilbert空间$X$中的两个正交规范集$\{e_n\}_{n=1}^\infty,\{f_n\}_{n=1}^\infty$满足：
+        \begin{equation*}
+            \sum_{n=1}^\infty ||e_n-f_n||^2<1
+        \end{equation*}
+        求证：两者其中一个完备蕴含另一个完备。
+    \end{ex}
+    \begin{solve}
+        假设$\{e_n\}$完备，$\{f_n\}$不完备，则存在$u\in X,u\neq 0$，使得
+        $\agl{u}{f_n}=0,\forall n$，则
+        \begin{align*}
+            ||u||^2=\sum_{n=1}^\infty |\agl{u}{e_n}|^2=\sum_{n=1}^\infty 
+            | \agl{u}{e_n-f_n} |^2\leqslant 
+            \sum_{b=1}^\infty ||u||^2||e_n-f_n||^2<||u||^2
+        \end{align*}
+        矛盾。
+    \end{solve}
+    
+    \begin{ex}{\rm (1.6.10)}
+        $X_0$为Hilbert空间$X$的闭线性子空间，
+        $\{e_n\},\{f_n\}$分别是$X_0,X_0^\perp$的正交规范基，求证：
+        $\{e_n\}\cup \{f_n\}$是$X$的正交规范基。
+    \end{ex}
+    \begin{solve}
+        $X$是{\rm Hilbert}空间，$X_0$是其闭线性子空间，
+        所以$X=X_0\oplus X_0^\perp$，即$\forall x\in X$，存在唯一的
+        $y\in X_0,\zeta\in X_0^\perp$使得$x=y+\zeta$，而$y$和$\zeta$能被唯一地表示为：
+        \begin{equation*}
+            y=\sum_{n=1}^\infty \agl{y}{e_n}e_n,\ 
+            \zeta=\sum_{n=1}^\infty \agl{\zeta}{f_n}f_n
+        \end{equation*}
+        同时因为$\agl{y}{f_n}=\agl{\zeta}{e_n}=0$，设$\{e_n\}\cup\{f_n\}=\{\alpha_n\}$，
+        则
+        \begin{equation*}
+            y+\zeta=\sum_{n=1}^\infty \agl{y}{\alpha_n}\alpha_n
+        \end{equation*}
+        所以$\{\alpha_n\}$是{\rm O.N.B}.
+    \end{solve}
+    
+    \begin{ex}{\rm (1.6.11)}
+        这道题要用到课本例1.6.28相关内容。
+        \begin{enumerate}[(1).]
+            \item 如果$u(z)$的泰勒展开式为
+                \begin{equation*}
+                    u(z)=\sum_{k=0}^\infty b_k z^k
+                \end{equation*}
+                求证：
+                \begin{equation*}
+                    \sum_{k=0}^\infty \frac{|b_k|^2}{1+k}<\infty
+                \end{equation*}
+            \item 设$u(z),v(z)\in H^2(D)$，并且
+                \begin{equation*}
+                    u(z)=\sum_{k=0}^\infty a_kz^k,\ 
+                    v(z)=\sum_{k=0}^\infty b_kz^k
+                \end{equation*}
+                求证：
+                \begin{equation*}
+                    (u,v)=\pi \sum_{k=0}^\infty \frac{a_k\overline{b_k}}{k+1}
+                \end{equation*}
+            \item 设$u(z)\in H^2(D)$，求证：
+                \begin{equation*}
+                    |u(z)|\leqslant \frac{||u||}{\sqrt{\pi}(1-|z|)},\ \forall |z|<1
+                \end{equation*}
+            \item 验证$H^2(D)$是Hilbert空间。
+        \end{enumerate}
+    \end{ex}
+    \begin{solve}
+        \begin{enumerate}[(1).]
+            \item 由例{\rm 1.6.28}，$\varphi_n(z)=\sqrt{\frac{n}{\pi}}z^{n-1}$是一组{\rm O.N.B.}那么
+            \begin{equation*}
+                u(z)=\sum_{n=1}^\infty (u,\varphi_n)\varphi_n(z)
+                =\sum_{n=1}^\infty b_{n-1}z^{n-1}
+            \end{equation*}
+            可得
+            \begin{equation*}
+                \frac{b_k}{\sqrt{k+1}}=(u,\varphi_{k+1})\cdot \sqrt{\frac{1}{\pi}}
+            \end{equation*}
+            于是
+            \begin{equation*}
+                \sum_{k=0}^\infty \frac{|b_k|^2}{k+1}
+                =\frac{1}{\pi}\sum_{k=0}^\infty |(u,\varphi_{k+1})|^2\mathop{=}\limits^{\rm Parseval} \frac{1}{\pi}||u||^2<+\infty
+            \end{equation*}
+            \item \begin{align*}
+                    (u,v)&=\left( \sum_{n=1}^\infty (u,\varphi_n)\varphi_n,\sum_{m=1}^\infty (v,\varphi_m)\varphi_m \right)\\
+                    &=\sum_{n=1}^\infty (u,\varphi_n)\overline{ (v,\varphi_n) }\\
+                    &=\sum_{k=0}^\infty \frac{\sqrt{\pi}a_k}{\sqrt{k+1}}\frac{\sqrt{\pi}\overline{b_k}}{\sqrt{k+1}}
+                    =\pi\sum_{k=0}^\infty \frac{a_k\overline{b_k}}{k+1}
+            \end{align*}
+            \item 由
+            \begin{equation*}
+                    \sum_{k=0}^\infty (k+1)|z|^k=\frac{1}{(1-|z|)^2},|z|<1
+            \end{equation*}
+            可得
+            \begin{align*}
+                    RHS^2=\frac{||u||^2}{\pi(1-|z|)^2}
+                    &=\sum_{k=0}^\infty \frac{|b_k|^2}{k+1}
+                    \cdot \sum_{k=0}^\infty (k+1)|z|^k\\
+                    &\geqslant \sum_{k=0}^\infty \frac{|b_k|^2|z|^k}{k+1}
+                    \cdot \sum_{k=0}^\infty (k+1)|z|^k\\
+                    &\geqslant \sum_{k=0}^\infty |b_k z^k|^2\geqslant |u(z)|^2=LHS^2
+            \end{align*}
+            \item 设$u_n$为$H^2(D)$上的基本列，由$(3)$可知$u_n$内闭一致收敛
+            至$u(z)$，故$u(z)$全纯，且
+            \begin{equation*}
+                    |u_n(z)|-|u_m(z)|\leqslant | u_n(z)-u_m(z) |
+            \end{equation*}
+            故$|u_n(z)|$是$L^2(D)$中的基本列，由$L^2(D)$的完备性，
+            可知$|u(z)|\in L^2(D)$，即$u(z)\in H^2(D)$.
+            \begin{equation*}
+                    ||u_n(z)-u_m(z)||_{H^2(D)}\rightarrow 0
+            \end{equation*}
+            令$m\rightarrow\infty$，有$u_n(z)\mathop{\rightarrow}\limits^{H^2(D)}u(z)$.
+        \end{enumerate}
+    \end{solve}
+    
+    \begin{ex}{\rm (1.6.12)}
+        $X$是内积空间，$\{e_n\}$是$X$中的正交规范集，求证：
+        \begin{equation*}
+            \left| \sum_{n=1}^\infty (x,e_n)\overline{(y,e_n)} \right|
+            \leqslant ||x||\cdot ||y||,\ \forall x,y\in X
+        \end{equation*}
+    \end{ex}
+    \begin{solve}
+        \begin{align*}
+            LHS&=\sum_{n=1}^\infty (x,e_n)\overline{(y,e_n)}\\
+            &=\agl{ \sum_{n=1}^\infty (x,e_n)e_n }{ \sum_{n=1}^\infty (y,e_n)e_n }\\
+            &\mathop{\leqslant}\limits^{\rm C-S} 
+            \ms{ \sum_{n=1}^\infty (x,e_n)e_n }\cdot\ms{\sum_{n=1}^\infty (y,e_n)e_n}\\
+            &=\sum_{n=1}^\infty |(x,e_n)|\cdot\sum_{n=1}^\infty |(y,e_n)|\\
+            &\mathop{\leqslant}\limits^{\rm Bessel}||x||\cdot ||y||=RHS
+        \end{align*}
+    \end{solve}
+    
+    \begin{ex}{\rm (1.6.13)}
+        $X$是内积空间，令
+        \begin{equation*}
+            C=\{ x\in X:||x-x_0||\leqslant r \}
+        \end{equation*}
+        其中$x_0\in X,r>0$，求证：
+        \begin{enumerate}
+            \item $C$是$X$中的闭凸集；
+            \item \begin{equation*}
+                y=\left\{ \begin{array}{ll}
+                    x_0+r(x-x_0)/||x-x_0||&,x\notin C\\
+                    x&,x\in C
+                \end{array} \right.
+            \end{equation*}
+            是$x$在$C$中的最佳逼近元。
+        \end{enumerate}
+    \end{ex}
+    \begin{solve}
+        \begin{enumerate}[$(1)$]
+            \item $C$闭显然，只需证明为凸集：$\forall x_1,x_2\in C,\forall \theta\in(0,1)$，
+            \begin{align*}
+                    ||\theta x_1+(1-\theta)x_2-x_0||&=||\theta (x_1-x_0)+(1-\theta)(x_2-x_0)||\\
+                    &\leqslant \theta||x_1-x_0||+(1-\theta)||x_2-x_0||\\
+                    &\leqslant \theta r+(1-\theta)r=r\\
+                    \Rightarrow \theta x_1+(1-\theta)x_2&\in C
+            \end{align*}
+            \item 当$x\notin C$，对于$\forall z\in C$，
+            \begin{align*}
+                    ||x-y||&=||x-y||+||y-x_0||-r\\
+                    &= ||x-x_0||-r\\
+                    &\leqslant ||x-z||+||z-x_0||-r\\
+                    &\leqslant ||x-z||
+            \end{align*}
+            等号成立当且仅当$z=y$，则$||x-y||=\fun{inf}{z\in M}||x-z||$；当$x\in C$则自身就是最佳逼近元。证毕。
+        \end{enumerate}
+    \end{solve}
+
+
+
+\section{第二章}
+\subsection{线性算子}
+\begin{ex}{\rm (2.1.1)}
+    证明：线性映射$T:X\rightarrow Y$有界当且仅当$T$将有界集映为有界集。
+\end{ex}
+\begin{solve}
+    必要性：任取有界集$A\subset X$，存在$B(0,r)\supset A$，则
+    \begin{equation*}
+        ||Tx||\leqslant C||x||\leqslant Cr\Rightarrow Tx\in B(0,Cr)\Rightarrow T(A)\subset B(0,Cr)
+    \end{equation*}
+    所以$T$把有界集映为有界集。
+
+    充分性：$B=\{x\in X:||x||\leqslant 1\}$是有界集，
+    则存在$M>0$使得$||Tx||\leqslant M,\forall x\in B$，
+    对于$\forall x\in X-\{0\}$，
+    \begin{equation*}
+        \left|\left| T\left( \frac{x}{||x||} \right) \right|\right|\leqslant M\Rightarrow ||Tx||\leqslant M||x||
+    \end{equation*}
+    因此$T$有界。
+\end{solve}
+
+\begin{ex}{\rm (2.1.2)}
+    设线性映射$A:X\rightarrow Y$有界，证明：
+    \begin{enumerate}[(1).]
+        \item $\ms{A}=\fun{sup}{\ms{x}\leqslant 1}\ms{Ax}$
+        \item $\ms{A}=\fun{sup}{\ms{x}<1}\ms{Ax}$
+    \end{enumerate}
+\end{ex}
+\begin{solve}
+    \begin{enumerate}[$(1)$]
+        \item 一方面
+            \begin{equation*}
+                \fun{sup}{||x||\leqslant 1}||Ax||\geqslant \fun{sup}{||x||=1}||Ax||=||A||
+            \end{equation*}
+            另一方面
+            \begin{equation*}
+                ||A||=\fun{sup}{x\neq 0}\frac{||Ax||}{||x||}\geqslant 
+                \fun{sup}{\mathop{x\neq 0}\limits_{||x||\leqslant 1}}\frac{||Ax||}{||x||}
+                \geqslant \fun{sup}{||x||\leqslant 1} ||Ax||
+            \end{equation*}
+            所以二者相等。
+        \item 由上一问，
+            \begin{equation*}
+                ||A||=\fun{sup}{||x||\leqslant 1}||Ax||\geqslant 
+                \fun{sup}{||x||<1}||Ax||
+            \end{equation*}
+            另一方面，对于$\forall ||x||=1$，$\forall \varepsilon>0$，
+            \begin{equation*}
+                Ax=(1+\varepsilon)A( \frac{x}{1+\varepsilon} )
+                \leqslant (1+\varepsilon)\fun{sup}{||x||<1}||Ax||
+            \end{equation*}
+            即
+            \begin{equation*}
+                ||A||\leqslant (1+\varepsilon)\fun{sup}{||x||<1}||Ax||
+            \end{equation*}
+            令$\varepsilon\rightarrow 0^+$得证。
+    \end{enumerate}
+\end{solve}
+
+\begin{ex}{\rm (2.1.5)}
+    $f$是$X$上的非零有界线性泛函，令：
+    \begin{equation*}
+        d={\rm inf}\{ \ms{x}:f(x)=1,x\in X \}
+    \end{equation*}
+    证明$\ms{f}=\frac{1}{d}$.
+\end{ex}
+\begin{solve}
+    \begin{equation*}
+        d={\rm inf}\{ ||x||:f(x)=1,x\in X \}
+    \end{equation*}
+    一方面，若$x\in X$满足$f(x)=1$，
+    \begin{align*}
+        &||f||\cdot ||x||=||x||\cdot \fun{sup}{0\neq z\in X}\frac{ ||f(z)|| }{||z||}\geqslant ||x||\cdot \frac{||f(x)||}{||x||}=||f(x)||=1\\
+        \Rightarrow&||x||\geqslant \frac{1}{||f||}\\
+        \Rightarrow&d\geqslant \frac{1}{||f||}  
+    \end{align*}
+    另一方面，由$||f||$的定义，$\forall \varepsilon>0$，存在$0\neq x_0\in X$使得
+    \begin{equation*}
+        \frac{||f(x_0)||}{||x_0||}>||f||-\varepsilon\Rightarrow
+        \frac{1}{||f||-\varepsilon}>\left|\left| \frac{x_0}{||f(x_0)||} \right|\right|
+    \end{equation*}
+    而$f\left( \frac{x_0}{||f(x_0)||} \right)=1$，所以
+    \begin{equation*}
+        \frac{1}{||f||-\varepsilon}>\left|\left| \frac{x_0}{||f(x_0)||} \right|\right|\geqslant d
+    \end{equation*}
+    综上，
+    \begin{equation*}
+        \frac{1}{||f||}\leqslant d<\frac{1}{||f||-\varepsilon}
+    \end{equation*}
+    令$\varepsilon\rightarrow0^+$得证。
+\end{solve}
+
+\begin{ex}{\rm (2.1.7)}
+    线性映射$T:X\rightarrow Y$，令：
+    \begin{equation*}
+        N(T)\defeq \{ x\in X:Tx=0 \}
+    \end{equation*}
+    \begin{enumerate}
+        \item 若$T$有界，证明$N(T)$是$X$的闭线性子空间；
+        \item $N(T)$是$X$的闭线性子空间能否推出$T$有界？
+        \item 若$f$是线性泛函，求证：\begin{equation*}
+            f\in X^*\Leftrightarrow N(f)\mbox{是闭线性子空间}
+        \end{equation*}
+    \end{enumerate}
+\end{ex}
+\begin{solve}
+    \begin{enumerate}[$(1)$]
+        \item $\{x_n\}\subset N(T)$，$x_n\rightarrow x$，$Tx_n=0$，$T$有界所以连续，令$n\rightarrow\infty$得到$Tx=0\Rightarrow x\in N(T)$，所以$N(T)$闭。
+            只需验证$N(T)$关于加法和数乘封闭，
+            \begin{equation*}
+                x_1,x_2\in N(T)\Rightarrow T(x_1+x_2)=T(x_1)+T(x_2)=0\Rightarrow x_1+x_2\in N(T)
+            \end{equation*}
+            \begin{equation*}
+                \lambda\in\K,x\in N(T)\Rightarrow T(\lambda x)=\lambda T(x)=0\Rightarrow \lambda x\in N(T)
+            \end{equation*}
+            所以$N(T)$是$X$的闭线性子空间。
+        \item 不能，反例如下：在$l^\infty$中，取$a=(1,-1,0,0,\cdots)$，设
+            \begin{equation*}
+                f:l^\infty\rightarrow \R,\{x_n\}_{n=1}^\infty \mapsto \sum_{n=1}^\infty x_n
+            \end{equation*}
+            \begin{equation*}
+                T:l^\infty\rightarrow l^\infty,\xi\mapsto \xi-f(\xi)a
+            \end{equation*}
+            \begin{enumerate}[$1^\circ$]
+                \item $T$是线性映射：显然$f$是线性映射，\begin{align*}
+                    T(\alpha \xi_1+\beta \xi_2)&=\alpha \xi_1+\beta \xi_2-f(\alpha \xi_1+\beta \xi_2)a\\
+                    &=\alpha \xi_1+\beta \xi_2-[\alpha f(\xi_1)+\beta f(\xi_2)]a\\
+                    &=\alpha (\xi_1-f(\xi_1)a)+\beta (\xi_2-f(\xi_2)a)\\
+                    &=\alpha T(\xi_1)+\beta T(\xi_2),\forall \alpha,\beta\in\K,\xi_1,\xi_2\in l^\infty
+                \end{align*}
+                \item $N(T)=\{0\}$，为闭线性子空间：
+                \begin{align*}
+                    \xi=\{x_n\}_{n=1}^\infty
+                    \in N(T)\Leftrightarrow& \xi-(f(\xi),-f(\xi),0,0,\cdots)=0\\
+                    \Rightarrow& x_1=f(\xi),x_2=-f(\xi),x_3=0,x_4=0,\cdots\\
+                    \Rightarrow& f(\xi)=x_1+x_2=0\Rightarrow \xi=0
+                \end{align*}
+                \item $f$无界：只需取$\xi_n=(1,\cdots,\mathop{1}\limits_{n},0,0,\cdots)$，$||\xi_n||=1$，$f(\xi_n)/||\xi_n||=n\rightarrow\infty$.
+                \item $T$无界：假设有界，则
+                \begin{align*}
+                    \xi\in l^\infty\Rightarrow& ||\xi-f(\xi)a||=||T\xi||\leqslant ||T||\cdot ||\xi||\\
+                    \Rightarrow& |f(\xi)|=|f(\xi)|\cdot ||a||\leqslant ||\xi-f(\xi)a||+||\xi||\leqslant (1+||T||)||\xi||
+                \end{align*}
+                这意味着$f$有界，矛盾。
+            \end{enumerate}
+        \item $(1)$已经证明必要性，只需说明充分性：假设$f$无界，即
+            \begin{equation*}
+                \forall n\in \N_+,\exists x_n\in X{\rm\ s.t.\ }||x_n||=1,f(x_n)\geqslant n
+            \end{equation*}
+            令
+            \begin{equation*}
+                y_n\defeq \frac{x_n}{f(x_n)}-\frac{x_1}{f(x_1)}
+            \end{equation*}
+            则$f(y_n)=1-1=0\Rightarrow y_n\in N(f)$，但是$y_n\rightarrow -\frac{x_1}{f(x_1)}\notin N(f)$，这与$N(f)$闭矛盾。
+    \end{enumerate}
+\end{solve}
+
+\begin{ex}{\rm (2.1.8)}
+    $f$是$X$上的线性泛函，记
+    \begin{equation*}
+        H_f^\lambda \defeq \{ x\in X:f(x)=\lambda \}
+    \end{equation*}
+    其中$\lambda\in\K$，如果$f\in X^*$，且$\ms{f}=1$，求证：
+    \begin{enumerate}[(1).]
+        \item $|f(x)|={\rm inf}\{ \ms{x-z}:\forall z\in H_f^0 \}$，$\forall x\in X$.
+        \item $\forall \lambda\in\K$，$H_f^\lambda$上的任一点$x$到$H_f^0$的距离都等于$|\lambda|$.
+    \end{enumerate}
+    并对$X=\R^2,\K=\R$的情形解释上述命题的几何意义。
+\end{ex}
+\begin{solve}
+    \begin{enumerate}[$(1)$]
+        \item 记$d={\rm inf}\{ ||x-z||:\forall z\in H_f^0 \}$，
+        一方面，对于$\forall z\in H_f^0$，
+            \begin{equation*}
+                |f(x)|=|f(x-z)|\leqslant ||f||\cdot ||x-z||=||x-z||
+            \end{equation*}
+            所以$|f(x)|\leqslant d$；
+            另一方面，$\forall y\in X$满足$||y||=1$且$f(y)\neq 0$，有
+            \begin{equation*}
+                z=x-\frac{f(x)}{f(y)}y\in N(f)
+            \end{equation*}
+            而
+            \begin{equation*}
+                |f(x)|=|f(y)|\cdot ||x-z||\geqslant |f(y)|d
+            \end{equation*}
+            于是
+            \begin{equation*}
+                |f(x)|\geqslant ||f|| d=d
+            \end{equation*}
+        \item 对于$\forall x\in H_f^\lambda$，有$f(x)=\lambda$，由上一问可知
+            \begin{equation*}
+                |\lambda|=\rho(x,H_f^0)
+            \end{equation*}
+            在$\R^2$中，由$||f||=1$知$f((x,y))=\alpha x+\beta y$，其中$\alpha=f((1,0)),\beta=f((0,1)),\alpha^2+\beta^2=1$，
+            \begin{equation*}
+                \rho(x,H_f^0)=\rho(0,H_f^\lambda)=\left.\frac{ |\alpha x+\beta y-\lambda| }{\sqrt{\alpha^2+\beta^2}}\right|_{(0,0)}=|\lambda|
+            \end{equation*}
+    \end{enumerate}
+\end{solve}
+
+\subsection{Riesz表示定理}
+\begin{ex}{\rm (2.2.1)}%done
+    $H$是Hilbert空间，设$f_1,\cdots,f_n$是$H$上的一组有界线性泛函，对于$k=1,2,\cdots,n$，定义
+    \begin{equation*}
+        M\defeq \bigcap_{k=1}^n N(f_k),\ N(f_k)\defeq \{ x\in H:f_k(x)=0 \}
+    \end{equation*}
+    任取$x_0\in H$，记$y_0$为$x_0$在$M$上的正交投影，求证：$\exists y_1,y_2,\cdots,y_n\in N(f_k)^\perp$
+    以及$\alpha_1,\cdots,\alpha_n\in\K$使得：
+    \begin{equation*}
+        y_0=x_0-\sum_{k=1}^n \alpha_k y_k
+    \end{equation*}
+\end{ex}
+\begin{solve}
+    由{\rm Riesz}表示定理，
+    \begin{equation*}
+        \forall 1\leqslant k\leqslant n,\exists y_k\in H{\rm\ s.t.\ }x\in H\Rightarrow f_k(x)=\ag{x,y_k}
+    \end{equation*}
+    则
+    \begin{equation*}
+        x\in M\Leftrightarrow \ag{x,y_k}=0,k=1,2,\cdots,n
+    \end{equation*}
+    所以$M=({\rm span}\{ y_k \}_{k=1}^n)^\perp$，由习题1.6.5可知
+    \begin{equation*}
+        M^\perp =\overline{ {\rm span}\{ y_k \}_{k=1}^n }
+        ={\rm span}\{ y_k \}_{k=1}^n
+    \end{equation*}
+    因此$x_0-y_0\in M^\perp$可以表示成$\{y_k\}$的线性组合：
+    \begin{equation*}
+        x_0-y_0=\sum_{k=1}^n \overline{\ag{z_k,z_0}}z_k\in{\rm span}\{z_k\}_{k=1}^n={\rm span}\{y_k\}_{k=1}^n
+    \end{equation*}
+\end{solve}
+
+\begin{ex}{\rm (2.2.3)}%done
+    $H$是Hilbert空间，$H$的元素是定义在集合$S$上的复值函数。$\forall x\in S$
+    ，由
+    \begin{equation*}
+        J_x(f)=f(x)
+    \end{equation*}
+    定义的映射$J_x:H\rightarrow \C$是$H$上的连续线性泛函，求证：存在$S\times S$上的复值函数$K(x,y)$，适合条件：
+    \begin{enumerate}[(1).]
+        \item 对任意固定的$y\in S$，作为$x$的函数有$K(x,y)\in H$.
+        \item $f(y)=(f,K(\cdot,y))$，$\forall f\in H$，$\forall y\in S$.
+    \end{enumerate}
+\end{ex}
+\begin{solve}
+    由{\rm Riesz}表示定理，
+    \begin{equation*}
+        \forall x\in S,\exists f_x\in H{\rm\ s.t.\ }J_x(f)=\ag{f,f_x},\forall f\in H
+    \end{equation*}
+    令$K(x,y)\defeq \ag{f_x,f_y}$，则：
+    对于任一固定的$y\in S$，
+    \begin{equation*}
+        K(x,y)=\ag{f_x,f_y}=J_x(f_y)=f_y(x),\forall x\in S
+    \end{equation*}
+    可得$K(\cdot,y)=f_y\in H$；另一方面，
+    \begin{equation*}
+        f(y)=\ag{f,f_y}=\ag{f,K(\cdot,y)},\forall f\in H,\forall y\in S
+    \end{equation*}
+    所以$K(x,y)$满足题意。
+\end{solve}
+
+\begin{ex}{\rm (2.2.5)}
+    $H$是Hilbert空间，$L,M$是$H$上的闭线性子空间，求证：
+    \begin{enumerate}[(1).]
+        \item $L\perp M\Leftrightarrow P_LP_M=0$.
+        \item $L=M^\perp\Leftrightarrow P_L+P_M=I$.
+        \item $P_LP_M=P_{L\cap M}\Leftrightarrow P_LP_M=P_MP_L$.
+    \end{enumerate}
+\end{ex}
+\begin{solve}
+    \begin{enumerate}[$(1)$]
+        \item 必要性：
+            \begin{equation*}
+                \ag{P_LP_Mx,y}=\ag{P_Mx,P_Ly}=0,\forall x,y\in H
+            \end{equation*}
+            充分性：
+            \begin{equation*}
+                \ag{x,y}=\ag{P_Lx,P_My}=\ag{x,P_LP_My}=\ag{x,0}=0,\forall x\in L,y\in M
+            \end{equation*}
+        \item 必要性：
+            \begin{equation*}
+                x=P_Lx+P_{L^\perp}x=P_Lx+P_Mx,\forall x\in H
+            \end{equation*}
+            充分性：
+            \begin{align*}
+                x\in L&\Rightarrow x=P_Lx+P_Mx\Rightarrow P_Mx=0\Rightarrow x\in M^\perp\\
+                x\in M^\perp&\Rightarrow P_Mx=0\Rightarrow P_Lx=x-P_Mx=x\Rightarrow x\in L
+            \end{align*}
+            于是$L=M^\perp$.
+        \item 必要性：
+            \begin{equation*}
+                P_LP_M=P_{L\cap M}=P_{M\cap L}=P_MP_L
+            \end{equation*}
+            充分性：对于$\forall y\in H$，
+            \begin{equation*}
+                M\ni P_MP_Lx=P_LP_Mx\in L
+            \end{equation*}
+            而$P_LP_Mx\in L\cap M$，则由变分引理，为证$P_LP_M=P_{L\cap M}$只需验证
+            \begin{equation*}
+                (x-P_LP_Mx)\perp (L\cap M),\forall x\in H
+            \end{equation*}
+            实际上
+            \begin{align*}
+                \ag{x-P_LP_Mx,y}&=\ag{x,y}-\ag{P_LP_Mx,y}\\
+                &=\ag{x,y}-\ag{x,y}=0,\forall y\in L\cap M
+            \end{align*}
+            所以得证。
+    \end{enumerate}
+\end{solve}
+
+\subsection{Baire纲定理}
+    本小节没有布置课本上的习题。
+
+\subsection{共鸣定理}
+\begin{ex}{\rm (2.3.7)}%done
+    设$X,Y$是Banach空间，$\{A_n\}\subset \mathcal{L}(X,Y)$，
+    若对于$\forall x\in X$，$\{A_n x\}$在$Y$中收敛，求证：存在$A\in\mathcal{L}(X,Y)$使得
+    \begin{equation*}
+        A_n x\rightarrow Ax,\ ||A||\leqslant \fun{liminf}{n\rightarrow\infty}||A_n||
+    \end{equation*}
+\end{ex}
+\begin{solve}
+    对于$\forall x\in X$，因为$\{A_n x\}$收敛，可定义
+    $A:x\mapsto\fun{lim}{n\rightarrow\infty}A_n x$，不难验证$A$是线性算子。
+    收敛列必有界，所以$\forall x\in X,\fun{sup}{n\geqslant 1}||A_n x||<\infty$.
+    由{\rm UBP}，
+    \begin{equation*}
+        \exists M>0{\rm\ s.t.\ }\fun{sup}{n\geqslant 1}||A_n||\leqslant M
+    \end{equation*}
+    于是
+    \begin{equation*}
+        ||Ax||=\fun{lim}{n\rightarrow\infty}||A_n x||\leqslant \fun{liminf}{n\rightarrow\infty}||A_n||\cdot ||x||\leqslant M||x||,\forall x\in X
+    \end{equation*}
+    （稍微解释一下这里的小于等于号是怎么来的：$||A_nx||\leqslant ||A_n||\cdot ||x||$，
+    尽管$\{||A_n||\cdot ||x||\}$不一定是收敛列，
+    但我们知道它的收敛子列的极限一定大于等于$\{||A_nx||\}$对应收敛子列的极限，也就是$\{||A_nx||\}$的极限，
+    因此由{\rm liminf}的定义可得。）
+    这就证明了$A$有界且$||A||\leqslant\fun{liminf}{n\rightarrow\infty}||A_n||$.
+\end{solve}
+
+\begin{ex}{\rm (2.3.8)}%done
+    设$1<p<\infty$，$p^{-1}+q^{-1}=1$，如果序列$\{\alpha_k\}$
+    使得对于$\forall x\in \{\xi_k\}\in \ell^p$保证
+    $\sum_{k=1}^\infty \alpha_k\xi_k$收敛，求证：$\{\alpha_k\}\in \ell^q$.
+
+    若定义
+    \begin{equation*}
+        f:x\mapsto \sum_{k=1}^\infty \alpha_k\xi_k
+    \end{equation*}
+    求证：$f$是$\ell^p$上的线性泛函，而且
+    \begin{equation*}
+        ||f||=\left(  \sum_{k=1}^\infty |\alpha_k|^q  \right)
+        ^\frac{1}{q}
+    \end{equation*}
+\end{ex}
+\begin{solve}
+    考虑
+    \begin{equation*}
+        f_n:\ell^p\rightarrow\K,x=\{\xi_k\}\mapsto \sum_{k=1}^n \alpha_k\xi_k
+    \end{equation*}
+    则由{\rm Holder}不等式，
+    \begin{align*}
+        |f_n(x)|=\left| \sum_{k=1}^n \alpha_k\xi_k \right|&\leqslant \left( \sum_{k=1}^n|\alpha_k|^q \right)^\frac{1}{q}\cdot \left( \sum_{k=1}^n|\xi_k|^p \right)^\frac{1}{p}\\
+        &\leqslant \left( \sum_{k=1}^n|\alpha_k|^q \right)^\frac{1}{q}\cdot ||x||_p,\forall x\in \ell^p
+    \end{align*}
+    从而$f_n\in \mathcal{L}(\ell^p,\K)$，而且
+    \begin{equation*}
+        ||f_n||\leqslant \left( \sum_{k=1}^n|\alpha_k|^q \right)^\frac{1}{q}
+    \end{equation*}
+    于是由习题$2.3.7$可得，若令
+    \begin{equation*}
+        f:l^p\rightarrow\K,x=\{\xi_k\}\mapsto \sum_{k=1}^\infty \alpha_k\xi_k
+    \end{equation*}
+    则$f\in \mathcal{L}(\ell^p,\K)$，
+    \begin{equation*}
+        ||f||\leqslant \fun{liminf}{n\rightarrow\infty}||f_n||
+        \leqslant \fun{liminf}{n\rightarrow\infty}\left( \sum_{k=1}^n|\alpha_k|^q \right)^\frac{1}{q}
+    \end{equation*}
+
+    另一方面，取
+    \begin{equation*}
+        x_k^{(n)}=\left\{ \begin{array}{ll}
+            |\alpha_k|^{q-1}{\rm e}^{-{\rm i}\cdot {\rm arg}(\alpha_k)}&,1\leqslant k\leqslant n\\
+            0&,k>n
+        \end{array} \right.
+    \end{equation*}
+    则$x^{(n)}=(x_1^{(n)},\cdots,x_k^{(n)},\cdots)\in l^p$，且
+    \begin{equation*}
+        ||x^{(n)}||_p=\left( \sum_{k=1}^n|\alpha_k|^{(q-1)p} \right)^\frac{1}{p}=\left( \sum_{k=1}^n|\alpha_k|^q \right)^\frac{1}{p}
+    \end{equation*}
+    注意$\alpha_k=|\alpha_k|\e^{i\cdot{\rm arg}(\alpha_k)}$，
+    \begin{align*}
+        |f(x^{(n)})|&=\sum_{k=1}^n \alpha_k|\alpha_k|^{q-1}{\rm e}^{-{\rm i}\cdot {\rm arg}(\alpha_k)}\\
+        &=\sum_{k=1}^n |\alpha_k|{\rm e}^{{\rm i}\cdot {\rm arg}(\alpha_k)}\cdot |\alpha_k|^{q-1}{\rm e}^{-{\rm i}{\rm arg}(\alpha_k)}\\
+        &=\sum_{k=1}^n |\alpha_k|^q=\left( \sum_{k=1}^n|\alpha_k|^q \right)^{\frac{1}{p}+\frac{1}{q}}\\
+        &=\left( \sum_{k=1}^n|\alpha_k|^q \right)^\frac{1}{q}\cdot ||x^{(n)}||_p
+    \end{align*}
+    于是
+    \begin{equation*}
+        ||f||\geqslant \frac{|f(x^{(n)})|}{||x^{(n)}||_p}
+        =\left( \sum_{k=1}^n|\alpha_k|^q \right)^\frac{1}{q},\ \forall n\in \N
+    \end{equation*}
+    令$n\rightarrow\infty$则
+    \begin{equation*}
+        ||f||\geqslant \fun{limsup}{n\rightarrow \infty}\left( \sum_{k=1}^n|\alpha_k|^q \right)^\frac{1}{q}\tag{2}
+    \end{equation*}
+    结合$(1)(2)$式则可知等号成立，
+    同时这也说明$||\{\alpha_k\}||_q<\infty\Rightarrow \{\alpha_k\}\in\ell^q$.
+\end{solve}
+
+\begin{ex}{\rm (2.3.9)}%done
+    如果序列$\{\alpha_k\}$使得对于$\forall x=\{\xi_k\}\in\ell^1$，
+    保证$\sum_{k=1}^\infty \alpha_k\xi_k$收敛，求证：$\{\alpha_k\}\in\ell^\infty$.
+
+    若定义
+    \begin{equation*}
+        f:x\mapsto \sum_{k=1}^\infty \alpha_k\xi_k
+    \end{equation*}
+    作为$\ell^1$上的线性泛函，求证：
+    \begin{equation*}
+        ||f||=\fun{sup}{k\geqslant 1}|\alpha_k|
+    \end{equation*}
+\end{ex}
+\begin{solve}
+    思路和上一题基本相同。设
+    \begin{equation*}
+        f_n:l^1\rightarrow\K,x=\{\xi_k\}\mapsto \sum_{k=1}^n \alpha_k\xi_k
+    \end{equation*}
+    则
+    \begin{equation*}
+        |f_n(x)|=\left| \sum_{k=1}^n \alpha_k\xi_k \right|
+        \leqslant \fun{max}{1\leqslant k\leqslant n}|\alpha_k|\cdot \sum_{k=1}^n |\xi_k|
+        \leqslant \fun{max}{1\leqslant k\leqslant n}|\alpha_k|\cdot ||x||_1
+    \end{equation*}
+    所以$f_n$有界，且
+    \begin{equation*}
+        ||f_n||\leqslant \fun{max}{1\leqslant k\leqslant n}|\alpha_k|
+    \end{equation*}
+    于是由习题$2.3.7$可得，若令
+    \begin{equation*}
+        f:l^1\rightarrow\K,x=\{\xi_k\}\mapsto \sum_{k=1}^\infty \alpha_k\xi_k
+    \end{equation*}
+    则$f$有界，而且
+    \begin{equation*}
+        ||f||\leqslant\fun{liminf}{n\rightarrow\infty}||f_n||
+        \leqslant \fun{max}{1\leqslant k\leqslant n}|\alpha_k|\leqslant \fun{sup}{k\geqslant 1}|\alpha_k|\tag{1}
+    \end{equation*}
+
+    另一方面，取$x^{(n)}=(0,0,\cdots,0,\mathop{1}\limits_{n},0,0,\cdots)$，则
+    $x^{(n)}\in l^\infty$，$||x^{(n)}||=1$，且
+    \begin{equation*}
+        ||f||\geqslant |f(x^{(n)})|=\alpha_n
+    \end{equation*}
+    于是$||f||\geqslant \fun{sup}{n\geqslant 1}|\alpha_n|$，结合$(1)$式可得$||f||=\fun{sup}{k\geqslant 1}|\alpha_k|$.
+\end{solve}
+
+\subsection{开映射定理}
+\begin{ex}{\rm (2.3.1)}%done
+    $X$是Banach空间，$X_0$是其闭子空间，定义映射：
+    \begin{equation*}
+        \varphi:X\rightarrow X\backslash X_0,x\mapsto [x]
+    \end{equation*}
+    $[x]$表示含$x$的商类。求证$\varphi$是开映射。
+\end{ex}
+\begin{solve}
+    \begin{equation*}
+        ||[x]||=\fun{inf}{y\in [x]}||y||\leqslant ||x||
+    \end{equation*}
+    所以$\varphi$有界。
+    由定义可知$\varphi$是满射，则
+    由{\rm OMT}可知$\varphi$是开映射。
+\end{solve}
+
+\begin{ex}{\rm (2.3.2)}%done
+    设$X,Y$是Banach空间，方程$Ux=y$对于$\forall y\in Y$有解，
+    其中$U\in\mathcal{L}(X,Y)$，并且存在$m>0$使得
+    \begin{equation*}
+        ||Ux||\geqslant m||x||,\ \forall x\in X
+    \end{equation*}
+    求证：$U$有连续逆$U^{-1}$，并且$||U^{-1}||\leqslant \frac{1}{m}$.
+\end{ex}
+\begin{solve}
+    方程$Ux=y$对于$\forall y\in Y$有解，说明$U$是满射；
+    设$Ux_1=Ux_2=y$，则
+    \begin{equation*}
+        m||x_1-x_2|| \leqslant 0=||U(x_1-x_2)|| \Rightarrow x_1-x_2=0
+    \end{equation*}
+    所以$U$是单射，进而是双射，则由{\rm OMT}，
+    $U^{-1}$存在、有界且连续，且
+    \begin{equation*}
+        ||U^{-1}y||=||U^{-1}Ux||=||x||\leqslant \frac{1}{m}||Ux||=\frac{1}{m}||y||\Rightarrow ||U^{-1}||\leqslant \frac{1}{m}
+    \end{equation*}
+\end{solve}
+
+\begin{ex}{\rm (2.3.3)}%done
+    设$H$是Hilbert空间，$A\in\mathcal{L}(H)$，并且$\exists m>0$使得
+    \begin{equation*}
+        |\ag{Ax,x}|\geqslant m||x||^2,\ \forall x\in H
+    \end{equation*}
+    求证：存在$A^{-1}\in\mathcal{H}$.
+\end{ex}
+\begin{solve}
+    由题意可知
+    \begin{align*}
+        x\in H\Rightarrow& m||x||^2\leqslant |\ag{Ax,x}|\leqslant ||Ax||\cdot||x||\\
+        \Rightarrow& m||x||\leqslant ||Ax||
+    \end{align*}
+    于是$A$是单射：
+    \begin{equation*}
+        0=||Ax_1-Ax_2||\geqslant m||x_1-x_2||\Rightarrow x_1=x_2
+    \end{equation*}
+    然后证明$A$是满射，从而$A^{-1}\in\mathcal{L}(H)$.
+    \begin{enumerate}[$1^\circ$]
+        \item ${\rm Ran}(A)=\overline{{\rm Ran}(A)}$：
+            \begin{align*}
+                y\in \overline{{\rm Im}(A)}\Rightarrow& \exists x_n\in H{\rm\ s.t.\ }Ax_n\rightarrow y\\
+                \Rightarrow& m||x_n-x_m||\leqslant ||Ax_n-Ax_m||\rightarrow 0{\rm\ as\ }n,m\rightarrow\infty\\
+                \Rightarrow& \exists x\in H{\rm\ s.t.\ }x_n\rightarrow x,Ax_n\rightarrow Ax\\
+                \Rightarrow& Ax=y
+            \end{align*}
+        \item ${\rm Ran}(A)^\perp=\{0\}$，从而${\rm Im}(A)=\overline{{\rm Im}(A)}=H$：
+            \begin{align*}
+                y\in {\rm Im}(A)^\perp\Rightarrow& \ag{y,Ax}=0,\forall x\in H\\
+                \Rightarrow& 0=|\ag{y,Ay}|\geqslant m||y||^2\\
+                \Rightarrow& y=0
+            \end{align*}
+    \end{enumerate}
+    由变分引理，$1^\circ$表明$H={\rm Ran}(A)\oplus {\rm Ran}(A)^\perp$，
+    所以$2^\circ\Rightarrow H={\rm Ran}(A)$.这个证明满射的思路在Lax-Milgram定理的证明中也用到了。
+\end{solve}
+
+\begin{ex}{\rm (2.3.5)}%done
+    用等价范数定理证明：$(C[0,1],||\cdot||_1)$
+    不是Banach空间，其中
+    \begin{equation*}
+        ||f||_1=\int_0^1 |f(t)|\d t,\forall f\in C[0,1]
+    \end{equation*}
+\end{ex}
+\begin{solve}
+    （反证）假设$(C[0,1],||\cdot||_1)$是{\rm Banach}空间，则
+    \begin{equation*}
+        ||f||_1=\int_0^1 |f(t)|\d t\leqslant \fun{max}{t\in [0,1]}|f(t)|
+    \end{equation*}
+    由等价范数定理可知，
+    \begin{equation*}
+        \exists C>0{\rm\ s.t.\ }||f||_1\geqslant C \fun{max}{t\in [0,1]}|f(t)|\ ,\forall f\in C[0,1] \tag{$*$}
+    \end{equation*}
+    若令
+    \begin{equation*}
+        f_n(x)=\left\{ \begin{array}{ll}
+            2n(1-nx)&,x\in [0,\frac{1}{n}]\\
+            0&,x\in [\frac{1}{n},1]
+        \end{array} \right.
+    \end{equation*}
+    则$||f_n||_1=1$，$\fun{max}{t\in [0,1]}|f_n(t)|=2n$，
+    当$n$充分大时与$(*)$式矛盾。
+\end{solve}
+
+\begin{ex}{\rm (2.3.11)}
+    设$X,Y$是Banach空间，$A\in\mathcal{L}(X,Y)$是满射，求证：
+    如果在$Y$中$y_n\rightarrow y_0$，则存在$C>0$和$x_n\rightarrow x_0$使得$Ax_n=y_n$，
+    且$||x_n||\leqslant C||y_n||$.
+\end{ex}
+\begin{solve}
+    记$N=\{x\in X:Ax=0\}$，则$N$是$X$的闭线性子空间，且商空间$X/N$是{\rm Banach}空间。定义映射：
+    \begin{equation*}
+        \tilde{A}:X/N\rightarrow Y,\ [x]\mapsto Ax
+    \end{equation*}
+    则
+    \begin{enumerate}[(1).]
+        \item $\tilde{A}$是单射：$\tilde{A}[x]=0\Rightarrow Ax=0\Rightarrow x\in N\Rightarrow [x]=0$.
+        \item $\tilde{A}$是满射：$y\in Y\Rightarrow \exists x\in X,Ax=y\Rightarrow \tilde{A}[x]=Ax=y$.
+        \item $\tilde{A}$是有界线性映射：
+            $A$是线性映射易知$\tilde{A}$也线性.$\forall x'\in [x]$，
+            \begin{equation*}
+                ||\tilde{A}[x]||=||Ax'||\leqslant ||A||\cdot ||x'||
+            \end{equation*}
+            取$x'\in [x]$满足$||x'||\leqslant 2|| [x]||$，则
+            \begin{equation*}
+                ||\tilde{A}[x]||\leqslant 2||A|| \cdot ||[x]||
+            \end{equation*}
+            所以$\tilde{A}$有界。
+    \end{enumerate}
+    由{\rm IMT}可知$\tilde{A}^{-1}$存在且有界，
+    不妨假设$y_0=0,y_n\rightarrow 0$，记$[x_n]=\tilde{A}^{-1}y_n$，则
+    \begin{equation*}
+        ||[x_n]||=||\tilde{A}^{-1}y_n||\leqslant ||\tilde{A}^{-1}y_n||\leqslant ||\tilde{A}^{-1}||\cdot ||y_n||
+    \end{equation*}
+    于是取$x_n\in [x_n]$，使得$||x_n||\leqslant 2||[x_n]||$，
+    便有$||x_n||\leqslant C||y_n||$，其中$C=2||\tilde{A}^{-1}||$.
+\end{solve}
+
+\subsection{闭图像定理}
+\begin{ex}{\rm (2.3.4)}
+    设$X,Y$是赋范线性空间，$D$是$X$
+    的线性子空间，并且$A:D\rightarrow Y$是线性映射，求证：
+    \begin{enumerate}[(1).]
+        \item $A$连续且$D$闭$\Rightarrow A$闭；
+        \item $A$连续且闭，则$Y$完备$\Rightarrow D$闭；
+        \item $A$单且闭$\Rightarrow A^{-1}$闭；
+        \item $X$完备，$A$单且闭，${\rm Ran}(A)$在$Y$中稠密，并且$A^{-1}$连续，那么${\rm Ran}(A)=Y$.
+    \end{enumerate}
+\end{ex}
+\begin{solve}
+    \begin{enumerate}[(1).]
+        \item 设$\{x_n\}\subset D$收敛到$x$，$Ax_n\rightarrow y$，则
+            $D$闭$\Rightarrow x\in D$，$A$连续$\Rightarrow Ax_n\rightarrow Ax$，所以$Ax=y$，$A$是闭算子。
+        \item 如果$Y$完备，设$\{x_n\}\subset D$收敛到$x$，
+            \begin{align*}
+                \Rightarrow& ||Ax_n-Ax||\leqslant ||A||\cdot ||x_n-x||\rightarrow0{\rm\ as\ }n,m\rightarrow\infty\\
+                \Rightarrow& \exists y\in Y{\rm\ s.t.\ }Ax_n\rightarrow y\\
+                \Rightarrow& x\in D,Ax=y
+            \end{align*}
+            则$D$闭。
+        \item $A$单射，所以记${\rm Range}(A)={\rm Dom}(A^{-1})=G\subset Y$，
+            设$\{y_n=Ax_n\}$是$G$中的收敛列，且$\{x_n\}$是$D$中的收敛列，
+            因为$A$是闭算子，可知$x_n\rightarrow x\in D$，$y_n\rightarrow y=Ax\in G$，
+            也就是$y_n\rightarrow y\in G$，$x_n\rightarrow A^{-1}y\in D$.所以$A^{-1}$也是闭算子。
+        \item $X$完备，$A$单且闭，则${\rm Ran}(A)$在$Y$中稠密，
+            $A^{-1}$连续，则${\rm Ran}(A)=Y$，
+            $A^{-1}$连续且闭，${\rm Ran}(A)$闭，所以${\rm Ran}(A)=\overline{{\rm Ran}(A)}=Y$.
+    \end{enumerate}
+\end{solve}
+
+\begin{ex}{\rm (2.3.12)}
+    设$X,Y$是Banach空间，$T$是闭线性算子，$D(T)\subset X$，
+    $R(T)\subset Y$，$N(T)\defeq \{x\in X|Tx=0\}$.求证：
+    \begin{enumerate}[(1).]
+        \item $N(T)$是$X$的闭线性子空间。
+        \item $N(T)=\{0\},R(T)$在$Y$中闭的充要条件是：
+            \begin{equation*}
+                \exists \alpha>0{\rm\ s.t.\ }
+                ||x||\leqslant \alpha||Tx||,\ \forall x\in D(T)
+            \end{equation*}
+        \item 点$x\in X$到集合$N(T)$的距离：
+            \begin{equation*}
+                d(x,N(T))\defeq \fun{inf}{z\in N(T)}||z-x||
+            \end{equation*}
+            则$R(T)$在$Y$中闭的充要条件是：
+            \begin{equation*}
+                \exists \alpha>0{\rm\ s.t.\ }
+                d(x,N(T))\leqslant \alpha||Tx||,\ \forall x\in D(T)
+            \end{equation*}
+    \end{enumerate}
+\end{ex}
+\begin{solve}
+    \begin{enumerate}[(1).]
+        \item 显然$N(T)$是线性子空间；设$N(T)\ni x_n\rightarrow x_0$，$\{Tx_n=0\}$是收敛列，
+        由$T$是闭算子可知$x_0\in D(T)$且$Tx_0=0\Rightarrow x_0\in N(T)\Rightarrow N(T)$闭。
+        \item 必要性：设$N(T)=\{0\}$，$R(T)$闭，则$R(T)$是{\rm Banach}空间，
+            由{\rm IMT}可得$T^{-1}$存在且有界，于是
+            \begin{equation*}
+                \exists \alpha>0,||x||\leqslant \alpha||Tx||,\forall x\in D(T)
+            \end{equation*}
+            充分性：设对于某个$\alpha>0$，$||x||\leqslant \alpha||Tx||,\forall x\in D(T)$，则
+            \begin{enumerate}[$1^\circ$]
+                \item $N(T)=\{0\}$：$Tx=0\Rightarrow ||x||\leqslant 0\Rightarrow x=0$.
+                \item $R(T)$闭：
+                    \begin{align*}
+                        Tx_n\rightarrow y\Rightarrow & ||x_n-x_m||\leqslant \alpha||Tx_n-Tx_m||\rightarrow 0{\rm\ as\ }n,m\rightarrow\infty\\
+                        \Rightarrow& \exists x_0\in X{\rm\ s.t.\ }x_n\rightarrow x_0\\
+                        \Rightarrow& x_0\in D(T),Tx_0=y_0
+                    \end{align*}
+            \end{enumerate}
+        \item 注意到$X/N(T)$是{\rm Banach}空间，且$d(x,N(T))=||[x]||,\forall x\in X$.
+        定义：
+            \begin{equation*}
+                \tilde{T}:X/N(T)\rightarrow Y,\ \tilde{T}[x]=Tx
+            \end{equation*}
+            则
+            \begin{equation*}
+                D(\tilde{T})=\{ [x]\in X/N(T):x\in D(T) \}
+            \end{equation*}
+            可见$N(\tilde{T})=[0]$，$R(\tilde{T})=R(T)$，于是只需证明
+            $\tilde{T}$是闭算子。设$[x_n-x_0]\rightarrow 0$，$Tx_n-y_0\rightarrow 0$，
+            则$\exists x_n^{(n)}\in [x_n],x_0^{(n)}\in [x_0]$使得
+            \begin{equation*}
+                ||x_n^{(n)}-x_0^{(n)}||\leqslant 2||[x_n-x_0]||\rightarrow 0{\rm\ as\ }n\rightarrow\infty
+            \end{equation*}
+            设
+            \begin{equation*}
+                \tilde{x}_n^{(n)}=x_n^{(n)}-(x_0^{(n)}-x_0)
+            \end{equation*}
+            则：
+            \begin{enumerate}[$1^\circ$]
+                \item $||\tilde{x}_n^{(n)}-x_0||=||x_n^{(n)}-x_0^{(n)}||\rightarrow 0$，$n\rightarrow\infty$.
+                \item $T \tilde{x}_n^{(n)}=Tx_n^{(n)}-Tx_0^{(n)}+Tx_0=Tx_n\rightarrow y_0$，$n\rightarrow\infty$.
+            \end{enumerate}
+            由$T$是闭算子可知：$x_0\in D(T),Tx_0=y_0$，从而
+            $[x_0]\in D(\tilde{T}),\tilde{T}[x_0]=Tx_0=y_0$.
+    \end{enumerate}
+\end{solve}
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\subsection{Hahn-Banach定理}
+\begin{ex}{\rm (2.4.3)}%done
+    设$X$是复线性空间，$p$是$X$上的半范数，
+    任取$x_0\in X$满足$p(x_0)\neq 0$，求证：
+    存在$X$上的线性泛函$f$满足：
+    \begin{enumerate}
+        \item $f(x_0)=1$.
+        \item $|f(x)|\leqslant p(x)/p(x_0),\forall x\in X$.
+    \end{enumerate}
+\end{ex}
+\begin{solve}
+    $\tilde{p}(x)\defeq p(x)/p(x_0)$仍然是一个半范数，
+    取$X_0={\rm span}\{x_0\}=\{ \alpha x_0:\alpha\in\C \}$，定义
+    $X_0$上的映射
+    \begin{equation*}
+        f_0: X_0\rightarrow \C, \alpha x_0\mapsto \alpha
+    \end{equation*}
+    则$f$是线性映射，并且
+    \begin{equation*}
+        |f_0(\alpha x_0)|=|\alpha|=\frac{p(\alpha x_0)}{p(x_0)}
+        =\tilde{p}(x)
+    \end{equation*}
+    于是由复HBT（定理2.7.2），存在$X$上的线性泛函$f$，使得
+    \begin{equation*}
+        f|_{X_0}=f_0,\ |f(x)|\leqslant \tilde{p}(x)=\frac{p(x)}{p(x_0)},\ \forall x\in X
+    \end{equation*}
+    进而$f(x_0)=f_0(x_0)=1$.
+\end{solve}
+
+\begin{ex}{\rm (2.4.5)}%done
+    $X$是赋范线性空间，$X_0$是其闭子空间，求证：
+    \begin{equation*}
+        \rho(x,X_0)={\rm sup}\{ |f(x)|:f\in X^*,||f||=1,f(X_0)=0 \}
+    \end{equation*}
+    其中$\rho(x,X_0)\defeq \fun{inf}{y\in X_0}||x-y||$.
+\end{ex}
+\begin{solve}
+    当$x\in X_0$时等式两边均为零，成立，下设$x\notin X_0$，
+    记$F=\{ f\in X^*:
+    ||f||=1,f(X_0)=0 \}$.
+    
+    一方面，
+    $\forall f\in F$，$\forall y\in X_0$，
+    \begin{equation*}
+        |f(x)|=| f(x-y) |\leqslant 
+        ||f||\cdot ||x-y||=||x-y||
+    \end{equation*}
+    所以
+    \begin{equation*}
+        \fun{sup}{f\in F}|f(x)|\leqslant \fun{inf}{y\in X_0}||x-y||
+    \end{equation*}
+
+    另一方面，$X_0$闭$\Rightarrow \rho(x,X_0)>0$，
+    由定理2.7.4可得
+    \begin{equation*}
+        \exists \tilde{f}\in F{\rm\ s.t.\ }
+        \tilde{f}(x)=\rho(x,X_0),
+        \tilde{f}(X_0)=0.
+    \end{equation*}
+    于是$|\tilde{f}(x)|=\rho(x,X_0)$，
+    因此
+    \begin{equation*}
+        \rho(x,X_0)\leqslant 
+        \fun{sup}{f\in F}|f(x)|
+    \end{equation*}
+    题目得证。
+\end{solve}
+
+\begin{ex}{\rm (2.4.7)}%done
+    $X$是赋范线性空间，给定$X$中$n$个线性无关的元素
+    $x_1,\cdots,x_n$，求证：存在$f_1,\cdots,f_n\in X^*$使得
+    \begin{equation*}
+        \ag{f_i,x_j}=\delta_{ij},\ \forall i,j\in\{1,2,\cdots,n\}
+    \end{equation*}
+\end{ex}
+\begin{solve}
+    考虑$X_0={\rm span}\{x_j\}_{j=1}^n$及其上的$n$个线性泛函：
+    \begin{equation*}
+        \tilde{f}_i:X_0\rightarrow \K,\sum_{j=1}^n \alpha_j x_j \mapsto \alpha_i,\ i=1,2,\cdots,n
+    \end{equation*}
+    则由有限维线性赋范空间中的范数等价，有
+    \begin{equation*}
+        \left|\tilde{f}_i\left( \sum_{j=1}^n \alpha_j x_j \right) \right|=\alpha_i\leqslant \fun{max}{1\leqslant j\leqslant n}|\alpha_j|\leqslant C\ms{ \sum_{j=1}^n \alpha_j x_j }
+    \end{equation*}
+    因此$\tilde{f}_i$都是$X_0$上的有界线性泛函，所以由HBT（定理2.7.3），
+    \begin{equation*}
+        \exists f_i\in X^*{\rm\ s.t.\ }\ag{ f_i,x_j }=\ag{ \tilde{f}_i,x_j }=\delta_{ij},\ i,j=1,2,\cdots,n
+    \end{equation*}
+\end{solve}
+
+\begin{ex}{\rm (1.5.1)}%done
+    $X$是赋范线性空间，$E$是以$0$为内点的真凸子集，
+    $P$是$E$产生的{\rm Minkowski}泛函，求证：
+    \begin{enumerate}[(1).]
+        \item $x\in \mathring{E}\Leftrightarrow P(x)<1$.
+        \item $\overline{\mathring{E}}=\overline{E}$.
+    \end{enumerate}
+\end{ex}
+\begin{solve}
+\begin{enumerate}[(1).]
+        \item 一方面，
+        $x\in \mathring{E}\Rightarrow \exists 
+        \varepsilon>0{\rm\ s.t.\ }$
+        \begin{equation*}
+            \frac{x}{1/(1+\varepsilon)}=(1+\varepsilon) x\in E
+        \end{equation*}
+        于是
+        \begin{equation*}
+            P(x)\leqslant \frac{1}{1+\varepsilon}<1
+        \end{equation*}
+    
+        另一方面，若$P(x)<1$，设$r\in (1,1/P(x))$，则有$rx\in E$.
+        因为$0$是$E$的内点，存在$B(0,\delta)\subset E$，令
+        \begin{equation*}
+            d=\delta(1-\frac{1}{r})
+        \end{equation*}
+        对于任一$y\in B(x,d)$，
+        \begin{equation*}
+            y=\frac{1}{r}\cdot rx+(1-\frac{1}{r})\frac{r(y-x)}{r-1}
+        \end{equation*}
+        注意到$rx\in E,\frac{r(y-x)}{r-1}\in B(0,\delta)\subset E\Rightarrow y\in E\Rightarrow 
+        B(x,d)\subset E\Rightarrow x$是内点。
+        \item 即证明$\forall x\in E$，都存在$\mathring{E}$中的点列$x_n$使得$x_n\rightarrow x$，
+            取$x_n=(1-\frac{1}{n})x$即可。
+\end{enumerate}
+\end{solve}
+
+\begin{ex}{\rm (2.4.9)}%done
+    $X$是复线性空间，$E$是$X$上的非空均衡集，
+    $f$是$X$上的线性泛函，求证：
+    \begin{equation*}
+        |f(x)|\leqslant \fun{sup}{y\in E}{\rm Re}f(y),\ \forall x\in E
+    \end{equation*}
+\end{ex}
+\begin{solve}
+    $\forall x\in E$，
+    \begin{equation*}
+        |f(x)|=f(x)\e^{-\i\cdot{\rm arg} f(x)}=f(\e^{-\i\cdot{\rm arg} f(x)} x)={\rm Re}f(\e^{-\i\cdot{\rm arg} f(x)} x)
+        \leqslant \fun{sup}{y\in E} {\rm Re}f(y)
+    \end{equation*}
+\end{solve}
+
+\begin{ex}{\rm (2.4.11)}%done
+    $E,F$是实赋范线性空间$X$中的两个互不相交的非空凸集，
+    且$E$是开的和均衡的，
+    求证：$\exists f\in X^*$使得：
+    \begin{equation*}
+        |f(x)|<\fun{inf}{y\in F} |f(y)|,\forall x\in E
+    \end{equation*}
+    笔者注：“均衡的”应该改成“对称的”，
+        因为前面说了$X$是实的。
+\end{ex}
+\begin{solve}
+    由凸集分离定理（定理2.7.7），存在非零$f\in X^*$，使得
+    \begin{equation*}
+        \fun{sup}{z\in E}f(z)\leqslant \fun{inf}{y\in F}f(y)\leqslant \fun{inf}{y\in F}|f(y)|
+    \end{equation*}
+    
+    引理：$\forall x\in E$有$f(z)<\fun{sup}{z\in E}f(z)$.因此
+    \begin{equation*}
+        |f(x)|={\rm sgn}(f(x)) f(x)=f(x\cdot {\rm sgn}(f(x)))
+        <\fun{sup}{z\in E}f(z)\leqslant \fun{inf}{y\in F}|f(y)|
+    \end{equation*}
+
+    引理的证明：（反证）假设存在$z_0\in E$使得$f(z_0)=\fun{sup}{z\in E}f(z)$，
+    $E$开所以存在$B(z_0,\delta)\subset E$，于是
+    \begin{equation*}
+        \forall z\in B(z_0,\delta),f(z_0)\geqslant f(z)\Rightarrow f(z_0)-f(z)=f(z_0-z)\geqslant 0
+    \end{equation*}
+    即
+    \begin{equation*}
+        \forall y\in B(0,\delta),f(y)\geqslant 0
+    \end{equation*}
+    因此也有$f(-y)=-f(y)\geqslant 0$，
+    进而$f(y)\equiv 0 {\rm\ on\ }B(0,\delta)$，
+    于是$f$恒为零，这与$f$非零矛盾。
+\end{solve}
+
+\begin{ex}{\rm (2.4.13)}%done
+    $X$是赋范线性空间，设$M$是
+    $X$上的闭凸集，求证：$\forall x\in X\backslash M$，
+    一定存在$f_1\in X^*{\rm\ with\ }||f_1||=1$，且
+    \begin{equation*}
+        \fun{sup}{y\in M}f_1(y)\leqslant f_1(x)-d(x)
+    \end{equation*}
+    其中$d(x)=\fun{inf}{z\in M}||x-z||$.
+\end{ex}
+\begin{solve}
+    注意到开凸集$B(x,d(x))\cap M=\varnothing$，
+    由凸集分离定理可得存在非零$f\in X^*$使得
+    \begin{equation*}
+        \fun{sup}{y\in M}f(y)\leqslant \fun{inf}{z\in B(x,d(x))}f(z)
+        =\fun{inf}{||w||<1}f(x-d(x)w)
+        =f(x)-d(x)\cdot \fun{sup}{||w||< 1}f(w)
+        =f(x)-d(x)\cdot ||f||
+    \end{equation*}
+    （这里最后一个等号见习题2.1.2(2).）于是取$f_1=f/||f||$，则
+    \begin{equation*}
+        \fun{sup}{y\in M}f_1(y)\leqslant f_1(x)-d(x)
+    \end{equation*}
+\end{solve}
+
+\subsection{对偶空间、自反空间、弱收敛}
+\begin{ex}{\rm (2.5.1)}%done
+    证明：
+    \begin{equation*}
+        (\ell^p)^*=\ell^q,\ 1\leqslant p<\infty,\frac{1}{p}+\frac{1}{q}=1
+    \end{equation*}
+\end{ex}
+\begin{solve}
+    对于$\forall x=\{ \xi_k \}_{k=1}^\infty\in \ell^p,y=\{ \eta_k \}_{k=1}^\infty\in \ell^q$，
+    由Holder不等式：
+    \begin{equation*}
+        \left| \sum_{k=1}^\infty \xi_k\eta_k \right|\leqslant 
+        \left( \sum_{k=1}^\infty |\xi_k|^p \right)^\frac{1}{p}\cdot
+        \left( \sum_{k=1}^\infty |\eta_k|^q \right)^\frac{1}{q}
+        \leqslant ||x||_p\cdot ||y||_q
+    \end{equation*}
+    定义
+    \begin{equation*}
+        T_y:l^p\rightarrow \K,\ x=\{ \xi_k \}_{k=1}^\infty\mapsto \sum_{k=1}^\infty \xi_k\eta_k
+    \end{equation*}
+    则$T_y$有界且$||T_y||\leqslant ||y||_q$，下面证明映射$\Lambda:y\mapsto T_y$是等距同构。
+
+    对于$T\in (\ell^p)^*$，令$e_k=(0,\cdots,0,\mathop{1}\limits_{k},0,\cdots)$，则
+    \begin{equation*}
+        T(x)=T\left( \sum_{k=1}^\infty \xi_k e_k \right)
+        =\sum_{k=1}^\infty \xi_k T(e_k),\ \forall x=\{ \xi_k \}_{k=1}^\infty\in l^p
+    \end{equation*}
+    取$y_T\defeq\{ T(e_k) \}_{k=1}^\infty$，
+    则$\Lambda(y_T)=T$，下面
+    证明$y_T\in \ell^p$且$||y_T||_{q}\leqslant ||T||$，
+    从而映射$\Lambda $是满射且保距，进而是等距同构。
+
+    若$p>1$，设$a_k=|T(e_k)|^{q-1}\e^{-\i \cdot{\rm arg}T(e_k)}$，
+    $z_n=(a_1,a_2,\cdots,a_n,0,0,\cdots)\in\ell^p$，于是
+    \begin{align*}
+        \sum_{k=1}^n |T(e_k)|^q=
+        \sum_{k=1}^n a_k \cdot T(e_k)
+        &=T(z_n)\\
+        &\leqslant ||T||\cdot ||z_n||_p\\
+        &=||T|| \cdot \left( \sum_{k=1}^n |a_k|^p \right)^{\frac{1}{p}}\\
+        &=||T|| \cdot \left( \sum_{k=1}^n |T(e_k)|^{p(q-1)} \right)^{\frac{1}{p}}\\
+        &=||T|| \cdot \left( \sum_{k=1}^n |T(e_k)|^{q} \right)^{\frac{1}{p}}
+    \end{align*}
+    从而
+    \begin{equation*}
+        \left(\sum_{k=1}^n |T(e_k)|^q\right)^{1-\frac{1}{p}}
+        =\left(\sum_{k=1}^n |T(e_k)|^q\right)^{\frac{1}{q}}
+        \leqslant ||T||,\ \forall n
+    \end{equation*}
+    令$n\rightarrow\infty$可得$||y_T||_q\leqslant ||T||$.
+
+    若$p=1,q=\infty$，
+    \begin{align*}
+        ||y_T||_{\infty}&= \fun{sup}{n\geqslant 1}|T(e_n)|\\
+        &=\fun{sup}{n\geqslant 1} T(e_n)\cdot \e^{ -\i\cdot{\rm arg}T(e_n) }\\
+        &=\fun{sup}{n\geqslant 1} T\left( \left\{ \e^{-\i\cdot{\rm arg}T(e_n)}\cdot \delta_{kn} \right\}_{k=1}^\infty \right)
+        \leqslant ||T||
+    \end{align*}
+    最后一个不等号来自
+    \begin{equation*}
+        ||T||=\fun{sup}{||x||=1}||Tx||
+    \end{equation*}    
+    所以题目得证。
+\end{solve}
+
+\begin{ex}{\rm (2.5.2)}%done
+    设$C$是收敛数列全体，赋以范数：
+    \begin{equation*}
+        ||\cdot||:\{\xi_k\}\in C\mapsto \fun{sup}{k\geqslant 1}|\xi_k|
+    \end{equation*}
+    求证$C^*=\ell^1$.
+\end{ex}
+\begin{solve}
+    记
+    \begin{equation*}
+        e_0=(1,1,\cdots),\ e_k=(0,\cdots,0,\mathop{1}\limits_{k},0,\cdots)\in C
+    \end{equation*}
+    对于$x=\{x_n\}\in C$，$x_n\rightarrow x_0$，设$a={a_n}\in \ell^1$，定义映射
+    \begin{equation*}
+        T_a: C\rightarrow\C,x\mapsto a_1x_0+\sum_{n=1}^\infty a_{n+1}x_n
+    \end{equation*}
+    右侧级数是收敛的，因为
+    \begin{equation*}
+        \sum_{n=1}^\infty |a_{n+1}x_n|
+        \leqslant \fun{sup}{n\geqslant 1}|x_n|\cdot 
+        \sum_{n=1}^\infty |a_{n+1}|\leqslant ||x||\cdot ||a||_1<+\infty
+    \end{equation*}
+    又因为$x_0\leqslant \fun{sup}{n\geqslant 1}|x_n|$，
+    \begin{equation*}
+        |T_a(x)|\leqslant 
+        |a_1x_0|+\fun{sup}{n\geqslant 1}|x_n|\cdot \sum_{n=2}^\infty |a_{n}|
+        \leqslant\fun{sup}{n\geqslant 1}|x_n|\cdot \sum_{n=1}^\infty |a_{n}|
+        \leqslant||x||\cdot ||a||_1
+    \end{equation*}
+    所以$||T_a||\leqslant ||a||_1$，同时，令
+    $y_n=(\e^{-\i\cdot{\rm arg}(a_2)},\cdots,\e^{-\i\cdot{\rm arg}(a_n)},\e^{-\i\cdot{\rm arg}(a_1)},\e^{-\i\cdot{\rm arg}(a_1)},\cdots)$
+    ，则
+    \begin{equation*}
+        \left|\sum_{k=1}^{n} |a_{k}|+
+        \e^{-\i\cdot{\rm arg}(a_1)}\cdot\sum_{k=n+1}^\infty a_k 
+        \right|=
+        |T_a(y_n)|\leqslant ||T_a||\cdot ||y_n||
+        =||T_a||
+    \end{equation*}
+    令$n\rightarrow\infty$就得到
+    \begin{equation*}
+        ||a||_1=\sum_{k=1}^\infty |a_k|\leqslant ||T_a||
+    \end{equation*}
+    ，从而$||T_a||=||a||_1$.
+    那么定义映射$\Lambda:\ell^1\rightarrow C^*,a\mapsto T_a$，
+    只需证明$\Lambda$是满射。
+
+    对于任意$T\in C^*$，
+    令$a_{k+1}=T(e_k)$，
+    $z_n=(\e^{-\i\cdot{\rm arg}(a_2)},\cdots,\e^{-\i\cdot{\rm arg}(a_n)},0,0,\cdots )\in C$，于是
+    \begin{equation*}
+        \sum_{k=2}^n |a_k|
+        =\sum_{k=2}^n a_k\cdot \e^{-\i\cdot{\rm arg}(a_k)}
+        =T(z_n)\leqslant ||T||\cdot ||z_n||=||T||<+\infty,\forall n
+    \end{equation*}
+    这说明级数$\sum_{k=2}^\infty a_k$收敛，取
+    \begin{equation*}
+        a_1=T( e_0 )-\sum_{k=2}^\infty a_k
+    \end{equation*}
+    则令$a=\{a_n\}\in\ell^1$，且
+    \begin{equation*}
+        T_a(x)=a_1x_0
+        +\sum_{k=2}^\infty a_{k}x_{k-1}
+        =T( (x_0,x_0,\cdots) )+\sum_{k=2}^\infty 
+        a_k(x_{k-1}-x_0)
+        =T( (x_1,x_2,\cdots) )
+        =T(x)
+    \end{equation*}
+    得证。
+\end{solve}
+
+\begin{ex}{\rm (2.5.4)}%done
+    证明：有限维赋范空间一定自反。
+\end{ex}
+\begin{solve}
+    设 $\{x_k\}_{k=1}^n$是$X$的一组基，则由习题2.4.7可知
+    \begin{equation*}
+        \exists\left\{f_{k}\right\}_{k=1}^{n}\subset X^{*}{\rm\ s.t.\ }\langle f_{i},x_{j}\rangle=\delta_{ij}\quad(i,j=1,2,\cdots,n)
+    \end{equation*}
+    于是对$\forall f\in X^*,\forall x=\sum_{k=1}^n \lambda_k x_k$，
+    \begin{equation*}
+        f(x)=f\left(\sum_{k=1}^{n}\lambda_{k}x_{k}\right)=\sum_{k=1}^{n}\lambda_{k}f(x_{k})=\sum_{k=1}^{n}f_{k}(x)f(x_{k})
+    \end{equation*}
+    此即说明，
+    \begin{equation*}
+        f=\sum_{k=1}^{n}f(x_{k})f_{k}
+    \end{equation*}
+    现对$\forall y\in X^{**}$，
+    \begin{equation*}
+        y(f)=y\left(\sum_{k=1}^{n}f(x_k)f_{k}\right)
+        =\sum_{k=1}^{n}f(x_{k})y(f_{k})=
+        f\left( \sum_{k=1}^n x_ky(f_k) \right)
+    \end{equation*}
+    于是$x_0\defeq \sum_{k=1}^n x_ky(f_k)\in X$使得$x_0^{**}=y$，
+    这意味着从$x$到$x^{**}$的自然映射是满的，所以$X$是自反的.
+\end{solve}
+
+\begin{ex}{\rm (2.5.5)}%done
+    证明：Banach空间自反当且仅当它的共轭空间（对偶空间）是自反的。
+\end{ex}
+\begin{solve}
+    设$X$是Banach空间，从$X$到$X^{**}$的自然映射是$T$.
+
+    必要性：
+    即证明从$X^*$到$X^{***}$的自然映射是满的，
+    考虑$y\in X^{***}$，取
+    \begin{equation*}
+        f:X\rightarrow \K,x\mapsto y(T(x))=y(x^{**})
+    \end{equation*}
+    于是$\forall x^{**}\in X^{**}$，
+    \begin{equation*}
+        y(x^{**})=f(x)=x^{**}(f)
+    \end{equation*}
+    这说明$f^{**}=y$，得证。
+
+    充分性：设$X^*$自反，则由必要性知$X^{**}$自反，
+    又因为$X$，
+    作为$X^{**}$的子空间（因为自然映射是嵌入）是闭的（因为$X$是Banach空间），
+    自反空间的闭子空间也自反（Pettis，定理2.8.11），
+    从而$X$自反。
+\end{solve}
+
+\begin{ex}{\rm (2.5.6)}%done
+    设$X$是赋范线性空间，$T$是从$X$到$X^{**}$的自然映射，求证：
+    $R(T)$闭的充要条件是$X$完备。
+\end{ex}
+\begin{solve}
+    $X^{**}$是完备的，
+    $R(T)\cong X$作为$X^{**}$的子空间，
+    闭$\Leftrightarrow $完备。
+\end{solve}
+
+\begin{ex}{\rm (2.5.8)}%done
+    在$\ell^2$中定义算子：
+    \begin{equation*}
+        T:(x_1,x_2,\cdots,x_n,\cdot)\mapsto (x_1,\frac{x_2}{2},\cdots,\frac{x_n}{n},\cdots)
+    \end{equation*}
+    证明$T\in\mathcal{L}(\ell^2)$，并求$T^*$.
+\end{ex}
+\begin{solve}
+    对$x=(x_1,x_2,\cdots,x_n,\cdots)\in \ell^2$,有
+    \begin{equation*}
+        \left\|Tx\right\|_{\ell^{2}}^{2}=\sum_{k=1}^{\infty}\left|\frac{x_{k}}{k}\right|^{2}\leqslant\sum_{k=1}^{\infty}\left|x_{k}\right|^{2}=\left\|x\right\|^{2}
+    \end{equation*}
+    从而$T\in\mathcal{L}(\ell^2)$.
+    
+    $\ell^2$是Hilbert空间，由Riesz表示定理，
+    $\forall f\in (\ell^2)^*=\ell^2$，
+    存在$y_f=\{f_n\}_{n=1}^\infty $使得
+    \begin{equation*}
+        f=\ag{\cdot,y_f}
+    \end{equation*}
+    $T^*$满足：
+    \begin{equation*}
+        T^*f(x)=f(T(x))
+        =\ag{T(x),y_f}=\sum_{n=1}^\infty \frac{f_nx_n}{n}
+        \Rightarrow 
+        T^*f=\ag{\cdot,\left\{\frac{f_n}{n}\right\}_{n=1}^\infty}
+    \end{equation*}
+    所以$T^*:\{f_n\}_{n=1}^\infty\mapsto \{f_n/n\}_{n=1}^\infty$，
+    也就是$T^*=T$.
+\end{solve}
+
+\begin{ex}{\rm (2.5.9)}%done
+    $H$是Hilbert空间，$A\in\mathcal{L}(H)$满足
+    \begin{equation*}
+        \ag{Ax,y}=\ag{x,Ay},\ \forall x,y\in H
+    \end{equation*}
+    求证：
+    \begin{enumerate}[(1).]
+        \item $A^*=A$.
+        \item $R(A)$在$H$中稠密$\Rightarrow $方程$Ax=y$对于$\forall y\in R(A)$
+            存在唯一解。
+    \end{enumerate}
+\end{ex}
+\begin{solve}
+    \begin{enumerate}[(1).]
+        \item 对于$f\in H^*$，由Riesz表示定理，存在$y_f$使得$f=\ag{\cdot,y_f}$，
+            并且$||f||=||y_f||$，因此$f\mapsto y_f$就是$H^*$到
+            $H$的等距同构。因此：$\forall f\in H^*$，$\forall x\in H$，
+            \begin{equation*}
+                A^*f(x)=f(A(x))\Rightarrow 
+                \ag{x,y_{A^*f}}
+                =\ag{Ax,y_f}=\ag{x,Ay_f}\Rightarrow 
+                Ay_f=y_{A^*f}
+            \end{equation*}
+            而$A^*:f\mapsto A^*f$对应了$y_f\mapsto y_{A^*f}$，
+            所以$A^*y_f=y_{A^*f}=Ay_f\Rightarrow A^*=A$.
+        \item 对$\forall y\in R(A)$,若
+        \begin{equation*}
+            Ax_1=y=Ax_2
+        \end{equation*}   
+        则$\forall z\in H$，
+        \begin{equation*}
+            0=\langle A(x_1-x_2),z\rangle=\langle x_1-x_2,Az\rangle
+        \end{equation*}        
+        由于 $R(A)$ 在 $H$ 中稠密，
+        \begin{equation*}
+            \exists z_n\in H{\rm\ s.t.\ }Az_n\rightarrow x_1- x_2
+        \end{equation*}
+        从而
+        \begin{equation*}
+            ||x_{1}-x_{2}||^{2}=\fun{lim}{n\rightarrow\infty}
+            \left\langle x_{1}-x_{2},Az_{n}\right\rangle=0\Rightarrow x_1=x_2
+        \end{equation*}
+    \end{enumerate}
+\end{solve}
+
+\begin{ex}{\rm (2.5.13)}%done
+    设$\{x_n\}\subset C[a,b],x\in C[a,b]$，且
+    $x_n\wto x$，求证：
+    \begin{equation*}
+        \fun{lim}{n\rightarrow\infty} x_n(t)=x(t),\ \forall t\in [a,b]
+    \end{equation*}
+\end{ex}
+\begin{solve}
+    对于$t\in C[a,b]$，取赋值映射$f_t:x\mapsto x(t)$，
+    \begin{equation*}
+        \frac{|f_t(x)|}{||x||}=\frac{|x(t)|}{\fun{sup}{t\in [a,b]}
+        |x(t)|}\leqslant 1 
+    \end{equation*}
+    则$f_t\in C[a,b]^*$，
+    \begin{equation*}
+        x_n\wto x\Rightarrow \fun{lim}{n\rightarrow\infty} f_t(x_n)
+        =f_t(x)
+    \end{equation*}
+    即
+    \begin{equation*}
+        \fun{lim}{n\rightarrow\infty} x_n(t)=x(t)
+    \end{equation*}
+\end{solve}
+
+\begin{ex}{\rm (2.5.14)}%done
+    已知在赋范线性空间中$x_n\wto x_0$，求证：
+    \begin{equation*}
+        \fun{liminf}{n\rightarrow\infty}||x_n||\geqslant ||x_0||
+    \end{equation*}
+\end{ex}
+\begin{solve}
+    左式非负，所以$x_0=0$时成立。下设$x_0\neq 0$，
+    则存在$f\in X^*{\rm\ s.t.\ }||f||=1{\rm\ s.t.\ }f(x_0)=||x_0||$，从而
+    \begin{equation*}
+        ||x_0||=\fun{lim}{n\rightarrow\infty}
+        |f(x_n)|\leqslant 
+        \fun{liminf}{n\rightarrow\infty} ||f||\cdot ||x_n||
+        =\fun{liminf}{n\rightarrow\infty} ||x_n||
+    \end{equation*}
+\end{solve}
+
+\begin{ex}{\rm (2.5.15)}%done
+    $H$是Hilbert空间，$\{e_n\}$是$H$的正交规范基，
+    求证：在$H$中$x_n\wto x_0$的充要条件为
+    \begin{enumerate}[$1^\circ$]
+        \item $||x_n||$有界。
+        \item $\ag{x_n,e_k}\rightarrow \ag{x_0,e_k},\forall k$.
+    \end{enumerate}
+\end{ex}
+\begin{solve}
+    充分性：设$f\in H^*$，由Riesz表示定理，
+    存在
+    \begin{equation*}
+        y_k=\sum_{k=1}^\infty y_ke_k
+    \end{equation*}
+    使得$f=\ag{\cdot,y_f}$，设
+    \begin{equation*}
+        y_f^n=\sum_{k=1}^n y_ke_k
+    \end{equation*}
+    则
+    \begin{equation*}
+        |\ag{x_n-x_0,y_f^n}|
+        \leqslant \sum_{k=1}^n |y_k|\cdot | \ag{x_n-x_0,e_k} |
+        \rightarrow 0
+    \end{equation*}
+    因此
+    \begin{align*}
+        | f(x_n)-f(x_0) |
+        =&| \ag{x_n-x_0,y_f} |\\
+        \leqslant& | \ag{x_n-x_0,y_f^n} |+| \ag{x_n-x_0,y_f-y_f^n} |\\
+        \leqslant& | \ag{x_n-x_0,y_f^n} |+||x_n-x_0||\cdot ||y_f-y_f^n||\\
+        \leqslant& | \ag{x_n-x_0,y_f^n} |+2M||y_f-y_f^n||\rightarrow 0
+    \end{align*}
+    所以$x_n\wto x_0$.
+
+    必要性：令$f=\ag{\cdot,e_k}\in H^*$，则$2^\circ$得证；
+    对于$\forall n$，考虑$x_n^{**}\in H^{**}$，则$||x_n^{**}||=||x_n||$，
+    收敛列必有界，所以
+    \begin{equation*}
+        \fun{sup}{n}|x_n^{**}(f)|=\fun{sup}{n}|f(x_n)|<+\infty 
+    \end{equation*}
+    由{\rm UBP}可得$x_n^{**}$一致有界，进而$1^\circ$得证。
+\end{solve}
+
+\begin{ex}{\rm (2.5.17)}%done
+    $H$是Hilbert空间，在$H$中$x_n\wto x_0$，且
+    $y_n\rightarrow y_0$，求证：
+    \begin{equation*}
+        \ag{x_n,y_n}\rightarrow \ag{x_0,y_0}
+    \end{equation*}
+\end{ex}
+\begin{solve}
+    \begin{align*}
+        |\ag{x_n,y_n}-\ag{x_0,y_0}|
+        &=| \ag{x_n,y_n}-\ag{x_0,y_n}+\ag{x_0,y_n}-\ag{x_0,y_0} |\\
+        &=| \ag{x_n-x_0,y_n}+\ag{x_0,y_n-y_0} |\\
+        &\leqslant | \ag{x_n-x_0,y_n}|+|\ag{x_0,y_n-y_0} |
+    \end{align*}
+    由$y_n\rightarrow y_0$知第二项$\rightarrow 0$；
+    $\ag{\cdot,y_n}\in H^*$，所以$x_n\wto x_0\Rightarrow $第一项$\rightarrow 0$.
+\end{solve}
+
+\begin{ex}{\rm (2.5.18)}%done
+    $H$是Hilbert空间，$\{e_n\}$是$H$的正交规范基，求证：在
+    $H$上$e_n\wto 0$，但$e_n\nrightarrow 0$.
+\end{ex}
+\begin{solve}
+    也就是证明$\forall x\in H,\ag{x,e_n}\rightarrow 0$，实际上
+    \begin{equation*}
+        \sum_{n=1}^\infty |\ag{x,e_n}|^2\leqslant ||x||
+        <+\infty
+    \end{equation*}
+    所以$\ag{x,e_n}\rightarrow 0$.
+
+    $||e_n||=1>0$，所以$e_n\nrightarrow 0$.
+\end{solve}
+
+\begin{ex}{\rm (2.5.20)}%done
+    求证：在自反的赋范线性空间中，集合的弱列紧性与有界性是等价的。
+\end{ex}
+\begin{solve}
+    弱列紧$\Rightarrow $有界：
+    假设$M\subset X$弱列紧且无界，
+    则$\forall n\geqslant 1,\exists x_n\in M{\rm\ s.t.\ }||x_n||\geqslant n$，
+    取$\{x_n\}$的弱收敛子列$\{x_{n_k}\}$，$X$自反，所以取
+    $x_{n_k}^{**}\in X^{**}$有$||x_{n_k}^{**}||=||x_{n_k}||$，而且
+    \begin{equation*}
+        \fun{sup}{n}|x_{n_k}^{**}(f)|=\fun{sup}{n}|f(x_{n_k})|<+\infty
+        \mathop{\Rightarrow}\limits^{\rm UBP}
+        \fun{sup}{n}||x_{n_k}||^{**}<+\infty 
+        \Rightarrow \{x_{n_k}\}\mbox{有界}
+    \end{equation*}
+    这与$||x_{n_k}||\geqslant n_k\rightarrow\infty$矛盾。
+
+    有界$\Rightarrow $弱列紧：定理2.8.18{\rm (Eberlein‑Smulian)}.
+\end{solve}
+
+
+
+\section{第三章}
+\begin{ex}{\rm (2.6.1)}
+    $X$是Banach空间，求证：$\mathcal{L}(X)$中可逆（存在有界逆）
+    算子集是开的。
+\end{ex}
+\begin{solve}
+    设$A\in\mathcal{L}(X)$可逆，
+    对于$\forall B\in\mathcal{L}(X)$且$||A-B||\leqslant 1/||A^{-1}||$，
+    则$||(A-B)A^{-1}||\leqslant 1$，由引理2.7.1可得
+    $BA^{-1}=I-(A-B)A^{-1}$可逆，进而$B$可逆。
+    这说明$A$是内点，从而$\mathcal{L}(X)$中可逆算子集是开集。
+\end{solve}
+
+\begin{ex}{\rm (2.6.4)}
+    在$\ell^2$空间上，考察左推移算子：
+    \begin{equation*}
+        A:(\xi_1,\xi_2,\cdots)\mapsto (\xi_2,\xi_3,\cdots)
+    \end{equation*}
+    求证：$\sigma_p(A)=\{ \lambda\in\C:|\lambda|<1 \}$，
+    $\sigma_c(A)=\{\lambda\in\C:|\lambda|=1\}$，并且
+    \begin{equation*}
+        \sigma(A)=\sigma_p(A)\cup\sigma_c(A)
+    \end{equation*}
+\end{ex}
+\begin{solve}
+    记$\D=\{ \lambda:|\lambda|<1 \}$，
+    \begin{align*}
+        \lambda\in \sigma_p(A)\Leftrightarrow& \exists 0\neq x=\{x_n\}_{n=1}^\infty\in \ell^2\\
+        \Leftrightarrow&\lambda x_1=x_2,\lambda x_2=x_3,\cdots\\
+        \Leftrightarrow&x=\{ \lambda^{n-1} x_1 \}_{n=1}^\infty
+    \end{align*}
+    $0\neq x\in \ell^2$，所以$|\lambda|<1$，$\sigma_p(A)=\{\lambda:|\lambda|<1\}=\D$.
+
+    $\lambda\in \partial\D$时：
+    \begin{enumerate}[$1^\circ$]
+        \item ${\rm Ran}(\lambda I-A)\neq \ell^2$：
+            \begin{align*}
+                y\in {\rm Ran}(\lambda I-A)\Rightarrow& \exists 0\neq x \in\ell^2,y=(\lambda I-A)x=
+                ( \lambda x_1-x_2,\lambda x_2-x_3,\cdots )=\{ \lambda x_n-x_{n+1} \}_{n=1}^\infty\\
+                \Rightarrow &\sum_{n=1}^k \lambda^{-n}y_n=x_1-\lambda^{-k}x_{k+1}\rightarrow x_1{\rm\ as\ }k\rightarrow\infty
+            \end{align*}
+            所以
+            \begin{equation*}
+                \sum_{n=1}^\infty \lambda^{-n}y_n=x_1
+            \end{equation*}
+            但是取
+            \begin{equation*}
+                y=\{ \lambda^n\cdot \frac{1}{n} \}_{n=1}^\infty\in\ell^2
+            \end{equation*}
+            则级数发散，说明满足$y=(\lambda I-A)x$的$x$不存在。因此${\rm Ran}(\lambda I-A)\neq \ell^2$.
+        \item $\overline{{\rm Ran}(\lambda I-A)}=\ell^2$：任取$x=\{x_n\}_{n=1}^\infty \in\ell^2$，
+            取充分大的$N$使得
+            \begin{equation*}
+                \sum_{n=N+1}^\infty |x_n|^2<\varepsilon^2
+            \end{equation*}
+            令$y_j=(x_1,x_2,\cdots,x_j,0,\cdots)$，则
+            \begin{equation*}
+                ||y_N-x||^2=\sum_{n=N+1}^\infty |x_n|^2<\varepsilon^2\Rightarrow ||y_N-x||<\varepsilon
+            \end{equation*}
+            因此只需证$y_N\in {\rm Ran}(\lambda I-A)$，令
+            \begin{equation*}
+                z=\left\{ \begin{array}{ll}
+                  \sum_{k\leqslant n\leqslant N} \lambda^{-n+k-1}y_n&,k\leqslant N\\
+                  0&,k>N
+                \end{array} \right.
+            \end{equation*}
+            即有$y_N=(\lambda I-A)z$.
+    \end{enumerate}
+    因此$\partial \D \subset \sigma_c(A)$.
+
+    接下来求$\sigma(A)$，因为$||Ax||^2=||x||^2+|x_1|^2$，所以
+    $||Ax||\leqslant ||x||$，等号在$x_1=0$成立，因此
+    \begin{equation*}
+        ||A||=\fun{sup}{0\neq x\in \ell^2}\frac{||Ax||}{||x||}=1
+    \end{equation*}
+    所以$\sigma(A)\subset \{ \lambda:|\lambda|\leqslant 1 \}=\overline{\D}$.
+
+    综上可知，$\overline{\D}\supset \sigma(A)\supset \sigma_c(A)\cup \sigma_p(A)\supset \partial\D\cup \D=\overline{\D}$，
+    所以都相等。
+\end{solve}
+
+\begin{ex}{\rm (3.1.2)}
+    $X$是Banach空间，$A\in\mathcal{L}(X)$满足：
+    \begin{equation*}
+        ||Ax||\geqslant \alpha||x||,\ \forall x\in X
+    \end{equation*}
+    其中$\alpha>0$为常数，求证：
+    $A\in\mathcal{T}(X)$，即$A$是紧算子的充要条件是$X$
+    是有穷维的。
+\end{ex}
+\begin{solve}
+    充分性：$X$有限维，所以有界集都列紧，
+    $A$将有界集映为有界集，进而是列紧集，所以$A$紧。
+
+    必要性：设$B\subset X$为有界集，$A$紧，
+    所以$A(B)$有收敛列$\{ Ax_n \}_{n=1}^\infty ,\{x_n\}\subset B$.
+    由于$||x_n||\leqslant \frac{1}{\alpha}||Ax_n||$，
+    所以$\{x_n\}_{n=1}^\infty$也是收敛列，因此$B$列紧。
+    这说明$X$上有界集都列紧，因此$X$有限维。
+\end{solve}
+
+\begin{ex}{\rm (3.1.4)}
+    $H$是Hilbert空间，$A:H\rightarrow H$是紧算子，又设
+    $x_n\wto x_0,y_n\wto y_0$，求证：
+    \begin{equation*}
+        \ag{x_n,Ay_n}\rightarrow \ag{x_0,Ay_0}
+    \end{equation*}
+\end{ex}
+\begin{solve}
+    注意到
+    \begin{equation*}
+        |\ag{x_n,Ay_n}-\ag{x_0,Ay_0}|
+        \leqslant |\ag{x_n,Ay_n-Ay_0}|+|\ag{x_n,Ay_n-Ay_0}|
+    \end{equation*}
+    因为$x_n\wto x_0$，所以$\{x_n\}$是有界的，
+    $A$紧$\Rightarrow A$全连续$\Rightarrow Ay_n\rightarrow Ay_0$
+    $\Rightarrow|(x_n,Ay_n-Ay_0)|\leqslant |x_n|\cdot |Ay_n-Ay_0|\rightarrow 0$；
+    $\ag{\cdot,Ay_0}\in H^*$，
+    所以由$x_n$弱收敛可知$\ag{x_n-x_0,Ay_0}\rightarrow 0$，
+    所以$|\ag{x_n,Ay_n}-\ag{x_0,Ay_0}|\rightarrow 0$.
+\end{solve}
+
+\begin{ex}{\rm (3.1.6)}
+    设$\omega_n\in\K$，$\omega_n\rightarrow 0$，求证：
+    \begin{equation*}
+        T:\ell^p\rightarrow \ell^p,\{\xi_n\}\mapsto \{\omega_n\xi_n\}
+    \end{equation*}
+    是$\ell^p(p\geqslant 1)$上的紧算子。
+\end{ex}
+\begin{solve}
+    $w_n$收敛则有界，从而$T$有界。定义：
+    \begin{equation*}
+        T_n:(x_1,\cdots,x_n,x_{n+1},\cdots)\mapsto (w_1x_1,\cdots,w_nx_n,0,0,\cdots)
+    \end{equation*}
+    那么$T_n$都是有界有限秩算子，因此$T_n$紧。
+    对于$\forall\varepsilon>0$，存在充分大的$N$使得
+    $\forall n>N$有$|w_n|<\varepsilon$，
+    从而
+    \begin{equation*}
+        ||T_nx-Tx||\leqslant \varepsilon||x||
+        \Rightarrow ||T_n-T|| \leqslant \varepsilon 
+    \end{equation*}
+    因此$||T_n-T||\rightarrow 0$，由于
+    紧算子全体是闭集，$T$也是紧算子。
+\end{solve}
+
+\begin{ex}{\rm (3.1.8)}
+    $\Omega\subset\R^n$是一个可测集，$K\in L^2(\Omega\times\Omega)$，
+    求证：
+    \begin{equation*}
+        A:L^2(\Omega)\rightarrow L^2(\Omega),u(x)\mapsto \int_{\Omega} K(x,y)u(y)\d y
+    \end{equation*}
+    是$L^2(\Omega)$上的紧算子。
+\end{ex}
+\begin{solve}
+    由C-S不等式，$L^2(\Omega)$上范数记为$||\cdot||$，
+    \begin{equation*}
+        ||Au||^2=\int_{\Omega}
+        \left(\int_{\Omega}
+        K(x,y)u(y) \d y\right)^2\d x\leqslant 
+        \int_{\Omega}\left(
+            \int_{\Omega}
+            K(x,y)^2 \d y\cdot ||u||^2\right)\d x
+    \end{equation*}
+    \begin{equation*}
+        \Rightarrow 
+        \frac{||Au||^2}{||u||^2}
+        \leqslant \int_{\Omega\times \Omega}K(x,y)^2\d y\d x<+\infty
+    \end{equation*}
+    所以$A$有界。
+
+    取$L^2(\Omega)$上的可数正交基$\{u_i\}$，\footnote{这里能取出ONB是因为$L^2(\Omega)$是可分Hilbert空间。}
+    设
+    \begin{equation*}
+        K(x,y)=\sum_{i=1}^\infty K_i(y)u_i(x)
+    \end{equation*}
+    其中
+    \begin{equation*}
+        K_i(y)=\int_\Omega K(x,y)u_i(x)
+    \end{equation*}
+    由Parseval，
+    \begin{equation*}
+        \int_\Omega |K(x,y)|^2\d x=\sum_{i=1}^\infty |K_i(y)|^2
+    \end{equation*}
+    因此
+    \begin{equation*}
+        \int_{\Omega\times\Omega}|K(x,y)|^2\d x\d y
+        =\sum_{i=1}^\infty \int_\Omega |K_i(y)|^2\d y
+    \end{equation*}
+    定义
+    \begin{equation*}
+        A_n:u\mapsto \int_{\Omega} K_n(\cdot,y)f(y)\d y
+    \end{equation*}
+    其中
+    \begin{equation*}
+        K_n(x,y)=\sum_{i=1}^n K_i(y)u_i(x)
+    \end{equation*}
+    那么$A_N$是有界有限秩算子，因此紧。
+    由C-S不等式，
+    \begin{align*}
+        ||A-A_n||^2\leqslant& \int_{\Omega\times\Omega}|K(x,y)-K_N(x,y)|^2\d x\d y\\
+        =&\int_{\Omega\times\Omega} |K(x,y)|^2 \d x\d y
+        -2\int_{\Omega\times\Omega} K(x,y)\sum_{i=1}^n K_i(y)u_i(x)\d x\d y
+        +\sum_{i=1}^n \int_{\Omega} |K_i(y)|^2\d y\\
+        =&\int_{\Omega\times\Omega}|K(x,y)|^2 \d x\d y-
+        \int_\Omega |K_i(y)|^2\d y\rightarrow 0{\rm\ as\ }n\rightarrow \infty
+    \end{align*}
+    因此$A$是紧算子。
+\end{solve}
+
+\begin{ex}{\rm (3.2.5)}
+    $A$是$X$上的紧算子，$T=I-A$，求证：$\forall k\in\N$，
+    $N(T^k)$是有穷维的，$R(T^k)$是闭的。
+\end{ex}
+\begin{solve}
+    注意到$T^k=(T-A)^k=I-A_k$，其中$A_k$是$A$的$k$次多项式，
+    因此$A_k$是紧算子，由定理3.2.2(Riesz‑Fredholm)前两条可知得证。
+\end{solve}
+
+\begin{ex}{\rm (3.2.6)}
+    $X$是Banach空间，
+    $M$是其闭线性子空间，若有界线性算子$P:X\rightarrow M$满足
+    $P^2=P$，则称为由$X$到$M$上的投影算子，求证：
+    \begin{enumerate}[(1).]
+        \item 若$M$是$X$的有穷维线性子空间，则必存在由$X$到$M$上的投影算子；
+        \item 若$P$是由$X$到$M$上的投影算子，则$I-P$是由$X$到$R(I-P)$上的投影算子；
+        \item 若$P$是由$X$到$M$上的投影算子，则$X=M\oplus R(I-P)$.
+        \item 若$A$是$X$上的紧算子，$T=I-A$，则在代数与拓扑同构意义下：
+            \begin{equation*}
+                N(T)\oplus X/N(T)=X=R(T)\oplus X/R(T)
+            \end{equation*}
+    \end{enumerate}
+\end{ex}
+\begin{solve}
+    \begin{enumerate}[(1).]
+        \item 取$\{e_k\}_{k=1}^n$为$M$的正交基，由习题2.4.7可知，存在$f_1,\cdots,f_n\in X^*$使得
+            \begin{equation*}
+                f_i(e_j)=\delta_{ij}
+            \end{equation*}
+            于是取
+            \begin{equation*}
+                P:X\rightarrow M,x\mapsto \sum_{k=1}^n f_k(x)e_k
+            \end{equation*}
+            就是$X$到$M$的投影算子，因为$P$有界且$P^2=P$.
+        \item 注意到$(I-P)^2=I-2P+P^2=I-P$.
+        \item 显然有$X=M+R(I-P)$，因为
+            \begin{equation*}
+                x=Px+(I-P)x
+            \end{equation*}
+            所以只需证明$M\cap R(I-P)=0$，令$x\in M\cap R(I-P)$，
+            $y=(I-P)x$，因此
+            \begin{equation*}
+                Px=P(I-P)y=(P-P)y=0
+            \end{equation*}
+            又因为$x\in M$，所以$Px=x=0$.
+        \item $N(T)$有限维，由(1)知存在$X$到$N(T)$的投影算子$P$，
+            由(3)知$X/N(T)$和$R(I-P)$代数同构。现令
+            \begin{equation*}
+                F:X/N(T)\rightarrow R(I-P),
+                [x]\mapsto (I-P)x
+            \end{equation*}
+            不难验证$F$良定、线性、双射。对于$\forall [x]\in X/N(T)$，
+            存在$x'\in [x]{\rm\ s.t.\ }||x'||\leqslant 2||[x]||$，于是
+            \begin{equation*}
+                ||F([x])||=||(I-P)x'||\leqslant ||I-P||\cdot ||x'||
+                \leqslant 2||I-P||\cdot ||[x]||
+            \end{equation*}
+            因此$F$有界$\Rightarrow$连续$\Rightarrow F^{-1}$也连续
+            $\Rightarrow $拓扑同胚。
+    \end{enumerate}
+\end{solve}
+
+\begin{ex}{\rm (3.3.1)}
+    给定数列$\{a_n\}_{n=1}^\infty$，在空间$\ell^1$
+    上定义算子$A$如下：
+    \begin{equation*}
+        A(x_1,x_2,\cdots)=(a_1x_1,a_2x_2,\cdots)
+    \end{equation*}
+    求证：
+    \begin{enumerate}[(1).]
+        \item $A$有界的充要条件是$M=\fun{sup}{n\geqslant 1}|a_n|<\infty$.
+        \item $A^{-1}$有界的充要条件是$\fun{inf}{n\geqslant 1}|a_n|>0$.
+        \item $A$是紧算子的充要条件是$\fun{lim}{n\rightarrow\infty}a_n=0$.
+    \end{enumerate}
+\end{ex}
+\begin{solve}
+    \begin{enumerate}[(1).]
+        \item 充分性：$||Ax||\leqslant M||x||\Rightarrow A\in\mathcal{L}(\ell^1)$；
+            
+            必要性：假设$\{a_n\}$无界，存在$n_1<n_2<\cdots$使得$|a_{n_k}|>k$，
+            设$e_n=(0,\cdots,0,\mathop{1}\limits_{m},0,\cdots)\in \ell^1$，
+            则
+            \begin{equation*}
+                \frac{||Ae_{n_k}||}{||e_{n_k}||}=|a_{n_k}|>k\rightarrow\infty
+            \end{equation*}
+            这与$A$有界矛盾。
+        \item 如果$\forall a_n\neq 0$，取
+            \begin{equation*}
+                T:(x_1,x_2,\cdots)\mapsto (\frac{x_1}{a_1},\frac{x_1}{a_2},\cdots)
+            \end{equation*}
+            则$TA=AT\Rightarrow T=A^{-1}$，而且
+            \begin{equation*}
+                \fun{sup}{n\geqslant 1}\left|\frac{1}{a_n}\right|<+\infty
+                \Leftrightarrow 
+                \fun{inf}{n\geqslant 1}|a_n|>0
+            \end{equation*}
+            所以$A^{-1}$有界$\Leftrightarrow \fun{inf}{n\geqslant 1}|a_n|>0$.
+            如果存在某个$a_n=0$，那么$R(A)\subsetneqq \ell^1$，$A^{-1}$不存在。
+        \item 充分性：设
+            \begin{equation*}
+                A_n:(x_1,x_2,\cdots)\mapsto (a_1x_1,\cdots,a_nx_n,0,\cdots)
+            \end{equation*}
+            则$A_n$是有界有限秩算子$\Rightarrow A_n$紧，
+            同时
+            \begin{equation*}
+                ||A-A_n||=\sum_{k=n+1}^\infty |a_k||x_k|\rightarrow 0{\rm\ as\ }n\rightarrow\infty
+            \end{equation*}
+            所以$A$也是紧算子；
+
+            必要性：$A$是紧算子，由定理3.2.3(Riesz‑Schauder)
+            知$0\in \sigma(A)$且$0$之外的元素都是特征值，注意到
+            $Ae_n=a_n e_n\Rightarrow a_n\in \sigma(A)$，
+            \begin{equation*}
+                \forall a\in \sigma(A)\backslash 
+            \{0,a_1,a_2,\cdots\}\Rightarrow \fun{inf}{n\geqslant 1}|\lambda-\lambda_n|>0
+            \end{equation*}
+            由(2)知$T=(\lambda I-A)^{-1}$有界$\Rightarrow\lambda\in\rho(A)$，
+            所以$\sigma(A)=\{0,a_1,a_2,\cdots\}$，且一定有
+            \begin{equation*}
+                \fun{lim}{n\rightarrow\infty}a_n=0
+            \end{equation*}
+    \end{enumerate}
+\end{solve}
+
+\begin{ex}{\rm (3.3.2)}
+    在$C[0,1]$中，考虑映射
+    \begin{equation*}
+        T:C[0,1]\rightarrow C[0,1],x(t)\mapsto \int_0^t x(s)\d s
+    \end{equation*}
+    \begin{enumerate}[(1).]
+        \item 证明$T$是紧算子；
+        \item 求$\sigma(T)$和$T$的一个非平凡闭不变子空间。
+    \end{enumerate}
+\end{ex}
+\begin{solve}
+    \begin{enumerate}[(1).]
+        \item 对于任何有界集$B$，我们来证明$T(B)$一致有界且等度连续，从而列紧。
+            设$\forall x\in B,||x||<M$，则
+            \begin{equation*}
+                ||Tx||\leqslant \int_0^1 |x(s)|\d s
+                \leqslant \sup{t\in [0,1]}|x(t)|=||x||<M
+            \end{equation*}
+            所以一致有界；
+            \begin{equation*}
+                | (Tx)(s')-(Tx)(s'') |
+                =| \int_{s'}^{s''} x(s)\d s |\leqslant ||x||\cdot |s''-s'|
+            \end{equation*}
+            所以等度连续。
+        \item 因为$C[0,1]$是无穷维的，由定理3.2.3(Riesz‑Schauder)
+            可得$0\in\sigma(T)$，$T$紧$\Rightarrow \sigma(T)$除了$0$之外都是
+            特征值。如果$0\neq \lambda\in\sigma(T)$，则
+            \begin{equation*}
+                Tx=\lambda x\Rightarrow 
+                \int_0^t x(s)\d s=\lambda x(t)
+            \end{equation*}
+            有非零解，进而$x(t)\in C^1[0,1]$，两边求导得
+            \begin{equation*}
+                x(t)=\lambda x'(t)\Rightarrow x(t)=C\e^{\frac{t}{\lambda}}
+            \end{equation*}
+            但
+            \begin{equation*}
+                \int_0^t x(s)\d s=C( \lambda \e^{\frac{t}{\lambda}}-1 )
+                =C\lambda\e^{\frac{t}{\lambda}}
+                \Rightarrow C=0\Rightarrow x(t)=0
+            \end{equation*}
+            所以$\sigma(T)=\{0\}$.
+            $C^1[0,1]$是$T$的一个闭不变子空间。
+    \end{enumerate}
+\end{solve}
+
+
+\section{期末复习相关}
+%    chap1：压缩映射原理、列紧$\Leftrightarrow $完全有界，单位球列紧$\Leftrightarrow {\rm dim}X<\infty$.
+
+%    chap2：
+%    \begin{enumerate}
+%        \item Baire纲定理：Banach空间无可数Hamel基。
+%        \item 开映射定理：$\ag{Ax,x}\geqslant A||x||^2$，证明满射的思路：$\overline{{\rm Ran}(T)}={\rm Ran}(T),{\rm Ran}(T)^\perp=0$.
+%        \item 闭图像定理：注意算子可逆只需要单射即可（逆映射的定义域取值域），闭算子的逆还是闭的，
+%            $A$连续、${\rm Ran}(A)$闭、$A$单射$\Rightarrow A^{-1}$连续，
+%            定义域为全空间的共轭算子连续。
+%        \item 共鸣定理：证明弱收敛序列有界，命题的应用（习题2.3.7-9）。
+%        \item 等价范数定理：题目给了两个范数，证明等价的思路是“取第三个范数为两个范数之和”，然后证明这个范数比其他两个都强，于是都等价。
+%        \item Hahn-Banach定理：一般只考代数形式，重要推论有三个：
+%            \begin{enumerate}
+%                \item $\exists f{\rm\ s.t.\ }f(x_0)=||x_0||,||f||=1$.
+%                \item $f(M)=\{0\},f(x_0)=d>0,||f||=1$.
+%                \item $f_i(x_j)=\delta_{ij}$.
+%            \end{enumerate}
+%        \item 对偶空间：自然映射是等距嵌入，所以$X$是$X^{**}$的闭子空间，例如证明“$X$自反$\Leftrightarrow X^*$自反”。
+%        \item 共轭算子：一般在Hilbert空间中求共轭算子。
+%        \item 弱收敛：很少考弱*列紧，掌握课后习题。
+%    \end{enumerate}
+%
+%    chap3：
+%    \begin{enumerate}
+%        \item 记住谱半径公式，一般算出来谱半径都是0或者1
+%        \item $\sigma(T)$是闭集，比如我们算出来$B(0,1)\subset \sigma(T)$，那$\overline{B(0,1)}\subset \sigma(T)$，不用特意讨论边缘上的点。
+%        \item 紧$\Rightarrow $全连续，自反空间时两者等价。
+%        \item 用有限秩算子去逼近闭算子！重要思路，见习题
+%        \item 二择一律：$A$是紧算子，那么$\lambda I-A$单射$\Leftrightarrow $满射。
+%        \item 各种谱的定义。
+%    \end{enumerate}
+
+\subsection{部分往年期末题}
+    \begin{ex}(19.6)
+        定义
+        \begin{equation*}
+            T:\ell^2\rightarrow \ell^2,
+            (x_1,x_2,\cdots)\mapsto (x_2,\frac{x_3}{2},\cdots,\frac{x_{n+1}}{n},\cdots)
+        \end{equation*}
+        求$T$的谱和特征值：$\sigma(T),\sigma_p(T)$.
+    \end{ex}
+    \begin{solve}
+        首先显然$||T||\leqslant 1$，取$||Te_2||=||e_2||=1$可知$||T||=1$，
+        因此$\sigma(T)\leqslant \overline{B(0,1)}$，
+        设
+        \begin{equation*}
+            T_n:(x_1,x_2,\cdots)\mapsto (x_2,\frac{x_2}{x_3},\cdots,\frac{x_{n+1}}{n},0,0,\cdots)
+        \end{equation*}
+        $T_n\rightarrow T$可知$T$是紧算子，因此$0\in\sigma(T)$.
+
+        对于$\lambda\neq 0$，考虑$\lambda I-T$，若存在$x$
+        使得$(\lambda I-T)x=0$，那么
+        \begin{equation*}
+            \lambda x_n=\frac{x_{n+1}}{n+1}\Rightarrow 
+            x_{n+1}=x_1\cdot \frac{(n+1)!}{\lambda^n}
+        \end{equation*}
+        如果$x_1\neq 0$，$|x_{n+1}|\rightarrow\infty$，所以只能$x=0$，
+        所以$\lambda I-T$是单射，由二择一律知是满射，
+        所以$\lambda\in\rho(T)$，因此$\sigma(T)=\{0\}$.
+        
+        因为$Te_1=0$，所以$\sigma_p(T)=\{0\}$.
+    \end{solve}
+
+    \begin{ex}(20.7)
+        定义：
+        \begin{equation*}
+            T:\ell^2\rightarrow \ell^2,
+            (x_1,x_2,\cdots)\mapsto (0,\lambda_1x_1,\lambda_2x_2,\cdots)
+        \end{equation*}
+        其中$0\neq \lambda_n\in\C$且$\lambda_n\rightarrow 0$，求$\sigma_p,\sigma_c,\sigma_r$.
+    \end{ex}
+    \begin{solve}
+        类似可证$T$是紧算子，以及$\lambda\neq 0$时$\lambda I-T$是单射：
+        \begin{equation*}
+            (\lambda I-T)x=0\Rightarrow \lambda x_{n+1}-\lambda_nx_n=0,x_1=0\Rightarrow x=0
+        \end{equation*}
+        进而是满射，所以只需考虑$0$：
+        $Tx=0\Rightarrow x=0$，不是特征值；
+        $Tx$的第一个分量始终是$0$，所以${\rm Ran}(T)$的闭包肯定不是全空间，
+        所以$0\notin \sigma_c(T)$.
+
+        综上，$\sigma_p(T)=\sigma_c(T)=\varnothing$，
+        $\sigma_r(T)=\{0\}$.
+    \end{solve}
+
+    \begin{ex}(22.6)
+        定义：
+        \begin{equation*}
+            T:L^2[0,1]\rightarrow L^2[0,1],
+            x(t)\mapsto \int_0^t x(s)\d s
+        \end{equation*}
+        \begin{enumerate}[(1).]
+            \item 证明$T$是紧算子。
+            \item 证明：
+                \begin{equation*}
+                    T^n x(t)=\int_0^t \frac{ (t-s)^{n-1} }{(n-1)!}x(s)\d s
+                \end{equation*}
+            \item 求$T$的谱半径。
+            \item 求$T$的各种谱。
+            \item 判断$T$是否是对称算子。
+        \end{enumerate}
+    \end{ex}
+    \begin{solve}
+        \begin{enumerate}[(1).]
+            \item 任取$L^2[0,1]$上的有界集$F$，不妨
+                \begin{equation*}
+                    \fun{sup}{f\in F} ||f||^2=\fun{sup}{f\in F} \int_0^1 |f(t)|^2\d t<M
+                \end{equation*}
+                由于积分的绝对连续性，
+                $T(F)\subset C[0,1]$，故只需证明$T(F)$一致有界且等度连续，
+                对于$\forall f\in L^2[0,1]$，
+                \begin{align*}
+                    \int_0^1 \left( |f(s)|-\int_0^1 |f(t)|\d t \right)^2\d s
+                    &=\int_0^1\left(  |f(s)|^2-2|f(s)|\int_0^1 |f(t)|\d t+\left(\int_0^1 |f(t)|\d t\right)^2 \right)\d s\\
+                    &=||f||^2-2\left(\int_0^1 |f(t)|\d t\right)^2+\left(\int_0^1 |f(t)|\d t\right)^2\\
+                    &=||f||^2-\left(\int_0^1 |f(t)|\d t\right)^2\geqslant 0
+                \end{align*}
+                所以
+                \begin{equation*}
+                    ||T(f)||^2=\int_0^1\left( \int_0^t f(s)\d s \right)^2\d t
+                    \leqslant \int_0^1 \left( \int_0^1 |f(s)|\d s \right)^2\d t
+                    \leqslant \int_0^1 ||f||^2\d t=||f||^2<M
+                \end{equation*}
+                故一致有界。对于$\forall \varepsilon>0$，
+                取$\delta<\varepsilon$，则$||f_1-f_2||<\delta\Rightarrow$
+                \begin{equation*}
+                    ||T(f_1)-T(f_2)||=||T(f_1-f_2)||\leqslant ||f_1-f_2||<\varepsilon
+                \end{equation*}
+                所以等度连续。
+            \item 这个用归纳证明，具体过程和泛函没啥关系，就不写了。
+            \item 用上一问结论和谱半径公式求出谱半径为$0$，计算过程省略。
+            \item 由上一问结论$\sigma(T)=\{0\}$，只需判断$0$是什么谱：
+                $T(f)=0\Rightarrow f=0$，所以$0$不是特征值，
+                现只需考虑${\rm Ran}(-T)$，显然多项式$P[0,1]\subset {\rm Ran}(-T)$，
+                因为$\overline{P[0,1]}=L^2[0,1]$，所以
+                $0$是连续谱。
+            \item 假如是对称算子，因为$L^2$是{\rm Hilbert}空间，则
+                \begin{equation*}
+                    \ag{Tx,y}=\ag{x,Ty}
+                \end{equation*}
+                从而
+                \begin{equation*}
+                    \int_0^1 y(t)\int_0^t x(s)\d s\d t=
+                    \int_0^1 x(t)\int_0^t y(s)\d s\d t
+                \end{equation*}
+                取$x=1,y=t^2$，则等式不成立，故不是对称算子。
+        \end{enumerate}
+    \end{solve}
+
+    \begin{ex}(19.7)
+        证明一个Hilbert空间是有限维的当且仅当它的任意一组规范正交基都是它的线性基。
+    \end{ex}
+    \begin{solve}
+        回顾一下概念：规范正交基是指：
+        \begin{equation*}
+            x=\sum_{\alpha\in \Lambda}\ag{x,e_\alpha}e_\alpha
+        \end{equation*}
+        线性基（Hamel基）：任何一个向量可以写成有限个基中向量的线性组合。
+
+        充分性是显然的，必要性：假设是无穷维的，
+        取它的一族规范正交基$\{e_\alpha\}$，从中选出可数个$\{e_k\}=A$，
+        定义
+        \begin{equation*}
+            x_n=\frac{1}{n}\sum_{k=1}^n e_k
+        \end{equation*}
+        那么$\{x_n\}$是柯西列，不妨设$x_n\rightarrow a$，
+        $a$是有限个$e_\alpha$的有限线性组合，
+        设
+        \begin{equation*}
+            a=\sum_{i=1}^p a_i e_{k_i}+c
+        \end{equation*}
+        $c$是不在$A$中的基的有限线性组合，
+        设$b=\fun{max}{1\leqslant i\leqslant p} k_i$，则$\forall n>b$，都有
+        \begin{equation*}
+            ||x_n-a||=\ms{ \frac{1}{n}\sum_{k=b+1}^n e_k+\left(\sum_{k=1}^b \frac{e_k}{n}-\sum_{i=1}^p a_ie_{k_i}\right)-c }>\ms{ \frac{1}{n}\sum_{k=b+1}^n e_k}=1-\frac{b}{n}>\frac{1}{b+1}
+        \end{equation*}
+        这就与$x_n\rightarrow a$矛盾。
+    \end{solve}
+
+    \begin{ex}(18.6)
+        $X$是赋范空间，证明：$\forall x\in X$，
+        \begin{equation*}
+            ||x||=\fun{sup}{}\{ |f(x)|:f\in X^*,||f||=1 \}
+        \end{equation*}
+    \end{ex}
+    \begin{solve}
+        $x=0$时等式显然成立，下设$x\neq 0$.
+        对于$\forall f\in X^*{\rm\ with\ }||f||=1$，
+        \begin{equation*}
+            1=||f||\geqslant \frac{|f(x)|}{||x||}
+            \Rightarrow ||x||\geqslant |f(x)|
+            \Rightarrow ||x||\geqslant \fun{sup}{}\{ |f(x)|:f\in X^*,||f||=1 \}
+        \end{equation*}
+        另一方面，由HBT可知存在$f\in X^*{\rm\ with} ||f||=1$使得
+        $f(x)=||x||$，所以
+        \begin{equation*}
+            \fun{sup}{}\{ |f(x)|:f\in X^*,||f||=1 \}\geqslant ||x||
+        \end{equation*}
+        故相等。
+    \end{solve}
+
+    \begin{ex}(18.7)
+        $X$是Banach空间，$A,B$分别是$X$上的有界算子、紧算子，证明：
+        \begin{equation*}
+            \sigma(A)\backslash( \sigma_p(A)\cup \sigma_p(A+B) )
+            =\sigma(A+B)\backslash(\sigma_p(A)\cup \sigma_p(A+B))
+        \end{equation*}
+    \end{ex}
+    \begin{solve}
+        对两边取补集，就是
+        \begin{equation*}
+            \rho(A)\cup\sigma_p(A)\cup\sigma_p(A+B)=
+            \rho(A+B)\cup\sigma_p(A)\cup\sigma_p(A+B)
+        \end{equation*}
+        对于$\lambda\in\rho(A)$，$\lambda I-A$可逆，考虑
+        \begin{equation*}
+            \lambda I-(A+B)=(\lambda I-A)(I-(\lambda I-A)^{-1}B)
+        \end{equation*}
+        注意$C=(\lambda I-A)^{-1}B$是有界算子和紧算子的复合，仍然是紧算子，
+        所以$I-C$单当且仅当$I-C$满，注意$(\lambda I-A)$是双射，
+        所以$\lambda I-(A+B)$单当且仅当$\lambda I-(A+B)$满：
+        \begin{enumerate}
+            \item $\lambda I-(A+B)$单$\Rightarrow \lambda\in\rho(A+B)$.
+            \item $\lambda I-(A+B)$不单$\Rightarrow \lambda\in\sigma_p(A+B)$.
+        \end{enumerate}
+        所以
+        \begin{equation*}
+            \rho(A)\subset \rho(A+B)\cup\sigma_p(A+B)
+        \end{equation*}
+        所以
+        \begin{equation*}
+            \rho(A)\cup\sigma_p(A)\cup\sigma_p(A+B)\subset
+            \rho(A+B)\cup\sigma_p(A)\cup\sigma_p(A+B)
+        \end{equation*}
+
+        另一方面，注意到题设等式是关于$A,A+B$对称的，
+        所以另一个方向也成立。（可以理解为两个有界算子$C,D$满足$C-D$紧。）
+    \end{solve}
+
+    \begin{ex}(18.9)
+        $X$是Banach空间，$T$是$X$上的线性算子，证明：$T$有界当且仅当
+        \begin{equation*}
+            x_n\wto x\Rightarrow Tx_n\wto Tx
+        \end{equation*}
+    \end{ex}
+    \begin{solve}
+        充分性：只需证明$T$是闭算子，若$x_n\rightarrow x,Tx_n\rightarrow y$，则
+        由于收敛$\Rightarrow $弱收敛，
+        \begin{equation*}
+            x_n\wto x\Rightarrow Tx_n\wto Tx,
+            Tx_n\wto y
+        \end{equation*}
+        由弱收敛列极限唯一\footnote{如果$x_n\wto x,x_n\wto y$，则根据$\K$上收敛极限的唯一性，$\forall f$有$f(x)=f(y)$，再由HBT可知$x=y$.}，可得$y=Tx$.
+        
+        必要性：$T$有界，$\forall f\in X^*$，
+        $f\circ T\in X^*$，从而
+        \begin{equation*}
+            x_n\wto x\Rightarrow f(Tx_n)\rightarrow f(Tx),\ \forall f\in X^*
+            \Rightarrow Tx_n\wto Tx
+        \end{equation*}
+
+        这个题好像不需要Banach的条件。
+    \end{solve}
+
+    \begin{ex}
+        (18.10)设$X$是Banach空间，$f$是$X$上的非零线性泛函，证明$N(f)$
+        要么是$X$的闭子空间，要么是$X$的稠密真子空间。
+
+        这道题其实就是习题2.1.7的思路继续延伸了一点。
+    \end{ex}
+    \begin{solve}
+        $f$有界$\Leftrightarrow N(f)$是$X$的闭子空间；
+        若$f$无界，对于任意$n$，存在$x_n$使得
+        \begin{equation*}
+            |f(x_n)|>n||x_n||
+        \end{equation*}
+        取
+        \begin{equation*}
+            a_n=\frac{f(x_n)}{f(x)}\Rightarrow f(x_n-a_nx)=0\Rightarrow x_n-a_nx\in N(f)
+        \end{equation*}
+        所以
+        \begin{equation*}
+            x-\frac{x_n}{a_n}=x-\frac{f(x)x_n}{f(x_n)}\in N(f)
+        \end{equation*}
+        那么令$n\rightarrow\infty$，
+        \begin{equation*}
+            \ms{\frac{f(x)x_n}{f(x_n)}}
+            =\frac{|f(x)|\cdot ||x_n||}{|f(x_n)|}<\frac{|f(x)|}{n}\rightarrow 0
+        \end{equation*}
+        所以
+        \begin{equation*}
+            N(f)\ni x-\frac{f(x)x_n}{f(x_n)}\rightarrow x
+        \end{equation*}
+    \end{solve}
+
+    \begin{ex}
+        (19.4)证明弱*收敛序列一定有界。
+    \end{ex}
+    \begin{solve}
+        共鸣定理直接得证。
+    \end{solve}
+
+    \begin{ex}(19.5)
+        $H$是Hilbert空间，$P$是$H$上的有界算子，且$P^2=P=P^*$，
+        证明$P$的值域是闭集，且$P$是正交投影算子。
+    \end{ex}
+    \begin{solve}
+        任取${\rm Ran}(P)$中柯西列$P(x_i)$，不妨设$P(x_i)\rightarrow a$，
+        则$P^2(x_i)\rightarrow P(a)=a\Rightarrow 
+        a\in {\rm Ran}(P)\Rightarrow {\rm Ran}(P)$闭。
+
+        对$H$作正交分解$H={\rm Ran}(P)+{\rm Ran}(P)^\perp={\rm Ran}(P)+M$，
+        对于$\forall x\in H$，可以分解为
+        \begin{equation*}
+            x=y+z,\ y\in {\rm Ran}(P),z\perp {\rm Ran}(P)
+        \end{equation*}
+        那么
+        \begin{equation*}
+            \ag{P(y),P(z)}=\ag{P^2(y),z}=\ag{P(y),z}=0
+        \end{equation*}
+        同理
+        \begin{equation*}
+            \ag{P(x),P(z)}=\ag{P(x),z}=0
+        \end{equation*}
+        所以
+        \begin{equation*}
+            \ag{P(x),P(z)}-\ag{P(y),P(z)}
+            =\ag{P(z),P(z)}=0\Rightarrow P(z)=0
+        \end{equation*}
+        由于$y\in {\rm Ran}(P)$，所以$P(y)=y$，从而
+        $P(x)=P(y)=y$，因此$P$是$X$到${\rm Ran}(P)$的正交投影算子，
+    \end{solve}
+
+    \begin{ex}(19.8)
+        $X,Y$是Banach空间，$X$有限维，$T$是从$X$到$Y$的线性算子，证明
+        存在$x\in X,||x||=1$使得$||Tx||=||T||$.
+    \end{ex}
+    \begin{solve}
+        $T$是有界算子（命题2.1.1），
+        则$\forall n$，存在$x_n{\rm\ with\ }||x_n||=1$满足
+        \begin{equation*}
+            ||T||-\frac{1}{n}\leqslant ||Tx_n|| 
+            \leqslant ||T||           
+        \end{equation*}
+        有限维赋范空间单位球面列紧，所以$\{x_n\}$存在收敛子列
+        $\{ x_{n_k} \}$，不妨设$x_{n_k}\rightarrow x$，则
+        $||Tx||=||T||$.
+    \end{solve}
+
+    \begin{ex}(19.9)
+        $X,Y$是赋范空间，且$X\neq 0$，证明$Y$是Banach空间当且仅当
+        $L(X,Y)$是Banach空间。
+    \end{ex}
+    \begin{solve}
+        必要性在定理2.1.3，只说明充分性：
+        设$\{y_n\}$是$Y$中柯西列，
+        取$0\neq x\in X$，由HBT可知存在$f\in X^*{\rm\ with\ }||f||=1,f(x)=||x||$，
+        定义算子序列：
+        \begin{equation*}
+            F_n:X\rightarrow Y,x\mapsto f(x)y_n
+        \end{equation*}
+        则$F_n$是线性算子，且$||F_n||=||y_n||$，所以
+        \begin{equation*}
+            ||F_n(x)-F_m(x)||\leqslant ||x||\cdot ||y_n-y_m||
+        \end{equation*}
+        故$\{F_n\}$是$\mathcal{L}(X,Y)$上的柯西列，
+        不妨$F_n\rightarrow F$，取$y=\frac{F(a)}{|a|}$，
+        \begin{equation*}
+            ||y_n-y||=\ms{ \frac{F_n(x)}{|f(x)|}-\frac{F(x)}{|x|} }
+            =\frac{1}{|x|}
+            \ms{ F_n(x)-F(x) }\leqslant ||F_n-F||\rightarrow 0
+        \end{equation*}
+        从而$y_n\rightarrow y$，这就证明了$Y$是{\rm Banach}空间。
+    \end{solve}
+
+    \begin{ex}(20.3)
+        $X$是赋范空间，$V$是$X$的子空间，证明$V$在$X$中稠密等价于$V^\perp=0$，这里
+        \begin{equation*}
+            V^\perp=\{ f\in X^*:f(V)=0 \}
+        \end{equation*}
+    \end{ex}
+    \begin{solve}
+        必要性由$f\in X^*$的连续性可得；
+        充分性由定理2.7.4可得。
+    \end{solve}
+
+    \begin{ex}(20.5)
+        $X$是Banach空间，$V_n$是一列闭子空间，满足
+        \begin{equation*}
+            X=\bigcup_{n=1}^\infty V_n
+        \end{equation*}
+        证明：存在某个$n_0$使得
+        \begin{equation*}
+            V_{n_0}=X
+        \end{equation*}
+    \end{ex}
+    \begin{solve}
+        由BCT1，$X$不是可数个无处稠密集之并，所以存在某个$V_{n_0}$
+        不是无处稠密集，即有$\overline{V}=V$内点，但真闭子空间无内点，所以只能$V_{n_0}=X$.
+    \end{solve}
+
+    \begin{ex}(20.6)
+        $X$是Hilbert空间，$||x_n||\rightarrow ||x||$且$x_n\wto x$，则$x_n\rightarrow x$.
+    \end{ex}
+    \begin{solve}
+        考虑
+        \begin{equation*}
+            \ag{\cdot,x}\in H^*\Rightarrow \ag{x_n,x}\rightarrow \ag{x,x}=||x||^2
+        \end{equation*}
+        那么
+        \begin{equation*}
+            ||x_n-x||^2=\ag{x_n-x,x_n-x}
+            =||x_n||^2+||x||^2-2\ag{x_n,x}
+            \rightarrow ||x||^2+||x||^2-2||x||^2=0{\rm\ as\ }n\rightarrow\infty
+        \end{equation*}
+    \end{solve}
+
+    \begin{ex}(20.8)
+        $A_n$是Hilbert空间$X$上的一列有界线性算子，且对于$\forall x$都有
+        $||A_n x||\rightarrow 0$，证明：对于任意紧算子$K$都有$||A_nK||\rightarrow 0$.
+    \end{ex}
+    \begin{solve}
+        记单位球面为$S$，考虑
+        \begin{equation*}
+            ||A_nK||=\fun{sup}{x\in S}||A_nK(x)||
+            =\fun{sup}{y\in K(S)}||A_ny||
+        \end{equation*}
+        假设$||A_nK||\nrightarrow 0$，即存在$\delta>0$使得
+        \begin{equation*}
+            \forall n,\fun{sup}{y\in K(S)}||A_ny||>\delta
+        \end{equation*}
+        所以
+        \begin{equation*}
+            \forall n,\exists y_n=K(x_n)\in K(S){\rm\ s.t.\ }
+            ||A_ny_n||\geqslant \delta
+        \end{equation*}
+        $K$是紧算子，$\{x_n\}\in S$有界，所以$K(\{x_n\})=\{y_n\}$列紧，
+        取其收敛子列$y_{n_k}\rightarrow y$，则
+        \begin{equation*}
+            ||A_{n_k}y_{n_k}||\leqslant ||A_{n_k}y||+||A_{n_k}(y_{n_k}-y)||
+            \leqslant ||A_{n_k}y||+||A_{n_k}||\cdot ||y_{n_k}-y||\rightarrow 0{\rm\ as\ }k\rightarrow\infty
+        \end{equation*}
+        这与$||A_{n_k}y_{n_k}||\geqslant \delta$矛盾。
+    \end{solve}
+    \begin{solve}
+        另一种解法：
+    \end{solve}
+
+    \begin{ex}(21.5)
+        $X$是可分赋范空间，证明：存在$\{f_n\}\in X^*$使得对于任意$x\in X$，都有
+        \begin{equation*}
+            ||x||=\fun{sup}{n}|f_n(x)|
+        \end{equation*}
+    \end{ex}
+    \begin{solve}
+        设$X$的稠密可数子集是${x_n}_{n=1}^\infty$，
+        有HBT可得存在$f_n\in X^*{\rm\ with\ }||f_n||=1{\rm\ s.t.\ }f(x_n)=||x_n||$，一方面：
+        \begin{equation*}
+            \fun{sup}{n}|f_n(x)|\leqslant \fun{sup}{n}||f_n||\cdot ||x||=||x||
+        \end{equation*}
+        另一方面，设$\{x_{n_k}\}$使得$x_{n_k}\rightarrow x$，那么
+        \begin{equation*}
+            f_{n_k}(x_{n_k})=||x_{n_k}||\rightarrow ||x||{\rm\ as\ }k\rightarrow\infty
+        \end{equation*}
+        所以
+        \begin{equation*}
+            \fun{sup}{n}|f_n(x)|\geqslant ||x||
+        \end{equation*}
+    \end{solve}
+
+    \begin{ex}(21.7)
+        设$X,Y$是实Hilbert空间，$S_x$是$X$中单位球面，$T\in L(X,Y)$，
+        且不存在$x\in S_x$使得$||Tx||=||T||$，求证：存在$\{x_n\}\subset S_x$，使得
+        $x_n\wto 0$且$||Tx_n||\rightarrow ||T||$
+    \end{ex}
+    \begin{solve}
+        由于
+        \begin{equation*}
+            ||T||=\fun{sup}{x\in S_x}||Tx||
+        \end{equation*}
+        所以
+        \begin{equation*}
+            \forall n,\exists x_n\in S_x{\rm\ s.t.\ }||T||-\frac{1}{n}\leqslant ||Tx_n||<||T||
+        \end{equation*}
+        则$||Tx_n||\rightarrow ||T||$.
+        由{\rm Eberlein Smulian}定理：自反空间上的有界集有弱收敛子列，
+        所以不妨假设$x_n\wto x$，只需证明$x=0$.
+
+        假设$x\neq 0$，$||x_n||=1$，所以
+        \begin{equation*}
+            ||x_n-x||^2=1+||x||^2-2\ag{x_n,x}
+            \rightarrow 1-||x||^2
+        \end{equation*}
+        又因为$T$有界，所以在$Y$上有$Tx_n\wto Tx$，同理有
+        \begin{equation*}
+            ||Tx_n-Tx||^2\rightarrow ||T||^2-||Tx||^2
+        \end{equation*}
+        同时
+        \begin{equation*}
+            ||Tx_n-Tx||^2\leqslant ||T||^2\cdot ||x_n-x||^2
+        \end{equation*}
+        所以上式左右两边取极限得
+        \begin{equation*}
+            ||T||^2-||Tx||^2\leqslant ||T||^2(1-||x||^2)\Rightarrow 
+            ||T||\cdot ||x||\leqslant ||Tx||
+        \end{equation*}
+        从而
+        \begin{equation*}
+            ||T||\leqslant \frac{||Tx||}{||x||}=\ms{ T\left( \frac{x}{||x||} \right) }
+            <||T||
+        \end{equation*}
+        矛盾，所以$x=0$.
+    \end{solve}
+
+    \begin{ex}(22.3)
+        证明二则一律。
+    \end{ex}
+    \begin{solve}
+        在定理3.2.2，但是为什么会考这个呢...
+    \end{solve}
+\subsection{其它}
+
+\begin{ex}
+    $C[0,1]$上有两个范数$||\cdot||_1$和$||\cdot ||_2$，其中
+    \begin{equation*}
+        ||f||_1=\fun{sup}{x\in [0,1]}|f(x)|
+    \end{equation*}
+    $||\cdot||_2$则满足：当$||x_n-x||_2\rightarrow 0$时，
+    \begin{equation*}
+        \fun{lim}{n\rightarrow\infty}x_n(t)\rightarrow x(t),\ \forall t\in [0,1]
+    \end{equation*}
+    而且$( C[0,1],||\cdot||_2 )$完备，证明两个范数等价。
+\end{ex}
+\begin{solve}
+    取范数
+    \begin{equation*}
+        ||\cdot||_3=||\cdot ||_1+||\cdot ||_2
+    \end{equation*}
+    则$||\cdot||_3$强于$||\cdot||_1$和$||\cdot||_2$，
+    只需证明$||\cdot||_3$是$C[0,1]$上的完备范数，则由范数等价定理
+    可知三个范数都等价。
+\end{solve}
+
+\begin{ex}
+    $0<p<1$时，$L^p(\R)$上不存在有界线性泛函。
+\end{ex}
+\begin{solve}
+    设$f:L^p(\R)\rightarrow \R$有界，$||f||=M$，考虑拆分区间$[a,b]$：
+    \begin{equation*}
+        [a,b]=\bigcup_{k=1}^n [a,a+\frac{k}{n}(b-a)]:=\bigcup_{k=1}^n I_k
+    \end{equation*}
+    那么
+    \begin{equation*}
+        ||f( \chi_{[a,b]} )||=\ms{ \sum_{k=1}^n f(\chi_{I_k}) }
+        \leqslant M\cdot \sum_{k=1}^n ||\chi_{I_i}||=Mn\left(\frac{b-a}{n}\right)^{\frac{1}{p}}
+    \end{equation*}
+    所以
+    \begin{equation*}
+        \frac{||f( \chi_{[a,b]} )||}{||\chi_{[a,b]}||}
+        =Mn^{1-\frac{1}{p}}\rightarrow 0
+        \Rightarrow f=0
+    \end{equation*}
+\end{solve}
+
+\begin{ex}
+    $X$是Banach空间，$T:X\rightarrow X^*$满足${\rm Dom}(T)=X$，$T(x)(x)\geqslant 0,\forall x$，
+    证明$T$有界。
+\end{ex}
+\begin{solve}
+    定义域全空间，求证有界，证明$T$是闭算子即可。
+    假设$x_n\rightarrow 0,Tx_n\rightarrow L$，那么对于$\forall \lambda>0$，
+    \begin{equation*}
+        T(x_n+\lambda y)(x_n+\lambda y)=\lambda^2 T(y)T(y)
+        +\lambda T(x_n)(y)+\lambda T(y)(x_n)+T(x_n)(x_n)\geqslant 0
+    \end{equation*}
+    令$n\rightarrow \infty$得到
+    \begin{equation*}
+        \lambda^2 T(y)(y)+\lambda L(y)\geqslant 0
+        \Rightarrow \lambda T(y)(y)+L(y)\geqslant 0,\forall \lambda>0,y
+    \end{equation*}
+    则一定有$L(y)\geqslant 0$，否则取一个充分小的$\lambda $就不成立了。
+    同理取$T(x_n-\lambda y)(x_n-\lambda y)$就得到$L(-y)\geqslant 0$，
+    从而$L=0$.
+
+    然后考虑一般情况：$x_n\rightarrow x,Tx_n\rightarrow L$，那么
+    $x_n-x\rightarrow 0\Rightarrow Tx_n-Tx\rightarrow L-Tx=0$，
+    从而$L=Tx$，因此$T$是闭算子，由闭图像定理知$T$有界（则连续）。
+\end{solve}
+
+\begin{ex}
+    $M$是$L^2[0,1]$的闭子空间，且$M\subset C[0,1]$，证明${\rm dim}M<+\infty$.
+\end{ex}
+\begin{solve}
+    $(M,||\cdot||_\infty)$和$(M,||\cdot||_2)$都是完备的，
+    考虑
+    \begin{equation*}
+        \frac{||x||_2}{||x||_\infty}=\frac{ \left(\int_0^1 |x(t)|^2\d t\right)^\frac{1}{2} }{\fun{sup}{t\in [0,1]} |x(t)|}\leqslant 1
+    \end{equation*}
+    所以两个范数等价，进而存在$C$使得
+    \begin{equation*}
+        ||x||_\infty\leqslant C||x||_2,\forall x\in M 
+    \end{equation*}
+
+    由于$L^2$是Hilbert空间，其闭子空间也是Hilbert空间，对于固定的$t\in [0,1]$：
+    \begin{equation*}
+        l_t:M\rightarrow \R, x\mapsto x(t)
+    \end{equation*}
+    那么由Riesz表示定理，存在$q_t\in L^2[0,1]$使得$l_t=\ag{\cdot,q_t},||q_t||_2=||l_t||$，
+    \begin{equation*}
+        \frac{|l_t(x)}{||x||_2}=\frac{|x(t)|}{||x||_2}
+        \leqslant \frac{||x||_\infty}{||x||_2}\leqslant C\Rightarrow ||q_t||_2=||l_t||\leqslant C
+    \end{equation*}
+
+    $M$可分\footnote{$L^p$空间可分，而Banach空间可分，则其闭子空间也是可分的。}，所以有可数正交基$S=\{h_n\}$，
+    \begin{equation*}
+        C^2\geqslant ||q_t||_2^2=\sum |\ag{h_n,q_t}|^2
+        =\sum |h_n(t)|^2
+    \end{equation*}
+    于是
+    \begin{equation*}
+        \# S=\sum 1= \sum ||h_n||_2^2= \sum \int_0^1 |h_n(t)|^2 \d t\leqslant \int_0^1 C^2 \d t=C^2<+\infty
+    \end{equation*}
+\end{solve}
+
+\begin{ex}
+    设
+    \begin{equation*}
+        \frac{\d}{\d t}:C^1[a,b]\rightarrow C[a,b],f\mapsto \frac{\d f}{\d t}
+    \end{equation*}
+    证明它是闭算子而非有界算子，说明闭图像定理为何不适用。
+\end{ex}
+\begin{solve}
+    取
+    \begin{equation*}
+        f_n(t)=\frac{(t-a)^n}{(b-a)^n}
+    \end{equation*}
+    则
+    \begin{equation*}
+        ||f_n||=\fun{sup}{t\in [a,b]}|f_n(t)|=1
+    \end{equation*}
+    但
+    \begin{equation*}
+        \ms{ \frac{\d }{\d t}f_n }=\fun{sup}{t\in [a,b]}\left| n\frac{(t-a)^{n-1}}{(b-a)^n} \right|=\frac{n}{b-a}\rightarrow\infty{\rm\ as\ }n\rightarrow\infty
+    \end{equation*}
+    所以是无界算子。
+    
+    考虑$x_n\in C^1[a,b]$，且$x_n\rightarrow x$，$Tx_n\rightarrow y$，我们转化成数分的语言就是：函数列${x_n(t)}$一致收敛，
+    每一项$x_n$都有连续导数，且$x_n'$一致收敛到$y$，那么
+    根据一致收敛函数列的性质，$x$也有连续导数，且$x'=y$，即$x\in C^1[a,b]$，$Tx=y$，这就证明了$\frac{\d }{\d t}$是闭算子。
+
+    闭图像定理不适用的原因是$C^1[a,b]$不是闭集，比如一阶可微函数可以一致收敛到折线，后者不是一阶可微的。例如$[a,b]=[-1,1]$，
+    \begin{equation*}
+        f_n(t)=\sqrt{x^2+\frac{1}{n}}
+    \end{equation*}
+    $f_n$一致收敛于$f(t)=|t|$，在$t=0$处不可导。具体过程就不详细写了，都是数分的东西。
+\end{solve}
+
+\begin{ex}
+    证明$\ell^\infty$不可分，$C_0$可分（考虑全体趋于$0$的有理数列即可）。
+\end{ex}
+\begin{solve}
+    假设$\ell^\infty$存在可数稠密子集$D$，那么对于$\forall x\in \ell^\infty$，$\forall \varepsilon>0$，
+    存在$y\in D$使得$||x-y||<\varepsilon$.现在考虑
+    \begin{equation*}
+        S=\{ x=\{x_n\}_{n=1}^\infty:x_n=0{\rm\ or\ }x_n=1 \}\subset \ell^\infty
+    \end{equation*}
+    即全体由$0,1$构成的数列，集合$S$和$[0,1]$是等势的（全体二进制小数），所以不可数，我们现在希望建立一个
+    $S$到$D$的单射，从而$D$不可数，得到矛盾。
+
+    取$\varepsilon=\frac{1}{2}$，任取$s=\{s_n\}\in S$，则存在某个$d=\{d_n\}\in D$使得
+    \begin{equation*}
+        \forall n,|s_n-d_n|< \frac{1}{2}
+    \end{equation*}
+    现在改动$s_1$：若$s_1=0$，则取$s_1'=1$，
+    \begin{equation*}
+        |0-d_1|<\frac{1}{2}\Rightarrow d_1\in (-\frac{1}{2},\frac{1}{2})\Rightarrow |1-d_1|>\frac{1}{2}
+    \end{equation*}
+    若$s_1=1$，则取$s_1'=0$，
+    \begin{equation*}
+        |1-d_1|<\frac{1}{2}\Rightarrow d_1\in (\frac{1}{2},\frac{3}{2})\Rightarrow |d_1|>\frac{1}{2}
+    \end{equation*}
+    这说明$s_1'$一定使得$|s_1'-d_1|>\frac{1}{2}$，
+    对于$s'=(s_1',s_2,s_3,\cdots)\in S$，我们需要重新找一个$d'\in D$使得$||s'-d'||<\frac{1}{2}$.
+    也就是说，对于某个$d\in D$，最多只有一个$s\in S$和它的距离小于$\frac{1}{2}$.这就得到了从$S\rightarrow D$的单射。
+\end{solve}
+
+\begin{solve}
+    我们还可以用更“泛函”的方式回答这个问题：
+    定理2.8.16告诉我们，如果$\ell^\infty$可分，则$(\ell^\infty)^*$中有界集都弱*列紧，
+    类似于习题2.5.2，可以证明$(\ell^\infty)^*=C_0$，
+    即每个$(\ell^\infty)^*$中的算子，都能被表示成与某个$f\in C_0$作内积（此处指各分量相乘后求和）。若我们能给出$C_0$上有界但不弱*列紧的例子，
+    就能得出矛盾。例如$f_n=(0,0,\cdots,0,\mathop{1}\limits_{n},0,0,\cdots)\in C_0$，
+    $e=(1,1,\cdots)\in \ell^\infty$，
+    $\{f_n\}$是有界集，但是
+    \begin{equation*}
+        f_n(e)=1\nrightarrow 0
+    \end{equation*}
+    这说明$\{f_n\}$不弱*列紧。
+\end{solve}
+
+\begin{ex}
+    $(X,d)$是度量空间，若$A\subset X$不可数且$(A,d)$是离散空间，则$(X,d)$不可分。
+\end{ex}
+\begin{solve}
+    这道题思路和上一题中证明存在$S\rightarrow D$的单射如出一辙，可以发现上一题构造的集合$S$就是一个离散空间。
+
+    假设$X$存在可数稠密子集$G$，
+    我们考虑建立$A\rightarrow G$的单射，从而证明$G$不可数，导出矛盾。
+    对于$\forall a\in A$，$\varepsilon=\frac{1}{2}$，存在某个$g\in G$满足
+    \begin{equation*}
+        d(g,a)<\frac{1}{2}
+    \end{equation*}
+    而$\forall a'\in A,a\neq a',d(a,a')=1$，所以
+    \begin{equation*}
+        d(g,a')\geqslant | d(a,a')-d(g,a) |=|1-d(g,a)|>\frac{1}{2}
+    \end{equation*}
+    这说明我们需要重新找一个$g'\in G$使得$d(g',a')<\frac{1}{2}$，这就构造了$S\rightarrow G$的单射。
+\end{solve}

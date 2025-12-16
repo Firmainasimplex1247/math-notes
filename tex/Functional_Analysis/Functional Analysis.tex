@@ -1,0 +1,131 @@
+\documentclass[lang=cn,10pt]{gorgeousnbook}
+\usepackage{geometry}
+%\geometry{landscape}%,margin=2in,legalpaper,
+%标题、题记、作者、组织、日期、版本、邮箱
+\title{Functional Analysis}                                  
+\subtitle{课程笔记}
+\author{Fir1247}
+\institute{USTC}
+\date{\today}
+%\version{1.1}
+\bioinfo{联系方式}{fa1247@mail.ustc.edn.cn或者QQ：3105292483}
+%封面下方的那行话
+\extrainfo{泛函分析}
+%目录显示级数
+\setcounter{tocdepth}{2}
+%封面右下角小方块头像
+\logo{logo.jpg}
+%封面
+\cover{cover.jpg}
+%本文档命令
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage[ruled,vlined]{algorithm2e}
+\numberwithin{equation}{section}%公式按节编号
+\numberwithin{figure}{section}%图表按节编号
+
+\newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
+% 修改标题页的橙色带
+\definecolor{customcolor}{RGB}{245, 250, 246}
+\colorlet{coverlinecolor}{customcolor}
+\usepackage{zhlipsum}
+\usepackage{longtable}
+%习题集模板
+\usepackage{ocgx2}
+\usepackage{color}
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241, 241, 255}
+\newcounter{exnum}
+\newcounter{solnum}
+\newenvironment{ex}{\begin{shaded}\stepcounter{exnum}\par\noindent\textbf{题目\arabic{exnum}.}}{\end{shaded}\par}
+%注意，ocgx2宏包的切换解答显示对pdf阅读器有很高要求，如果你正在使用的阅读器无法正常使用，推荐Adobe Acrobat DC，或者使用下面这行代码。
+%\newenvironment{solve}{\par\noindent\textbf{解答：}\it}{\par}
+\newenvironment{solve}{\par\noindent\textbf{解答：}\stepcounter{solnum}\it\switchocg{\arabic{solnum}}{\textbf{\rm Show answer}}\begin{ocg}{Ex}{\arabic{solnum}}{1}\par}{\end{ocg}\par}
+%\newenvironment{note}{\par\noindent\textbf{注. }}{\par}
+%表格相关
+\usepackage{float}
+%自己加的宏定义
+\def\p{\partial}
+\def\d{{\rm d}}
+\def\Q{\mathbb{Q}}
+\def\R{\mathbb{R}}
+\def\C{\mathbb{C}}
+\def\K{\mathbb{K}}
+\def\F{\mathbb{F}}
+\def\E{\mathbb{E}}
+\def\N{\mathbb{N}}
+\def\Z{\mathbb{Z}}
+\def\D{\mathbb{D}}
+\def\e{ {\rm e} }
+\def\i{ {\rm i} }
+\def\L{\mathcal{L}}
+
+
+\def\defeq{ \mathop{=}\limits^{\rm def} }
+\def\eq#1{ \mathop{=}\limits^{#1} }
+\def\Ra#1{ \mathop{\Rightarrow}\limits^{#1} }
+\def\ve#1{ \textit{\textbf{#1}} }
+\def\sve#1{ \boldsymbol{#1} }
+\newcommand*{\ag}[1]{
+        \langle #1 \rangle
+}
+\newcommand*{\agl}[2]{
+        \langle #1,#2 \rangle
+}
+\newcommand*{\fun}[2]{
+	\mathop{\rm #1}\limits_{#2}
+}
+\newcommand*{\ms}[1]{
+	\left|\left|#1\right|\right|
+}
+\def\wto{ \mathop{\rightarrow}\limits^{w} }
+\def\w*to{ \mathop{\rightarrow}\limits^{w^*} }
+
+\usepackage{ocgx2}
+
+%开始！
+\begin{document}
+%主字体
+\setmainfont{Palatino Linotype}
+%目录的封面
+\chapterimage{empty.jpg}
+%绘制标题
+\maketitle
+%前言
+\input{chapter/preface.tex}
+%编译目录
+\frontmatter
+\thispagestyle{fancy}
+\tableofcontents
+%第一部分
+%\partsimage{empty.jpg}
+%\part{课程笔记}
+\mainmatter	
+	%第一章
+	\chapterimage{empty.jpg}
+	\input{chapter/chapter1.tex}
+
+	%第二章
+	\chapterimage{empty.jpg}
+	\input{chapter/chapter2.tex}
+
+	%第三章
+	\chapterimage{empty.jpg}
+	\input{chapter/chapter3.tex}
+
+	%第四章
+	%\chapterimage{chap4.jpg}
+	%\input{chapter/chapter4.tex}
+
+	%第五章
+	%\chapterimage{chap5.jpg}
+	%\input{chapter/chapter5.tex}
+	
+	%第六章
+	%\chapterimage{chap6.png}
+	%\input{chapter/chapter6.tex}
+
+	%作业
+	\chapterimage{empty.jpg}
+	\input{chapter/hw.tex}
+\end{document}

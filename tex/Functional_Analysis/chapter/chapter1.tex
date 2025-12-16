@@ -1,0 +1,2173 @@
+\chapter{度量空间}
+%\begin{center}
+%    “泛函分析心泛寒”，说明泛函是一门很难的课，但是泛函其实并没有比数分、线代、实分析更难。
+%    这是一门很抽象的课，由于前面的课没学好，很多同学学到这里学崩了。泛函是压死骆驼的最后一根稻草。
+%\end{center}
+%\rightline{——刘聪文老师，2023.09.04}
+%\vspace{-5pt}
+%\begin{center}
+%    \pgfornament[width=0.36\linewidth,color=lsp]{88}
+%\end{center}
+\section{压缩映射原理}
+        \begin{definition}
+            $X$是一个非空集合，映射$d:X\times X\rightarrow \mathbb{R}$满足：
+            \begin{enumerate}[(1)]
+                \item 唯一性：$d(x,y)=0\Leftrightarrow x=y$.
+                \item 非负性：$\forall x,y\in X,d(x,y)\geqslant 0$.
+                \item 对称性：$\forall x,y\in X,d(x,y)=d(y,x)$.
+                \item 三角不等式：$\forall x,y,z\in X,d(x,z)\leqslant d(x,y)+d(y,z)$.
+            \end{enumerate}
+            则称$d$是$X$上的一个距离函数（度量），$(X,d)$称为一个度量空间，度量空间里的元素称为“点”。
+
+            对于度量空间$X$，$Y\subset X$，
+            限制在$Y$上的$d$，记作$d|_Y$，是$Y$上的度量，$(Y,d|_Y)$称为$(X,d)$的子度量空间。
+        \end{definition}
+        \begin{remark}
+            实际上$(2)(3)(4)\Rightarrow (1)$：
+            \begin{equation*}
+                2d(x,y)=d(x,y)+d(y,x)\geqslant d(x,x)=0
+            \end{equation*}
+        \end{remark}
+        \begin{example}
+            $\mathbb{R}^n$上定义：$x=(x_1,\cdots,x_n),y=(y_1,\cdots,y_n)$，对于$1\leqslant p<\infty$，
+            \begin{equation*}
+                d_p(x,y)\mathop{=}\limits^{\rm def}\sqrt[p]{\sum_{k=1}^n |x_k-y_k|^p}
+            \end{equation*}
+            是距离函数。
+
+            $p=\infty$，取$d_p(x,y) \mathop{=}\limits^{\rm def} \mathop{\rm max}\limits_{1\leqslant k\leqslant n}|x_k-y_k|$，也是距离函数。
+        \end{example}
+        \begin{example}
+            数组空间
+            \begin{equation*}
+                \ell^p(\mathbb{F})\mathop{=}\limits^{\rm def}\{ (x_k):x_k\in\mathbb{F},k=1,2,\cdots,\sum_{k=1}^\infty |x_k|^p<\infty \}
+            \end{equation*}
+            一般$\mathbb{F}$取$\mathbb{R},\mathbb{C}$，对于$1\leqslant p<\infty$，
+            \begin{equation*}
+                d_p(x,y)\mathop{=}\limits^{\rm def}\sqrt[p]{\sum_{k=1}^\infty |x_k-y_k|^p}
+            \end{equation*}
+            是距离函数。
+
+            $p=\infty$，
+            \begin{equation*}
+                \ell^\infty(\mathbb{F})=\{ (x_k):\mathop{\rm sup}_k |x_k|<\infty \}
+            \end{equation*}
+            \begin{equation*}
+                d_\infty(x,y)=\mathop{\rm sup}_k|x_k-y_k|
+            \end{equation*}
+        \end{example}
+        \begin{example}
+            离散度量：
+            \begin{equation*}
+                d(x,y)=\left\{ \begin{array}{ll}0&,x=y\\1&,x\neq y\end{array} \right.
+            \end{equation*}
+        \end{example}
+        \begin{example}
+            积度量空间：对于度量空间$(X,d)$，$(Y,\rho)$，
+            \begin{equation*}
+                X\times Y=\{ (x,y):x\in X,y\in Y \}
+            \end{equation*}
+            取
+            \begin{equation*}
+                d_{X\times Y}( (a,b),(c,d) )\mathop{=}\limits^{\rm def}d(a,c)+\rho(b,d)
+            \end{equation*}
+            是距离函数。
+        \end{example}
+            约定一些记号：度量空间$(X,d)$上，对于$x_0\in X,r>0$，
+            \begin{equation*}
+                B(x_0,r)\mathop{=}\limits^{\rm def}
+                \{ x\in X:d(x,x_0)<r \}
+            \end{equation*}
+            称为$x_0$的一个$r$邻域（球形邻域）。此外，记
+            \begin{equation*}
+                \overline{B}(x_0,r)\mathop{=}\limits^{\rm def}\overline{B(x_0,r)}=\{ x\in X:d(x,x_0)\leqslant r \}
+            \end{equation*}
+            \begin{equation*}
+                S(x_0,r)\mathop{=}\limits^{\rm def}\{ x\in X:d(x,x_0) = r \}
+            \end{equation*}
+            对于$A\subset X$，
+            \begin{equation*}
+                {\rm diam}(A)\mathop{=}\limits^{\rm def}\mathop{\rm sup}\limits_{x,y\in A}d(x,y)
+            \end{equation*}
+            那么如果${\rm diam}(A)$有限，称$A$有界，等价条件为$\exists B(x_0,R)\supset A$.
+        \begin{definition}
+            度量空间$(X,d)$上，称$\{x_n\}_{n=1}^\infty$收敛，是指存在
+            $x_0\in X$使得
+            \begin{equation*}
+                d(x_n,x_0)\rightarrow 0{\rm\ as\ }n\rightarrow\infty
+            \end{equation*}
+        \end{definition}
+        \begin{corollary}
+            度量空间$(X,d)$上的收敛列的极限唯一，且收敛列有界。
+        \end{corollary}
+        \begin{proof}
+            设$\{x_n\}_{n=1}^\infty$是$X$上的收敛列，
+
+            极限唯一：假设$\{x_n\}_{n=1}^\infty$有两个极限$a,b$且$a\neq b$，即
+            \begin{equation*}
+                d(x_n,a)\rightarrow 0,d(x_n,b)\rightarrow 0
+            \end{equation*}
+            取$\varepsilon=\frac{1}{2}d(a,b)>0$，存在$N$使得$n>N$时$d(x_n,a)<\varepsilon$，于是
+            \begin{align*}
+                d(a,b)&\leqslant d(x_n,a)+d(x_n,b)\\
+                \Rightarrow d(x_n,b)&\geqslant d(a,b)-d(x_n,a)>\varepsilon-\frac{1}{2}\varepsilon=\frac{1}{2}\varepsilon
+            \end{align*}
+            这与$d(x_n,b)\rightarrow 0$矛盾。
+        
+            收敛列有界：设$\{x_n\}_{n=1}^\infty$收敛到$x_0$，$\varepsilon>0$，存在$N$使得$n>N$时
+            $d(x_n,x_0)<\varepsilon$，令
+            \begin{equation*}
+                R_0=\mathop{\rm max}\limits_{1\leqslant n\leqslant N}d(x_n,x_0),R={\rm max}\{ R_0,\varepsilon \}
+            \end{equation*}
+            则$\{ x_n \}_{n=1}^\infty\subset B(x_0,R)$.            
+        \end{proof}
+        \begin{example}
+            $C[0,1]$为$[0,1]$上连续函数全体，定义度量：
+            \begin{equation*}
+                d(f,g)\mathop{=}\limits^{\rm def} \mathop{\rm max}\limits_{x\in[0,1]}|f(x)-g(x)|
+            \end{equation*}
+            于是
+            \begin{equation*}
+                d(f_n,f)\rightarrow 0\Leftrightarrow f_n\rightrightarrows f
+            \end{equation*}
+            若定义：
+            \begin{equation*}
+                \rho_1(f,g)\mathop{=}\limits^{\rm def}
+                \int_0^1|f(t)-g(t)|{\rm d}t
+            \end{equation*}
+            则$\rho_1$也是$C[0,1]$上的一个度量，设
+            \begin{equation*}
+                f_k(t)=\left\{ \begin{array}{ll}
+                    -k^3(t-\frac{1}{k^2})&,t\in [0,\frac{1}{k^2}]\\
+                    0&,t\in [\frac{1}{k^2},1]
+                \end{array} \right.
+            \end{equation*}
+            那么$\rho_1(f_k,0)=\frac{1}{2}k\cdot \frac{1}{k^2}\rightarrow 0{\rm\ as\ }k\rightarrow \infty$，
+            但是$d(f_k,0)=k\nrightarrow 0$.
+
+            这个例子说明不同度量下的点列的收敛情况可能不同。
+        \end{example}
+        \begin{definition}
+            度量空间$(X,d)$，称$X$中的集合$E$是开集是指：
+            $\forall x\in E$，$\exists r>0$使得$B(x,r)\subset E$，即$\forall x\in E$是$E$的内点。
+
+            开集的余集称为闭集。\footnote{实际上这是一般拓扑度量空间上闭集的最原始定义，如果该拓扑是由度量诱导的，
+            即所有点都是内点的集合作为开集构成拓扑（见定理1.1.1），则闭集的定义有其他等价表述（见推论1.1.2）}
+        \end{definition}
+        \begin{theorem}
+            记$X$上所有的开集为$\tau$，$\tau$满足拓扑的定义：
+            \begin{enumerate}
+                \item $\varnothing\in\tau$，$X\in \tau$.
+                \item $\tau$对于任意并封闭。
+                \item $\tau$对于有限交封闭。
+            \end{enumerate}
+        \end{theorem}
+        \begin{definition}
+            度量空间$(X,d)$，$E\subset X$满足：存在$x_0\in X$使得
+            \begin{enumerate}
+                \item $\forall \varepsilon>0$，$B(x_0,\varepsilon)\cap E\neq \varnothing$，则$x_0$为$E$的接触点；
+                \item $\forall \varepsilon>0$，$B(x_0,\varepsilon)\cap (E\backslash \{x_0\})\neq \varnothing$，则$x_0$为$E$的聚点。
+            \end{enumerate}
+            $E$的接触点全体称为$E$的闭包，记作$\overline{E}$.
+        \end{definition}
+        \begin{corollary}
+            度量空间$(X,d)$，$E\subset X$，下列命题等价：
+            \begin{enumerate}
+                \item $E$是闭集；
+                \item $E=\overline{E}$；
+                \item $\forall \{x_n\}_{n=1}^\infty\subset E$，如果$x_n\rightarrow x_0$，则$x_0\in E$.
+            \end{enumerate}
+        \end{corollary}
+        \begin{proof}
+            证明：
+            $(1)\Rightarrow (2)$：$E$闭$\Rightarrow E^c$开，如果存在
+            $x_0\in \overline{E}$且$x_0\notin E$，则$x_0\in E^c$，存在邻域$B=B(x_0,\varepsilon_0)\subset E^c\Rightarrow B\cap E=\varnothing$，
+            这与$x_0$是接触点矛盾，故$\overline{E}\subset E$，进而$\overline{E}=E$.
+        
+            $(2)\Rightarrow (1)$：$\overline{E}=E\Rightarrow \forall y\in E^c,y\notin \overline{E}\Rightarrow $存在邻域$B(y,\varepsilon)\cap E=\varnothing\Rightarrow
+            B(y,\varepsilon)\subset E^c\Rightarrow E^c$开$\Rightarrow E$闭。
+        
+            $(2)\Rightarrow (3)$：任取收敛列$\{x_n\}_{n=1}^\infty\subset E$，$x_n\rightarrow x_0$，则$\forall \varepsilon>0$，存在
+            $N$使得$n>N$时$x_n\in B(x_0,\varepsilon)$，于是
+            $x_{N+1}\in B(x_0,\varepsilon)\cap E\neq \varnothing\Rightarrow x_0\in \overline{E}$.
+        
+            $(3)\Rightarrow (2)$：设$x_0\in \overline{E}$，取$\varepsilon_1>0$，存在$x_1\in B(x_0,\varepsilon_1)\cap E$；
+            取$0<\varepsilon_2<\varepsilon_1$使得
+            存在$x_2\in B(x_0,\varepsilon_2)\cap E$且$x_2\neq x_1$；以此类推，并可以要求$\varepsilon_n\rightarrow 0$，否则
+            $B(x_0,\mathop{\rm inf}\limits_{n}\{\varepsilon_n\} )\cap E=\varnothing$，这与$x_0\in\overline{E}$矛盾。最后得到点列$\{x_n\}$，且
+            $x_n\rightarrow x_0$，由$(3)$可知$x_0\in E$，所以$\overline{E}\subset E$，进而$\overline{E}=E$.
+        \end{proof}
+
+        \begin{definition}
+            度量空间$(X,d)$，$E\subset X$，$x_0\in E$，如果
+            $\forall \varepsilon>0$，$ B(x_0,\varepsilon)\backslash\{x_0\}\cap E=\varnothing $，
+            等价于存在点列$\{x_n\}\subset E$使得$x_n\rightarrow x_0$，则称
+            $x_0$是$E$的聚点或者极限点。
+
+            记$E'$为$E$的聚点全体，称为$E$的导集。
+
+            记$\overline{E}=E\cup E'$，称为$E$的闭包。如果$\overline{E}=X$，称$E$在$X$中稠密，记作$E\mathop{\subset}\limits^{\rm dense} X$或者$E\subset\subset X$.
+            如果$X$有一个可数稠密子集，称$X$可分。
+        \end{definition}
+
+        \begin{example}
+            $\mathbb{Q}\mathop{\subset}\limits^{\rm dense}\mathbb{R}$，
+            多项式全体$P[a,b]\mathop{\subset}\limits^{\rm dense} C[a,b]$.
+        \end{example}
+
+        \begin{example}
+            $C[a,b]$可分。
+        \end{example}
+        \begin{proof}
+            记$Q[a,b]$为$[a,b]$上全体有理系数多项式，这是一个可数集；$P[a,b]$是$[a,b]$上全体实系数多项式。设
+            \begin{equation*}
+                r(x)=r_nx^n+\cdots+r_0\in P[a,b],\forall r_i\in \mathbb{R}
+            \end{equation*}
+            因为$\mathbb{Q}\mathop{\subset}\limits^{\rm dense}\mathbb{R}$，$\forall \varepsilon>0$，对于每个$r_i$，存在
+            $q_i\in \mathbb{Q}{\rm\ s.t.\ }|r_i-q_i|<\varepsilon$，于是令
+            \begin{equation*}
+                q(x)=q_nx^n+\cdots+q_0\in Q[a,b]
+            \end{equation*}
+            \begin{align*}
+                \Rightarrow d(r,q)&=\mathop{\rm sup}\limits_{x\in [a,b]}
+                | (r_n-q_n)x^n+\cdots+(r_0-q_0) |\\
+                &\leqslant \mathop{\rm sup}\limits_{x\in [a,b]}\varepsilon(|x^n|+\cdots+|x|+1)\\
+                &=C\varepsilon\rightarrow 0{\rm\ as\ }\varepsilon\rightarrow 0
+            \end{align*}
+            因此$Q[a,b]\mathop{\subset}\limits^{\rm dense}P[a,b]$，而$P[a,b]\mathop{\subset}\limits^{\rm dense}C[a,b]$，$\forall f\in C[a,b]$，设
+            $d(r,f)<\frac{1}{2}\varepsilon$，$d(q,r)<\frac{1}{2}\varepsilon$，
+            \begin{equation*}
+                d(q,f)\leqslant d(r,f)+d(q,r)<\varepsilon
+            \end{equation*}
+            所以$C[a,b]$有可数稠密子集$Q[a,b]$.
+        \end{proof}
+
+        \begin{definition}
+            $(X,d)$，$(Y,\rho)$是两个度量空间，设映射：
+            \begin{equation*}
+                T:X\rightarrow Y
+            \end{equation*}
+            在$x_0\in X$处连续是指：$\forall \varepsilon>0$，存在$\delta>0$使得
+            \begin{equation*}
+                d(x,x_0)<\delta\Rightarrow \rho(T(x),T(x_0))<\varepsilon
+            \end{equation*}
+            如果$T$在$X$中的每一点都连续，则称$T$是连续映射。
+        \end{definition}
+
+        \begin{theorem}
+            $(X,d)$，$(Y,\rho)$是两个度量空间，
+            映射$ T:X\rightarrow Y $连续$\Leftrightarrow $任取$Y$上的开集$U$，
+            $T^{-1}(U)$是$X$上的开集。
+        \end{theorem}
+        \begin{proof}
+            记$B_X(x_0,r)=\{ x\in X|d(x,x_0)<r \}$，$B_Y(y_0,r)=\{ y\in Y|\rho(y,y_0)<r \}$.
+
+            $(\Rightarrow )$：$\forall y_0\in U$，$B_Y(y_0,\varepsilon)\subset U$，设$x_0\in T^{-1}(U)$，
+            因为$T$连续，存在$\delta>0$使得$x\in B_X(x_0,\delta)\Rightarrow T(x)\in B_Y(y_0,\varepsilon)\subset U$，所以
+            $B_X(x_0,\delta)\subset T^{-1}(U)$，由于$y_0$的任意性，$x_0$能取遍整个$T^{-1}(U)$，故$T^{-1}(U)$为开集。
+        
+            $(\Leftarrow)$：对于$x_0\in X$，设$y_0=T(x_0)$，$U=B_Y(y_0,\varepsilon)$是$Y$上的开集，
+            且$x_0\in T^{-1}(U)$，所以存在$B_X(x_0,\delta)\subset T^{-1}(U)$，则
+            $x\in B_X(x_0,\delta)\Rightarrow T(x)\in U=B_Y(y_0,\varepsilon)$.由$\varepsilon$的任意性，$T$是连续映射。
+        \end{proof}
+
+        \begin{theorem}[Heine]
+            $T$在$x_0$处连续$\Leftrightarrow$
+            任取$X$上收敛到$x_0$的点列$\{x_n\}$，都有$T(x_n)\rightarrow T(x_0)$.
+        \end{theorem}
+        \begin{proof}
+            $(\Rightarrow )$：$\forall \varepsilon>0,\exists \delta>0{\rm\ s.t.\ }x\in B_X(x_0,\delta)\Rightarrow T(x)\in B_Y(y_0,\varepsilon)$，
+            存在$N$使得$n>N$时$x_n\in B_X(x_0,\delta)\Rightarrow T(x_n)\in B_Y(T(x_0),\varepsilon)\Rightarrow T(x_n)\rightarrow T(x_0)$.
+        
+            $(\Leftarrow)$：假设$T$在$x_0$处不连续，即存在$\varepsilon>0$，$\forall \delta>0$，存在$x\in B_X(x_0,\delta){\rm\ s.t.\ }T(x)\notin B_Y(y_0,\varepsilon)$，
+            取$x_n\rightarrow x_0$，每个$T(x_n)\notin B_Y(y_0,\varepsilon)$，则$T(x_n)\nrightarrow T(x_0)$，矛盾。
+        \end{proof}
+
+        \begin{definition}
+            度量空间$(X,d)$，称$\{x_n\}$是一个基本列（或者叫Cauthy列）是指：
+            $\forall \varepsilon>0$，存在$N$使得：
+            \begin{equation*}
+                d(x_m,x_n)<\varepsilon,\forall m,n\geqslant N
+            \end{equation*}
+            如果$(X,d)$中任意基本列都收敛，则称$(X,d)$完备。完备的度量空间称为Banach空间，
+        \end{definition}
+
+        \begin{example}
+            $(\mathbb{R},d)$完备，$(\mathbb{Q},d)$不完备；$L^p[0,1]$完备。
+        \end{example}
+        \begin{example}
+            例1.1.5中的$(C[0,1],d)$完备。
+        \end{example}
+        \begin{proof}
+            设$\{f_n\}_{n=1}^\infty$是$C[0,1]$中任一基本列，于是
+            \begin{equation*}
+                \forall \varepsilon,\exists N{\rm\ s.t.\ }
+                \mathop{\rm max}\limits_{t\in[0,1]}|f_m(t)-f_n(t)|<\varepsilon,\forall m,n\geqslant N
+            \end{equation*}
+            于是对于每个固定的$t\in [0,1]$，$|f_m(t)-f_n(t)|<\varepsilon$，从而可知
+            $\{f_n(t)\}_{n=1}^\infty$是$\mathbb{R}$中的基本列，于是存在极限$f(t)=\mathop{\rm lim}\limits_{n\rightarrow\infty}f_n(t)$.
+            在(1.1.1)式中令$m\rightarrow\infty$，于是
+            \begin{align*}
+                &\mathop{\rm max}\limits_{t\in[0,1]}|f_m(t)-f(t)|\leqslant \varepsilon,\forall n\geqslant N\\
+                \Rightarrow &f_n\rightrightarrows f\\
+                \Rightarrow &f\in C[0,1],d(f_n,f)\rightarrow 0
+            \end{align*}
+        \end{proof}
+
+        \begin{example}
+            例1.1.5中的$(C[0,1],\rho_1)$不完备。
+        \end{example}
+        \begin{proof}
+            令：
+            \begin{equation*}
+                f_n(t)\mathop{=}\limits^{\rm def}
+                \left\{ \begin{array}{ll}
+                    0&,t\in[0,\frac{1}{2}-\frac{1}{n}]\\
+                    nt-\frac{n}{2}+1&,t\in [\frac{1}{2}-\frac{1}{n},\frac{1}{2}]\\
+                    1&,t\in[\frac{1}{2},1]
+                \end{array} \right.
+            \end{equation*}
+            于是
+            \begin{equation*}
+                \rho_1(f_n,f_m)=\frac{1}{2}\left| \frac{1}{n}-\frac{1}{m} \right|\rightarrow 0{\rm\ as\ }n,m\rightarrow\infty
+            \end{equation*}
+            因此$\{f_n\}$是基本列。下面证明它不收敛，假设存在$f\in C[0,1]$使得
+            $\rho_1(f_n,f)\rightarrow 0$，
+            \begin{align*}
+                \rho_1(f_n,f)&=\int_0^1 |f_n(t)-f(t)|{\rm d}t\\
+                &=\int_0^{\frac{1}{2}-\frac{1}{n}}|f(t)|{\rm d}t+
+                \int_{\frac{1}{2}-\frac{1}{n}}^{\frac{1}{2}}
+                |f_n(t)-f(t)|{\rm d}t+\int_{\frac{1}{2}}^1 |1-f(t)|{\rm d}t
+            \end{align*}
+            令$n\rightarrow\infty$可得
+            \begin{equation*}
+                \int_0^{\frac{1}{2}}|f(t)|{\rm d}t+\int_{\frac{1}{2}}^1 |1-f(t)|{\rm d}t=0
+            \end{equation*}
+            所以
+            \begin{equation*}
+                f(t)=\left\{ \begin{array}{ll}
+                    0&,t\in (0,\frac{1}{2})\\
+                    1&,t\in (\frac{1}{2},1)
+                \end{array} \right.
+            \end{equation*}
+            和$f$连续矛盾。
+        \end{proof}
+
+        \begin{example}
+            离散度量空间完备。
+        \end{example}
+        \begin{proof}
+            任取$X$上的柯西列$\{x_n\}_{n=1}^\infty$，取$\varepsilon=\frac{1}{2}$，
+            存在$N$使得$\forall n,m>N$，$d(x_n,x_m)<\frac{1}{2}\Rightarrow d(x_n,x_m)=0$，即
+            $\forall n>N,x_n=x_{N+1}$，所以$x_n\rightarrow x_{N+1}\in X$.故离散度量空间完备。
+        \end{proof}
+
+        \begin{definition}
+            度量空间$(X,d)$，映射$T:X\rightarrow X$，如果存在
+            $x^*\in X$使得$T(x^*)=x^*$，则称$x^*$是$T$的一个不动点。
+
+            如果存在$\alpha\in (0,1)$，使得
+            \begin{equation*}
+                d(T(x),T(y))\leqslant \alpha d(x,y),\forall x,y\in X
+            \end{equation*}
+            则称$T$是一个压缩映射。
+        \end{definition}
+        \begin{theorem}[Banach不动点定理、压缩映射原理]
+            完备度量空间到自身的压缩映射有唯一的不动点。
+        \end{theorem}
+        \begin{proof}
+            存在性：这个证明方法叫做Picard迭代，任取$x_0\in X$，定义迭代序列：
+            \begin{equation*}
+                x_{n+1}=T(x_n),n=0,1,\cdots
+            \end{equation*}
+            \begin{align*}
+                \Rightarrow d(x_{n+1},x_n)&=d( T(x_n),T(x_{n-1}) )\\
+                &\leqslant \alpha d(x_n,x_{n-1})=\alpha d( T(x_{n-1}),T(x_{n-2}) )\\
+                &\leqslant \alpha^2 d(x_{n-1},x_{n-2})\\
+                &\leqslant\cdots\leqslant \alpha^n d(x_1,x_0)
+            \end{align*}
+            利用三角不等式，
+            \begin{align*}
+                \Rightarrow d( x_{n+p},x_n )&\leqslant \sum_{k=1}^p d(x_{n+k},x_{n+k-1})\\
+                &\leqslant \sum_{k=1}^p \alpha^{n+k-1}d(x_1,x_0)\\
+                &\leqslant \frac{\alpha^n}{1-\alpha}d(x_1,x_0)<\varepsilon,n\mbox{充分大时},\forall p
+            \end{align*}
+            \begin{align*}
+                \Rightarrow& \{x_n\}_{n=1}^\infty \mbox{是$X$中的基本列}\\
+                X\mbox{完备}\Rightarrow& \exists x^*\in X{\rm\ s.t.\ }d(x_n,x^*)\rightarrow 0{\rm\ as\ }n\rightarrow\infty\\
+                \Rightarrow& d( T(x^*),x^* )\leqslant d( T(x^*),T(x_n) )+d( T(x_n),x_n )+
+                d(x_n,x^*)\\
+                &\leqslant \alpha d(x^*,x_n)+d(x_{n+1},x_n)+d(x_n,x^*)\rightarrow 0{\rm\ as\ }n\rightarrow\infty\\
+                \Rightarrow& T(x^*)=x^*
+            \end{align*}
+
+            唯一性：设$y^*$是另一个不动点，则
+            \begin{equation*}
+                d(x^*,y^*)=d(T(x^*),T(y^*))\leqslant \alpha d(x^*,y^*)
+            \end{equation*}
+            因此只能$d(x^*,y^*)=0\Rightarrow x^*=y^*$.
+        \end{proof}
+        \begin{example}
+            完备的条件不可去，例如$X=(0,1)$不完备，
+            度量$d(x,y)=|x-y|$，压缩映射$T(x)=\frac{1}{2}x$，无不动点。
+        \end{example}
+    
+\section{完备化}
+        \begin{definition}
+            $(X_1,d_1)$和$(X_2,d_2)$是两个度量空间，如果映射$T:X_1\rightarrow X_2$保持距离不变，即
+            \begin{equation*}
+                d_1(x,y)=d_2(T(x),T(y)),\forall x,t\in X_1
+            \end{equation*}
+            则称$T$是等距映射。如果存在从$X_1$到$X_2$的既单又满的等距映射，则称
+            $(X_1,d_1)$和$(X_2,d_2)$是等距同构的。
+        \end{definition}
+        \begin{definition}
+            如果$(X_1,d_1)$和$(X_2,d_2)$的某个子空间等距同构，则称
+            $(X_1,d_1)$可等距嵌入$(X_2,d_2)$，记作
+            \begin{equation*}
+                (X_1,d_1) \hookrightarrow (X_2,d_2)
+            \end{equation*}
+            在此意义下，称$X_1$是$X_2$的子空间。
+        \end{definition}
+        \begin{definition}
+            对于度量空间$(X,d)$，如果存在完备的度量空间
+            $(\tilde{X},\tilde{d})$，它的某个稠密子空间$X_0$和$X$等距同构，则称
+            $(\tilde{X},\tilde{d})$是$(X,d)$的一个完备化。
+        \end{definition}
+        \begin{example}
+            \begin{enumerate}
+                \item $\mathbb{R}$是$\mathbb{Q}$的完备化。
+                \item $L^1[a,b]$是$(C[a,b],\rho_1)$的完备化。
+                \item $C[a,b]$是$( P[a,b],d )$的完备化。
+            \end{enumerate}
+        \end{example}
+        \begin{theorem}
+            任何度量空间都有完备化，且完备化在等距同构意义下唯一，
+            即如果$(\tilde{X},\tilde{d})$和$(X',d')$都是$(X,d)$的完备化，则二者等距同构。
+        \end{theorem}
+        我们的证明思路是：
+        \begin{enumerate}
+            \item 构造$(\tilde{X},\tilde{d})$.
+            \item 构造稠密子空间$(X_0,\tilde{d})$和等距同构。
+            \item 证明$(\tilde{X},\tilde{d})$完备。
+            \item 证明等距同构意义下的唯一性。
+        \end{enumerate}
+        \begin{proof}
+            \begin{enumerate}
+                \item $\mathcal{F}$定义为$(X,d)$上基本列全体，记$\xi=\{x_n\}_{n=1}^\infty$，
+                $\eta=\{y_n\}_{n=1}^\infty$，
+                在$\mathcal{F}$上引入等价关系：
+                \begin{equation*}
+                    \xi\sim\eta\mathop{\Leftrightarrow}\limits^{\rm def}
+                    \mathop{\rm lim}\limits_{n\rightarrow\infty}d(x_n,y_n)=0
+                \end{equation*}
+                $\tilde{X}\mathop{=}\limits^{\rm def}\mathcal{F}/_\sim$，定义
+                $\tilde{X}$上的度量：
+                \begin{equation*}
+                    \tilde{d}( [\xi],[\eta] )
+                    \mathop{=}\limits^{\rm def}
+                    \mathop{\rm lim}\limits_{n\rightarrow\infty}d(x_n,y_n)
+                \end{equation*}
+                这里$\{x_n\}_{n=1}^\infty$是$[\xi]$中任一代表元，
+                $\{y_n\}_{n=1}^\infty$是$[\eta]$中任一代表元，
+                    \begin{enumerate}
+                        \item $\tilde{d}$良定：\begin{enumerate}
+                            \item $\mathop{\rm lim}\limits_{n\rightarrow\infty}d(x_n,y_n)$存在：由三角不等式：
+                            \begin{align*}
+                                | d(x_n,y_n)-d(x_m,y_m) |=&| d(x_n,y_n)-d(y_n,x_m)+d(x_m,y_n)-d(x_m,y_m) |\\
+                                \leqslant & |d(x_n,y_n)-d(y_n,x_m)|+|d(x_m,y_n)-d(x_m,y_m)|\\
+                                \leqslant & d(x_n,x_m)+d(y_n,y_m) \rightarrow 0{\rm\ as\ }n,m\rightarrow\infty
+                            \end{align*}
+                            所以$\{ d(x_n,y_n) \}_{n=1}^\infty$是$\mathbb{R}$中基本列，再由$\mathbb{R}$的完备性可知极限存在。
+                        \item $\tilde{d}([\xi],[\eta])$不依赖于$[\xi],[\eta]$的代表元选取：
+                            设$\xi^{(1)}=\{ x_n^{(1)} \}_{n=1}^\infty,\xi^{(2)}=\{ x_n^{(2)} \}_{n=1}^\infty\in[\xi]$，
+                            根据定义有$\mathop{\rm lim}\limits_{n\rightarrow\infty}d( x_n^{(1)}, x_n^{(2)} )=0$，
+                            \begin{align*}
+                                &|d(x_n^{(1)},y_n)-d( x_n^{(2)},y_n )|\leqslant d(x_n^{(1)},x_n^{(2)})\rightarrow 0{\rm\ as\ }n\rightarrow\infty\\
+                                \Rightarrow &
+                                \mathop{\rm lim}\limits_{n\rightarrow\infty}d(x_n^{(1)},y_n)=\mathop{\rm lim}\limits_{n\rightarrow\infty}d(x_n^{(2)},y_n)
+                            \end{align*}
+                            $[\eta]$同理。
+                        \end{enumerate}
+                        \item $\tilde{d}$是度量：平凡。
+                    \end{enumerate}
+                \item 对$x\in X$，记$\xi_x\mathop{=}\limits^{\rm def}(x,x,\cdots)$，称为常驻点列，当然也是一个基本列。设
+                    \begin{equation*}
+                        X_0\mathop{=}\limits^{\rm def}
+                        \{ [\xi_x]:x\in X \}\subset\tilde{X}
+                    \end{equation*}
+                    设$T:X\rightarrow X_0,x\mapsto [\xi_x]$，则$T$是
+                    $X$到$X_0$的等距同构。任取$[\xi]\in \tilde{X}$，任取代表元
+                    $\{x_n\}_{n=1}^\infty$，根据$\tilde{d}$的定义有（常驻点列$\xi_{x_n}$的第$k$项是$x_n$，点列$\xi$的第$k$项为$x_k$）
+                    \begin{equation*}
+                        \mathop{\rm lim}\limits_{n\rightarrow\infty}
+                        \tilde{d}( [\xi_{x_n}],[\xi] )
+                        =\mathop{\rm lim}\limits_{n\rightarrow\infty}
+                        \mathop{\rm lim}\limits_{k\rightarrow\infty}
+                        d(x_n,x_k)
+                    \end{equation*}
+                    而$\xi=\{x_n\}_{n=1}^\infty$是基本列，所以上式等于$0$，即
+                    柯西列$[\xi_{x_n}]\rightarrow [\xi]$，可得$\overline{X_0}=\tilde{X}$.
+                \item $(\tilde{X},\tilde{d})$完备：设$ \{ [\xi^{(k)}] \}_{k=1}^\infty $是
+                    $(\tilde{X},\tilde{d})$中任一基本列，这里$\xi^{(k)}=
+                    \{x_n^{(k)}\}_{n=1}^\infty$，
+                    由上一步的结论，取常驻点列$\xi_{x_{n}^{(k)}}=(x_{n}^{(k)},\cdots)$，
+                    于是对每个$k$，$[\xi_{x_{n}^{(k)}}]\rightarrow [\xi^{(k)}]$
+                    取充分大的$n_k$使得：
+                    \begin{equation*}
+                        \tilde{d}( [\xi^{(k)}],[\xi_{x_{n_k}^{(k)}}] )<\frac{1}{k}
+                    \end{equation*}
+                    可得
+                    \begin{align*}
+                        \tilde{d}( [\xi_{x_{n_k}^{(k)}}],[\xi_{x_{n_j}^{(j)}}] )
+                        &\leqslant \tilde{d}( [\xi_{x_{n_k}^{(k)}}],[\xi^{(k)}] )
+                        +\tilde{d}( [\xi^{(k)}],[\xi^{(j)}] )+
+                        \tilde{d}( [\xi^{(j)}],[\xi_{x_{n_j}^{(j)}}] )\\
+                        &< \frac{1}{k}+\tilde{d}( [\xi^{(k)}],[\xi^{(j)}] )
+                        +\frac{1}{j}\rightarrow 0{\rm\ as\ }j,k\rightarrow\infty
+                    \end{align*}
+                    令$\xi'\mathop{=}\limits^{\rm def}
+                    \{ x_{n_k}^{(k)} \}_{k=1}^\infty \in \mathcal{F}$，于是$[\xi']\in\tilde{X}$，
+                    根据$\tilde{d}$的定义有（常驻点列$\xi_{x_{n_k}^{(k)}}$的第$j$项是$\xi_{x_{n_k}^{(k)}}$，
+                    点列$\xi'$的第$j$项为$x_{n_j}^{(j)}$）
+                    \begin{equation*}
+                        \mathop{\rm lim}\limits_{k\rightarrow\infty}
+                        \tilde{d}( [\xi_{x_{n_k}^{(k)}}],[\xi'] )
+                        =\mathop{\rm lim}\limits_{k\rightarrow\infty}
+                        \mathop{\rm lim}\limits_{j\rightarrow\infty}
+                        d(x_{n_k}^{(k)},x_{n_j}^{(j)})=0
+                    \end{equation*}
+                    最后
+                    \begin{equation*}
+                        \tilde{d}( [\xi^{(k)}],[\xi'] )
+                        \leqslant \mathop{\tilde{d}( [\xi^{(k)}],[\xi_{x_{n_k}^{(k)}}] )}\limits_{<\frac{1}{k}\rightarrow 0}
+                        +\mathop{\tilde{d}( [\xi'],[\xi_{x_{n_k}^{(k)}}] )}\limits_{\rightarrow 0}
+                    \end{equation*}
+                    所以$[\xi^{(k)}]\rightarrow [\xi']$，完备性得证。
+                \item 唯一性：
+                设$(X',d')$也是$(X,d)$的完备化，即$(X,d)$等距同构于
+                $(X',d')$的一个稠密子空间$(X_0',d')$，设
+                $T':X\rightarrow X_0'$是等距同构，则
+                $\varphi=T'\circ T^{-1}$是$(X_0,\tilde{d})$
+                到$(X_0',d')$的等距同构，下面把$\varphi$延拓为
+                $(\tilde{X},\tilde{d})$到$(X',d')$的等距同构。
+                \begin{equation*}
+                    \forall [\xi]\in \tilde{X}
+                    ,\exists [\xi^n]\in X_0,n=1,2,\cdots{\rm\ s.t.\ }
+                    \tilde{d}( [\xi^n],[\xi] )\rightarrow 0\mbox{（由稠密性）}
+                \end{equation*}
+                因为$\varphi$是等距映射，所以$\varphi( [\xi^{(n)}] )$是$(X',d')$中的基本列。$X'$完备，所以
+                存在$y\in X'$使得$d'(\varphi[\xi^{(n)}],y)\rightarrow 0$，定义映射：
+                $\Phi:\tilde{X}\rightarrow X',[\xi]\mapsto y$，接下来验证$\Phi$是等距同构（作业）：
+
+                任取$[\xi^{(1)}],[\xi^{(2)}]\in\tilde{X}$，设$\Phi([\xi^{(1)}])=y_1,\Phi([\xi^{(2)}])=y_2$，
+                \begin{align*}
+                    &d'(T'(x_n^{(1)}),T'(x_n^{(2)}))-d'(y_1,y_2)\\
+                    &\leqslant ( d'(T'(x_n^{(1)}),y_2)+d'(y_2,T'(x_n^{(2)})) )-( d(T'(x_n^{(1)}),y_2)-d'(T'(x_n^{(1)}),y_1) )\\
+                    &\leqslant d'(T'(x_n^{(1)}),y_1)+d'(T'(x_n^{(2)}),y_2)\rightarrow 0
+                \end{align*}
+                而$d'(T'(x_n^{(1)}),T'(x_n^{(2)}))=\tilde{d}( [\xi_{x_n^{(1)}}],[\xi_{x_n^{(2)}}] )$，同理
+                \begin{align*}
+                    \tilde{d}( [\xi_{x_n^{(1)}}],[\xi_{x_n^{(2)}}] )-\tilde{d}( [\xi^{(1)}],[\xi^{(2)}] )
+                    \leqslant \tilde{d}( [\xi_{x_n^{(1)}}],[\xi^{(1)}] )+\tilde{d}( [\xi_{x_n^{(2)}}],[\xi^{(2)}] )\rightarrow 0
+                \end{align*}
+                因此
+                \begin{equation*}
+                    \tilde{d}( [\xi^{(1)}],[\xi^{(2)}] )=\mathop{\rm lim}\limits_{n\rightarrow\infty}\tilde{d}( [\xi_{x_n^{(1)}}],[\xi_{x_n^{(2)}}] )
+                    =\mathop{\rm lim}\limits_{n\rightarrow\infty}d'(T'(x_n^{(1)}),T'(x_n^{(2)}))
+                    =d'(y_1,y_2)
+                \end{equation*}
+                这就证明了$\Phi$是等距同构。
+            \end{enumerate}
+        \end{proof}
+    
+\section{紧性推理}
+        \begin{definition}
+            度量空间$(X,d)$，$A\subset X$，
+            \begin{enumerate}
+                \item 如果一族开集$\{G_\alpha\}_{\alpha\in \Lambda}$使得
+                    \begin{equation*}
+                        \bigcup_{\alpha\in\Lambda}G_\alpha\supset A
+                    \end{equation*}
+                    则称$\{G_\alpha\}_{\alpha\in \Lambda}$是$A$的一个开覆盖。
+                \item 如果$A$的任一开覆盖$\{G_\alpha\}_{\alpha\in \Lambda}$都有有限子覆盖，即
+                    存在$\alpha_1,\alpha_2,\cdots,\alpha_N\in \Lambda$使得
+                    \begin{equation*}
+                        \bigcup_{k=1}^N G_{\alpha_k}\supset A
+                    \end{equation*}
+                    则称$A$紧。
+                \item 如果$A$中任一点列都有在$X$中收敛的子列，则称$A$列紧。
+                \item 如果$A$中任一点列都有在$A$中收敛的子列，则称$A$自列紧。
+                \item 如果空间$X$自身列紧，则称$X$为列紧空间。
+            \end{enumerate}
+        \end{definition}
+        \begin{corollary}
+            度量空间上，自列紧集等价于列紧闭集。
+        \end{corollary}
+        \begin{example}
+            $\mathbb{R}^n$中，列紧集等价于有界集，自列紧集等价于有界闭集等价于紧集。
+        \end{example}
+        \begin{example}
+            一般度量空间中，有界集不一定列紧，如无穷维线性空间和欧式度量构成的度量空间，设
+            $e_n$为第$n$个分量为$1$，其余为$0$的向量，无穷点列$\{e_n\}_{n=1}^\infty$是有界的，
+            但是$d(e_n,e_m)=\sqrt{2},\forall n\neq m$，无收敛子列。
+        \end{example}
+        \begin{proposition}
+            列紧空间中任一集合都列紧，任一闭集都自列紧。
+        \end{proposition}
+        \begin{proposition}
+            列紧空间一定完备。
+        \end{proposition}
+        \begin{proof}
+            设$\{x_n\}_{n=1}^\infty$是$(X,d)$中基本列，
+            $(X,d)$列紧$\Rightarrow $有子列$x_{n_k}\rightarrow x_0\in X$，
+            \begin{equation*}
+                \Rightarrow d(x_n,x_0)\leqslant d(x_n,x_{n_k})+d(x_{n_k},x_0)\rightarrow 0{\rm\ as\ }n,k\rightarrow\infty
+            \end{equation*}
+        \end{proof}
+        \begin{definition}
+            度量空间$(X,d)$，$A\subset X$，$\varepsilon>0$，
+            \begin{enumerate}
+                \item 称$N_\varepsilon\subset A$是$A$的一个$\varepsilon$网是指\begin{equation*}
+                    \forall x\in A,\exists y\in N_\varepsilon{\rm\ s.t.\ }d(x,y)<\varepsilon
+                \end{equation*}
+                等价于
+                \begin{equation*}
+                    A\subset \bigcup_{y\in N_\varepsilon}B(y,\varepsilon)
+                \end{equation*}
+                即由半径为$\varepsilon$的开球组成的$A$的开覆盖。
+                \item 如果$\forall \varepsilon>0$，都有$A$的一个元素有限的$\varepsilon$网，则称$A$完全有界。即可以选取有限个半径为$\varepsilon$的开球作为$A$的开覆盖。
+            \end{enumerate}
+        \end{definition}
+        \begin{proposition}
+            完全有界$\Rightarrow $有界
+        \end{proposition}
+        \begin{proof}
+            有$A$的有限$1$网$N_1:=\{ y_1,\cdots,y_m \}$，于是令
+            $R=\sum_{k=2}^m d(y_k,y_1)+1$，则
+            \begin{equation*}
+                A\subset \bigcup_{k=1}^m B(y_k,1)\subset B(y_1,R)
+            \end{equation*}
+        \end{proof}
+        \begin{example}
+            有界并不一定完全有界，考虑例$1.3.2$，
+            $A=\{e_n\}_{n=1}^\infty$没有有限的$\frac{1}{2}$网，因为每个$\frac{1}{2}$球只能覆盖球心。
+        \end{example}
+        \begin{theorem}[Hausdorff]
+            \begin{enumerate}
+                \item 列紧$\Rightarrow$完全有界
+                \item 完备度量空间中，列紧$\Leftrightarrow $完全有界。
+            \end{enumerate}
+        \end{theorem}
+        \begin{proof}
+            \begin{enumerate}
+                \item 假设$A$列紧不完全有界，即存在$\varepsilon_0>0$使得有限个
+                    半径为$\varepsilon_0$的球不能覆盖$A$，按照以下方式选取出一列点：
+                    \begin{align*}
+                        x_1&\in A\\
+                        x_2&\in A\backslash B(x_1,\varepsilon_0)\\
+                        x_3&\in A\backslash \bigcup_{k=1}^2 B( x_k,\varepsilon_0 )\\
+                        &\vdots\\
+                        x_n&\in A\backslash \bigcup_{k=1}^n B( x_k,\varepsilon_0 )\\
+                        &\vdots
+                    \end{align*}
+                    那么序列$\{x_n\}_{n=1}^\infty \subset A$使得
+                    \begin{equation*}
+                        x_n\notin \bigcup_{i=1}^{n-1}B(x_i,\varepsilon_0)
+                    \end{equation*}
+                    因此$d(x_n,x_m)\geqslant \varepsilon_0,\forall n\neq m$，说明$A$并不列紧，矛盾。
+                \item 只需证明：$X$完备并且$A$完全有界$\Rightarrow A$列紧。设$\{x_n\}_{n=1}^\infty\subset A$，
+                    对于$\varepsilon=1$，有$A$的有限$1$网$N_1=\{ y_1^{(1)},\cdots,y_{m_1}^{(1)} \}$，于是
+                    \begin{equation*}
+                        \{ x_n \}_{n=1}^\infty\subset A\subset \bigcup_{k=1}^{m_1} B( y_k^{(1)},1 )
+                    \end{equation*}
+                    因此，存在某个$k$使得$B(y_k^{(1)},1)$包含$\{ x_n \}_{n=1}^\infty$中的无穷多项，记作$\{ x_n^{(1)} \}_{n=1}^\infty$，
+                    并记$y_k^{(1)}=y^{(1)}$.
+                    同理，$\exists y^{(2)}\in N_{\frac{1}{2}}$使得有$\{ x_n^{(1)} \}_{n=1}^\infty$的子列
+                    $\{x_n^{(2)}\}_{n=1}^\infty\subset B(y^{(2)},\frac{1}{2})$，以此类推：
+                    \begin{equation*}
+                        \begin{matrix}
+                            x_1^{(1)}&,x_2^{(1)}&,x_3^{(1)}&,\cdots&\in B(y^{(1)},1)\\
+                            x_1^{(2)}&,x_2^{(2)}&,x_3^{(2)}&,\cdots&\in B(y^{(2)},\frac{1}{2})\\
+                            \vdots&\vdots&\vdots&&\\
+                            x_1^{(n)}&,x_2^{(n)}&,x_3^{(n)}&,\cdots&\in B(y^{(n)},\frac{1}{n})\\
+                            \vdots&\vdots&\vdots&&
+                        \end{matrix}
+                    \end{equation*}
+                    而且
+                    \begin{equation*}
+                        \{ x_n^{(1)} \}_{n=1}^\infty\supset \{ x_n^{(2)} \}_{n=1}^\infty\supset\cdots\supset\{ x_n^{(n)} \}_{n=1}^\infty\supset \cdots
+                    \end{equation*}
+                    取对角线子列：
+                    \begin{equation*}
+                        x_n^{(n)}\in \bigcap_{k=1}^n B(y^{(k)},\frac{1}{k}),n=1,2,\cdots
+                    \end{equation*}
+                    所以$\forall n,p$，由于$x_{n+p}^{(n+p)},x_n^{(n)}\in B(y^{(n)},\frac{1}{n})$，因此
+                    \begin{equation*}
+                        d( x_{n+p}^{(n+p)},x_n^{(n)} )\leqslant \frac{2}{n}\rightarrow 0
+                    \end{equation*}
+                    所以$\{x_n^{(n)}\}$是基本列，由$X$完备可知$\{x_n^{(n)}\}$收敛，这就是$\{x_n\}_{n=1}^\infty$的收敛子列，于是$A$列紧。
+            \end{enumerate}
+        \end{proof}
+        \begin{theorem}
+            度量空间中，紧$\Leftrightarrow $自列紧。
+        \end{theorem}
+        \begin{proof}
+            必要性：\begin{enumerate}
+                \item 紧集是闭集。设$A$是紧集，希望证明$X\backslash A$是开集，任取
+                    $x\in X\backslash A$，取开覆盖
+                    \begin{equation*}
+                        \bigcup_{y\in A} B( y,\frac{1}{3}d(x,y) )\supset A
+                    \end{equation*}
+                    存在子覆盖
+                    \begin{equation*}
+                        \bigcup_{k=1}^m B(y_k,\frac{1}{3}d(x,y_k))\supset A
+                    \end{equation*}
+                    令$\delta=\mathop{\rm min}\limits_{1\leqslant k\leqslant m}\frac{1}{3}d(x,y_k)$，
+                    \begin{align*}
+                        &\Rightarrow B(x,\delta)\cap \bigcup_{k=1}^m B( y_k,\frac{1}{3}d(x,y_k) )=\varnothing\\
+                        &\Rightarrow B(x,\delta)\subset X\backslash A
+                    \end{align*}
+                    所以$x$是内点，进而$X\backslash A$是开集。
+                \item 紧集是列紧集。假设$A$紧而不列紧，则存在$\{x_n\}_{n=1}^\infty\subset A$没有收敛子列，不妨假设$x_n$互不相同，令
+                    \begin{equation*}
+                        S_n=\{x_k\}_{k=1}^\infty \backslash {x_n}
+                    \end{equation*}
+                    则$S_n$是闭集\footnote{$S_n$没有聚点，也符合闭集定义。}，
+                    $X\backslash S_n$是开集。而
+                    \begin{equation*}
+                        \bigcup_{n=1}^\infty (X\backslash S_n)=X\backslash \left( \bigcap_{n=1}^\infty S_n \right)=X\supset A
+                    \end{equation*}
+                    这就是$A$的一个开覆盖，存在$N$使得
+                    \begin{equation*}
+                        \bigcup_{n=1}^N (X\backslash S_n)\supset A
+                    \end{equation*}
+                    但是
+                    \begin{equation*}
+                        \bigcup_{n=1}^N (X\backslash S_n)=
+                        X\backslash \left( \bigcap_{n=1}^N S_n \right)
+                        =X\backslash \{ x_n \}_{n=N+1}^\infty
+                    \end{equation*}
+                    不能是$A$的覆盖，矛盾。
+            \end{enumerate}
+
+            充分性：假设$A$自列紧但不紧，即存在$A$的一个开覆盖
+            $\{G_\alpha\}_{\alpha\in\Lambda}$使得任取有限个$G_\alpha$都不能覆盖$A$，
+            $A$自列紧，所以完全有界，对于$\forall n$，取有限$\frac{1}{n}$网：
+            \begin{equation*}
+                N_{\frac{1}{n}}=\{ y_1^{(n)},\cdots,y_{m_n}^{(n)} \},\ A\subset \bigcup_{k=1}^{m_n}B(y_k,\frac{1}{n})
+            \end{equation*}
+            那么，对于每个$n$，存在$y_k^{(n)}\in N_{\frac{1}{n}}$使得$B(y_k^{(n)},\frac{1}{n})$
+            不能被有限个$G_\alpha$覆盖\footnote{否则，每个$B(y_k^{(n)},\frac{1}{n})$都能被有限覆盖，取这些有限覆盖的并就是$A$的有限覆盖，矛盾。}，记$y_k^{(n)}=y^{(n)}$，
+            得到点列$\{y^{(n)}\}_{n=1}^\infty$，
+            因为$A$自列紧，所以有收敛子列$\{y^{(n_k)}\}_{k=1}^\infty$，并设其收敛到$y_0\in A$.
+            
+            设$y_0\in G_{\alpha_0}$，则存在$\delta>0$使得
+            $B(y_0,\delta)\subset G_{\alpha_0}$，而
+            $y^{(n_k)}\rightarrow y_0$，当$k$充分大时，
+            $n_k>\frac{2}{\delta}$且$d( y^{(n_k)},y_0 )<\frac{\delta}{2}$，则$\forall y\in B(y^{(n_k)},\frac{1}{n_k})$，
+            \begin{equation*}
+                d( y,y_0 )\leqslant d(y_0,y^{(n_k)})+d( y,y^{(n_k)} )\leqslant \frac{2}{\delta}+\frac{1}{n_k}\leqslant \delta 
+            \end{equation*}
+            于是
+            \begin{equation*}
+                B(y_{n_k},\frac{1}{n_k})\subset B(y_0,\delta)\subset G_{\alpha_0}
+            \end{equation*}
+            和$B(y_{n_k},\frac{1}{n_k})$不能被有限个$G_\alpha$覆盖矛盾。
+        \end{proof}
+%        \begin{example}
+%            Hilbert长方体：
+%            \begin{equation*}
+%                \{ x=(x_1,x_2,\cdots,x_n,\cdots)\in \ell^2:|x_n|\leqslant \frac{1}{2^n},n=1,2,\cdots \}
+%            \end{equation*}
+%            是$\ell^2$上的列紧集。
+%
+%            这里$\ell^p(1\leqslant p<\infty)$是数列空间，每个元素都是一个数列，度量为：
+%            \begin{equation*}
+%                d( \{x_n\},\{y_n\} )=\left(\sum_{k=1}^\infty |x_n-y_n|^p\right)^{\frac{1}{p}}
+%            \end{equation*}
+%        \end{example}
+%        \begin{proof}
+%            作业。
+%        \end{proof}
+        \begin{property}
+            \begin{equation*}
+                \mbox{有界闭}\mathop{\Leftrightarrow}\limits_{X=\mathbb{R}^n}^{} 
+                \mbox{紧}\mathop{\Leftrightarrow}\limits_{}^{} 
+                \mbox{自列紧}\mathop{\leftrightarrows}\limits_{}^{\mbox{闭}} 
+                \mbox{列紧}\mathop{\leftrightarrows}\limits_{}^{X\mbox{完备}} 
+                \mbox{完全有界}\mathop{\leftrightarrows}\limits_{}^{X=\mathbb{R}^n} 
+                \mbox{有界}
+            \end{equation*}
+        \end{property}
+        \begin{theorem}
+            列紧空间可分。
+        \end{theorem}
+        \begin{proof}
+            列紧$\Rightarrow $完全有界$\Rightarrow \forall n$，存在有限的
+            $\frac{1}{n}$网$N_{\frac{1}{n}}$，然后对所有的$n$取并得到一个可数集：
+            \begin{equation*}
+                \bigcup_{n=1}^\infty N_{\frac{1}{n}}\mathop{\subset }\limits^{\rm dense} X
+            \end{equation*}
+            这是因为$\forall x\in X$，$\forall n$，存在$x_n\in N_{\frac{1}{n}}$使得$d(x_n,x)<\frac{1}{n}$，从而$x_n\rightarrow x$.
+        \end{proof}
+        \begin{proposition}
+            $(M,\rho)$是紧度量空间，$C(M)$为$M$上的连续函数全体，定义
+            \begin{equation*}
+                d(f,g)\mathop{=}\limits^{\rm def}
+                \mathop{\rm sup}\limits_{x\in M}|f(x)-g(x)|
+            \end{equation*}
+            则$d$是$C(M)$上的度量，且$(C(M),d)$完备。（作业）
+        \end{proposition}
+        \begin{proof}
+            先证明$d$是$C(M)$上的度量：
+    \begin{enumerate}[$(1)$]
+        \item 唯一性：$d(f,g)=\fun{sup}{x\in M}|f(x)-g(x)|=0\Leftrightarrow f(x)=g(x){\rm\ on\ }M$.
+        \item 非负性：绝对值非负，故$d(f,g)$非负。
+        \item 对称性：$|f-g|=|g-f|$.
+        \item 三角不等式：
+            \begin{align*}
+                d(f,g)+d(g,h)&=
+                \fun{sup}{x\in M} |f(x)-g(x)|+\fun{sup}{x\in M} |g(x)-h(x)|\\
+                &\geqslant \fun{sup}{x\in M} (|f(x)-g(x)|+|g(x)-h(x)|)\\
+                &\geqslant \fun{sup}{x\in M} |f(x)-h(x)|=d(f,h)
+            \end{align*}
+    \end{enumerate}
+
+    再证明$(C(M),d)$完备：任取$C(M)$上的柯西列$\{ f_n \}_{n=1}^\infty$，即
+    \begin{equation*}
+        \forall \varepsilon>0,\exists N{\rm\ s.t.\ }\forall m,n\geqslant N,d(f_n,f_m)=\fun{sup}{x\in M}|f_n(x)-f_m(x)|<\varepsilon
+    \end{equation*}
+    则固定$x\in M$，$\{f_n(x)\}_{n=1}^\infty$是$\R$上的柯西列，
+    进而收敛，设其收敛到$f_0(x)$，于是
+    \begin{equation*}
+        \forall x\in M,\forall \varepsilon>0,\exists N>0{\rm\ s.t.\ }
+        n\geqslant N\Rightarrow \fun{sup}{x\in M}|f_n(x)-f_0(x)|<\varepsilon\tag*{(1)}
+    \end{equation*}
+    $f_n$连续，所以对于$\varepsilon$，
+    \begin{equation*}
+        \exists \delta{\rm\ s.t.\ }\forall y\in B(x,\delta),|f_n(x)-f_n(y)|<\varepsilon\tag*{(2)}
+    \end{equation*}
+    则
+    \begin{align*}
+        |f_0(x)-f_0(y)|&\leqslant \mathop{|f_0(x)-f_n(x)|}\limits_{(1)}+
+        \mathop{|f_n(x)-f_n(y)|}\limits_{(2)}+
+        \mathop{|f_n(y)-f_0(x)|}\limits_{(1)}\\
+        &\leqslant \varepsilon+\varepsilon+\varepsilon=3\varepsilon\rightarrow 0
+    \end{align*}
+    所以$f_0$连续，即$f_0\in C(M)$，于是$(C(M),d)$完备。
+        \end{proof}
+        \begin{definition}
+            $(M,\rho)$是紧度量空间，$C(M)$为$M$上的连续函数全体，称$C(M)$中的一族函数$\mathcal{F}$等度连续是指：$\forall \varepsilon>0$，存在$\delta>0$使得
+            \begin{equation*}
+                |\varphi(x')-\varphi(x'')|<\varepsilon,\forall x',x''\in M{\rm\ with\ }\rho(x',x'')<\delta,\forall \varphi\in\mathcal{F}
+            \end{equation*}
+        \end{definition}
+        \begin{theorem}[Argela-Ascoli]
+            $\mathcal{F}$列紧当且仅当$\mathcal{F}$作为函数族一致有界、等度连续。
+        \end{theorem}
+        \begin{proof}
+            必要性：$\mathcal{F}$列紧$\Rightarrow $完全有界$\Rightarrow $有界，
+            \begin{equation*}
+                d(f,0)\leqslant R,\forall f\in \mathcal{F}\Rightarrow 
+                \mathop{\rm sup}\limits_{x\in M}|f(x)|\leqslant R,\forall f\in\mathcal{F}
+            \end{equation*}
+            $\Rightarrow $一致有界。下证等度连续：$\forall \varepsilon>0$，存在
+            $N_{\frac{\varepsilon}{3}}=\{ \varphi_{1},\cdots,\varphi{m} \}$使得
+            \begin{equation*}
+                \bigcup_{k=1}^m B(\varphi_k,\frac{\varepsilon}{3})\supset \mathcal{F}\tag*{(1)}
+            \end{equation*}
+            因为$\varphi_k$一致连续，对每个$k$，存在$\delta_k>0$使得
+            \begin{equation*}
+                |\varphi_k(x')-\varphi_k(x'')|<\frac{\varepsilon}{3},\forall x',x''\in M{\rm\ with\ }\rho(x',x'')<\delta_k
+            \end{equation*}
+            令$\delta={\rm min}\{\delta_1,\cdots,\delta_m\}$，则
+            \begin{equation*}
+                |\varphi_k(x')-\varphi_k(x'')|<\frac{\varepsilon}{3},\forall x',x''\in M{\rm\ with\ }\rho(x',x'')<\delta,\forall k\tag*{(2)}
+            \end{equation*}
+            由(1)，
+            \begin{equation*}
+                \forall \varphi\in\mathcal{F},\exists k{\rm\ s.t.\ }d(\varphi,\varphi_k)<\frac{\varepsilon}{3}
+            \end{equation*}
+            于是$\forall x,|\varphi(x)-\varphi_k(x)|\leqslant
+            \mathop{\rm sup}\limits_{x\in M}|\varphi(x)-\varphi_k(x)|=d(\varphi,\varphi_k)\leqslant \frac{\varepsilon}{3}$.
+            而当$\rho(x',x'')<\delta$时，由(2)，$|\varphi_k(x')-\varphi_k(x'')|<\frac{\varepsilon}{3}$，所以
+            \begin{equation*} 
+                |\varphi(x')-\varphi(x'')|\leqslant 
+                |\varphi(x')-\varphi_k(x')|+|\varphi_k(x')-\varphi_k(x'')|+|\varphi_k(x'')-\varphi(x'')|<\varepsilon
+            \end{equation*}
+
+            充分性：$\mathcal{F}$等度连续，$\forall \varepsilon>0$，存在$\delta>0$，使得
+            \begin{equation*}
+                |\varphi(x')-\varphi(x'')|<\varepsilon,
+                \forall x',x''\in M{\rm\ with\ }\rho(x',x'')<\delta,\forall \varphi\in\mathcal{F}
+            \end{equation*}
+            $M$紧，所以有有限$\delta$网$N_\delta=\{x_1,\cdots,x_n\}$，定义映射：
+            \begin{equation*}
+                T:\mathcal{F}\rightarrow\mathbb{R}^n,\varphi\mapsto ( \varphi(x_1),\cdots,\varphi(x_n) )
+            \end{equation*}
+            $\mathcal{F}$一致有界，所以可令
+            \begin{equation*}
+                R\mathop{=}\limits^{\rm def}
+                \mathop{\rm sup}\limits_{\varphi\in\mathcal{F}}
+                \mathop{\rm sup}\limits_{x\in M}|\varphi(x)|<\infty
+            \end{equation*}
+            则
+            \begin{equation*}
+                \left[ \sum_{i=1}^n |\varphi(x_i)|^2 \right]^{\frac{1}{2}}\leqslant \sqrt{n}R,\forall \varphi\in\mathcal{F}
+            \end{equation*}
+            所以$T(\mathcal{F})$是$\mathbb{R}^n$中有界集，故列紧，设
+            $T(\mathcal{F})$的有限$\frac{\varepsilon}{3}$网为
+            \begin{equation*}
+                M_{\frac{\varepsilon}{3}}=\{ T(\varphi_1),\cdots,T(\varphi_m) \}
+            \end{equation*}
+            Claim:$\{\varphi_1,\cdots,\varphi_m\}$是$\mathcal{F}$的$\varepsilon$网。
+            \begin{equation*}
+                \forall \varphi\in\mathcal{F},\exists k{\rm\ s.t.\ }d_{\mathbb{R}^n}(T(\varphi),T(\varphi_m))<\frac{\varepsilon}{3}
+            \end{equation*}
+            于是$|\varphi(x_i)-\varphi_k(x_i)|\leqslant d_{\mathbb{R}^n}(T(\varphi),T(\varphi_m))<\frac{\varepsilon}{3}$.
+            同时，$\forall x\in M,\exists x_i\in N_\delta{\rm\ s.t.\ }\rho(x_i,x)<\delta$，由(1.3.3)，
+            \begin{equation*}
+                |\varphi(x)-\varphi(x_i)|,|\varphi_k(x_i)-\varphi_k(x)|<\frac{\varepsilon}{3}
+            \end{equation*}
+            所以
+            \begin{equation*}
+                |\varphi(x)-\varphi_k(x)|\leqslant |\varphi(x)-\varphi(x_i)|+|\varphi(x_i)-\varphi_k(x_i)|+|\varphi_k(x_i)-\varphi_k(x)|<\varepsilon
+            \end{equation*}
+            所以$d(\varphi,\varphi_k)\leqslant\varepsilon$.
+        \end{proof}
+            
+            $L^p$空间中列紧集是怎样的？
+        \begin{theorem}[Riesz-Frechet-kolmogorov]
+            设$1\leqslant p<\infty$，$\mathcal{F}\subset L^p(\mathbb{R}^n)$列紧当且仅当：
+            \begin{enumerate}
+                \item $\mathcal{F}$有界，即$\mathop{\rm sup}\limits_{f\in\mathcal{F}}||f||_p<\infty$.
+                \item $\forall \varepsilon>0$，$\exists R>0{\rm\ s.t.}$
+                    \begin{equation*}
+                        \int_{|x|>R}|f(x)|^p{\rm d}x<\varepsilon^p,\forall f\in\mathcal{F}
+                    \end{equation*}
+                \item $\forall \varepsilon$，$\exists\delta>0{\rm\ s.t.}$
+                    \begin{equation*}
+                        ||\tau_h f-f||_p<\varepsilon,\forall h\in\mathbb{R}^n{\rm\ with\ }|h|<\delta,\forall f\in\mathcal{F}
+                    \end{equation*}
+                    其中$(\tau_h f)(x)=f(x+h)$.
+            \end{enumerate}
+        \end{theorem}
+        \begin{example}
+            $A$是$\ell^2$上的列紧集$\Leftrightarrow $
+            \begin{enumerate}
+                \item $A$有界。
+                \item $\forall \varepsilon>0$，$\exists N$使得\begin{equation*}
+                    \sum_{k=N+1}^\infty |x_k|^2<\varepsilon,\forall x=(x_1,x_2,\cdots)\in A
+                \end{equation*}
+            \end{enumerate}
+            （作业）
+        \end{example}
+        \begin{proof}
+            $(\Rightarrow)$：假设$A$无界，则能取发散点列$\{a_n\}_{n=1}^\infty$满足
+    $d(a_n,0)\rightarrow\infty $，与$A$列紧矛盾；
+    $A$列紧则完全有界，$\forall\varepsilon>0$，
+    取$A$的有限$\varepsilon/2$网$\{a^{(i)}\}_{i=1}^n$，
+    其中每个$a^{(i)}=(a^{(i)}_1,\cdots,a^{(i)}_j,\cdots)$，
+    根据定义有：
+    \begin{equation*}
+        \sum_{j=1}^\infty |a_j^{(i)}|^2<+\infty,\ i=1,2,\cdots,n
+    \end{equation*}
+    所以
+    \begin{equation*}
+        \exists N_i{\rm\ s.t.\ } 
+        \sum_{j=N_i+1}^\infty |a_j^{(i)}|^2<\varepsilon/2,
+        \ i=1,2,\cdots,n
+    \end{equation*}
+    取$N=\fun{max}{i=1,2,\cdots,n}N_i$，因为$\{a^{(i)}\}_{i=1}^n$是$\varepsilon$网，
+    \begin{equation*}
+        \forall x\in A,\exists a^{(i)}{\rm\ s.t.\ }d(x,a^{(i)})=\sum_{j=1}^\infty | a_j^{i}-x_i |^2<\varepsilon/2
+    \end{equation*}
+    所以
+    \begin{equation*}
+        \sum_{i=N+1}^\infty |x_i|^2\leqslant \sum_{i=N+1}^\infty 
+        ( |a_i^{(k)}|^2+|x_i-a_i^{(k)}|^2 )\leqslant \varepsilon
+    \end{equation*}
+
+    $(\Leftarrow)$：$\forall \varepsilon>0$，存在$N$使得
+    \begin{equation*}
+        \sum_{i=N+1}^\infty |x_i|^2\leqslant \varepsilon,\forall x\in A
+    \end{equation*}
+    取连续映射$\varphi:A\rightarrow\R^N,x\mapsto (x_1,\cdots,x_N)$，
+    $A$有界$\Rightarrow \varphi(A)$有界$\Rightarrow \varphi(A)$完全有界，
+    对于$\delta=\frac{\varepsilon^2}{2}$，存在
+    $\varphi(A)$上的有限$\delta$网$\{ \varphi(x^{(i)}) \}_{i=1}^n$，
+    记$X=\{ x^{(i)} \}_{i=1}^n\subset A$.
+    \begin{equation*}
+        \forall y\in A,\exists x^{(i)}\in X{\rm\ s.t.\ }
+        d_{\R^N}(\varphi(y),\varphi(x^{(i)}))<\frac{\varepsilon^2}{2}
+    \end{equation*}
+    \begin{align*}
+        \Rightarrow d(y,x^{(i)})^2&=
+        \sum_{j=1}^N |y_j-x_j^{(i)}|^2+\sum_{j=N+1}^\infty |y_j-x_j^{(i)}|^2\\
+        &<d_{\R^N}(\varphi(y),\varphi(x^{(k)}))
+        +2\sum_{j=N+1}^\infty ( |y_j|^2+|x_j^{(i)}|^2 )<\varepsilon^2
+    \end{align*}
+    于是$X$为$A$的有限$\varepsilon$网，$A$完全有界$\Rightarrow A$列紧。
+        \end{proof}
+    
+\section{赋范线性空间}
+        \subsection{Banach空间}
+        \begin{definition}
+            $X$是非空集合，$\mathbb{K}$表示$\mathbb{C}$或者$\mathbb{R}$，如果能在$X$上定义两种封闭的运算：
+            \begin{enumerate}
+                \item 加法：$X\times X\rightarrow X,(x,y)\mapsto x+y$.满足：
+                    \begin{enumerate}[(i)]
+                        \item 结合律
+                        \item 交换律
+                        \item 零元
+                        \item 负元
+                    \end{enumerate}
+                \item 乘法：$\mathbb{K}\times X\rightarrow X,(\lambda,x)\mapsto \lambda x$.满足：
+                    \begin{enumerate}
+                        \item[(v)] $1x=x$.
+                        \item[(vi)] $\alpha(\beta x)=(\alpha\beta)x$.
+                        \item[(vii)] $(\alpha+\beta)x=\alpha x+\beta y$.
+                        \item[(viii)] $\alpha(x+y)=\alpha x+\alpha y$.
+                    \end{enumerate}
+            \end{enumerate}
+            则称$X$是$\mathbb{K}$上的向量空间，线性空间。$X$中的元素称为向量。
+
+            如果向量空间$X$的子集$Y$，如果对同一数域$\mathbb{K}$上的加法和乘法
+            构成向量空间，则称之为$X$的向量子空间，也等价于$Y$关于加法和乘法封闭。
+        \end{definition}
+
+        约定一些记号：
+            \begin{align*}
+                x+E&:=\{ x+y:y\in E \}\\
+                \lambda E&:= \{ \lambda y:y\in E \}\\
+                E+F&:=\{ x+y:x\in E,y\in F \}
+            \end{align*}
+            \begin{equation*}
+                {\rm span}(E):= \left\{
+                    \sum_{k=1}^n \lambda_k x_k,x_k\in E,\lambda_k\in\mathbb{K},n\in \mathbb{N}
+                \right\}
+            \end{equation*}
+            称为$E$张成的子空间。
+
+            如果$E$线性无关且${\rm span}(E)=X$，则称$E$是$X$的Hamel基（代数基，线性基）。
+        
+        \begin{theorem}
+            任一向量空间一定有Hamel基。
+        \end{theorem}
+
+        如果Hamel基是有限集，则定义${\rm dim\ }X=\# E$，否则记${\rm dim\ }X=\infty$.
+        \begin{definition}
+            $\mathbb{K}$是$\mathbb{C}$或者$\mathbb{R}$，$X$是$\mathbb{K}$上的向量空间，
+            如果函数$||\cdot ||:X\rightarrow\mathbb{R}$满足：
+            \begin{enumerate}
+                \item 正定性
+                \item 齐次性
+                \item 三角不等式
+            \end{enumerate}
+            则称之为$X$上的一个范数。$(X,||\cdot||)$称为一个赋范空间。定义
+            \begin{equation*}
+                d(x,y)\mathop{=}\limits^{\rm def}||x-y||
+            \end{equation*}
+            称为范数诱导的度量，也叫典则度量。
+
+            如果$(X,||\cdot ||)$在此度量下完备，则称之为Banach空间。
+        \end{definition}
+        \begin{example}
+            Banach空间的一些例子：
+            
+            函数空间$L^p,L^\infty,C(M)$；
+            数列空间$\ell^p,\ell^\infty$(有界数列空间，$||x||_\infty \mathop{=}\limits^{\rm def} \mathop{\rm sup}\limits_{k\geqslant 1}|x_k|$)，
+            $C$(收敛数列空间)，$C_0$(收敛到零的数列全体).
+        \end{example}
+        \begin{example}
+            $\Omega$是$\mathbb{R}^n$中的有界域，
+            $C^k(\overline{\Omega})$是$\overline{\Omega}$上$k$次连续可微的函数全体，定义
+            \begin{equation*}
+                ||u||_{k,p}\mathop{=}\limits^{\rm def}
+                \left( \sum_{|\alpha|\leqslant k}\int_\Omega |\partial^\alpha u|^p \right)^{\frac{1}{p}}
+            \end{equation*}
+            这是$C^k(\overline{\Omega})$上的一个范数，
+            \begin{equation*}
+                S\mathop{=}\limits^{\rm def}
+                \left\{ u\in C^k(\overline{\Omega}):||u||_{k,p}<\infty\right\}
+            \end{equation*}
+            的完备化称为Sobolev空间，记作$H^{k,p}(\Omega)$.
+        \end{example}
+        \subsection{范数等价}
+        \begin{definition}
+            $X$是向量空间，$||\cdot||_1$和$||\cdot||_2$是$X$上的两个范数，称
+            $||\cdot||_2$强于$||\cdot||_1$是指：$\forall \{x_n\}_{n=1}^\infty \subset X$，
+            \begin{equation*}
+                ||x_n||_2\rightarrow 0\Rightarrow ||x_n||_1\rightarrow 0
+            \end{equation*}
+            记作$||\cdot||_1\lesssim ||\cdot||_2$.如果$||\cdot||_2$强于$||\cdot||_1$，同时$||\cdot||_1$强于$||\cdot||_2$，则称二者是等价范数。
+        \end{definition}
+        \begin{proposition}
+            $||\cdot||_2$强于$||\cdot||_1\Leftrightarrow \exists C>0$
+            使得$||x||_1\leqslant C||x||_2,\forall x\in X$.
+        \end{proposition}
+        \begin{proof}
+            充分性显然，下证必要性：假设不然，则$\forall n$，存在$x_n\in X$使得
+            $||x_n||_1\geqslant m||x_n||_2$，令$y_n=\frac{x_n}{||x_n||_1}$，则
+            \begin{equation*}
+                ||y_n||_2\leqslant \frac{1}{n}\rightarrow 0{\rm\ as\ }n\rightarrow\infty
+            \end{equation*}
+            $||\cdot||_2$强于$||\cdot||_1$，所以$||y_n||_1\rightarrow 0$，
+            但是$||y_n||_1$恒等于$1$，矛盾。
+        \end{proof}
+        \begin{corollary}
+            $||\cdot||_1$和$||\cdot||_2$等价，当且仅当存在
+            $C_1,C_2>0$，使得 
+            \begin{equation*}
+                C_1||x||_1\leqslant ||x||_2\leqslant C_2||x||_1,\forall x\in X
+            \end{equation*}
+        \end{corollary}
+        \begin{example}
+            $\mathbb{R}^n$上$||\cdot ||_p(1\leqslant p\leqslant \infty)$彼此等价，因为
+            \begin{equation*}
+                ||x||_\infty\leqslant ||x||_p \leqslant n^{\frac{1}{p}}||x||_\infty
+            \end{equation*}
+        \end{example}
+        \begin{theorem}
+            有限维空间上所有范数都等价。
+        \end{theorem}
+        \begin{proof}
+            设${\rm dim\ }X=n$，$\{e_1,\cdots,e_n\}$是一组基，
+            $\forall x\in X$有唯一表示
+            \begin{equation*}
+                x=\sum_{i=1}^n \xi_i e_i,\xi_i\in\mathbb{K}
+            \end{equation*}
+            定义映射：$T\rightarrow \mathbb{K}^n,x\mapsto (\xi_1,\xi_2,\cdots,\xi_n)$，
+            则$T$是$X$到$\mathbb{K}$的代数同构，设
+            \begin{equation*}
+                |\xi|=\left( \sum_{i=1}^n |\xi_i|^2 \right)^{\frac{1}{2}},\xi\in\mathbb{K}^n
+            \end{equation*}
+            令$||x||_T=|T(x)|$，则$||\cdot||_T$是$X$上的范数。任取一个$X$上的范数$||\cdot||$，下面证明
+            $||\cdot||_T$和$||\cdot||$等价。
+
+            定义函数
+            \begin{equation*}
+                p:\mathbb{K}^n\rightarrow \mathbb{R},\xi\mapsto || \sum_{i=1}^n \xi_i e_i ||
+            \end{equation*}
+            \begin{enumerate}
+                \item $p(\xi)=|\xi|\cdot p(\frac{\xi}{|\xi|}),\forall \xi\neq 0$.
+                \item $p$在$\mathbb{K}$上连续：\begin{align*}
+                    |p(a)-p(b)|&=\left| ||\sum_{i=1}^n a_i e_i||-||\sum_{i=1}^n b_i e_i|| \right|\\
+                    &\leqslant || \sum_{i=1}^n (a_i-b_i) e_i ||\\
+                    &\leqslant \sum_{i=1}^n |a_i-b_i| e_i\\
+                    &\leqslant \left( \sum_{i=1}^n ||e_i||^2 \right)^{\frac{1}{2}}|a-b|
+                \end{align*}
+                最后一步是Caurhy-Schwarz不等式。
+            \end{enumerate}
+            令$S_1=\{ \xi\in\mathbb{K}^n:|\xi|=1 \}$，则$S_1$是紧集，故$p$在$S_1$上存在最小值和最大值，分别记作
+            $C_1$和$C_2$，从而
+            \begin{align*}
+                &\Rightarrow C_1\leqslant p(\frac{\xi}{|\xi|})\leqslant C_2,\forall \xi\neq 0\\
+                &\Rightarrow C_1|\xi|\leqslant p(\xi)\leqslant C_2|\xi|,\forall \xi\\
+                &\Rightarrow C_1|T(x)|\leqslant p(T(x))\leqslant C_2|T(x)|,\forall x\in X\\
+                &\Leftrightarrow C_1||x||_T\leqslant ||x||\leqslant C_2||x||_T
+            \end{align*}
+            只需证明$C_1>0$，假设$C_1=0$，则存在$\xi^*\in S_1$使得
+            \begin{equation*}
+                ||\sum_{i=1}^n \xi_i^* e_i||=p(\xi^*)=0 \Rightarrow \sum_{i=1}^n \xi_i^* e_i=0\Rightarrow \xi^*=0
+            \end{equation*}
+            这与$\xi^*\in S_1$矛盾。
+        \end{proof}
+        \begin{corollary}
+            同维数的两个有限维赋范空间（作为向量空间）代数同构且
+            （作为拓扑空间）同胚。
+        \end{corollary}
+        \begin{proof}
+            \begin{equation*}
+                T:X\rightarrow \mathbb{K}^n,x=\sum_{i=1}^n \xi_i e_i\mapsto \xi
+            \end{equation*}
+            是一个代数同构，满足
+            \begin{equation*}
+                C_1|T(x)|\leqslant ||x||\leqslant C_2|T(x)|,\forall x\in X
+            \end{equation*}
+            第一个不等号得到$T$连续，第二个不等号得到$T^{-1}$连续，故$T$也是同胚。
+        \end{proof}
+        \begin{corollary}
+            有限维赋范空间一定是Banach空间。
+        \end{corollary}
+        \begin{proof}
+            $C_1|T(x)|\leqslant ||x||\leqslant C_2|T(x)|$，设$\{x_n\}_{n=1}^\infty$是$X$中基本列，
+            则$\{ T(x_n) \}_{n=1}^\infty$是$\mathbb{K}^n$中基本列，设$T(x_k)\rightarrow \xi$，
+            \begin{equation*}
+                ||x_n-T^{-1}(\xi)||\leqslant C_2|T(x_n)-\xi|\rightarrow 0
+            \end{equation*}
+        \end{proof}
+        \begin{corollary}
+            任何赋范空间的有限维子空间一定是闭子空间。（作业）
+        \end{corollary}
+        \begin{proof}
+            任何赋范空间的有限维子空间是有限维赋范空间，所以是Banach空间，
+            所有的收敛列都是柯西列，所有的柯西列都收敛到子空间内某点，所以是闭子空间。
+        \end{proof}
+        \begin{theorem}
+            赋范空间$(X,||\cdot||)$，$X$中单位球面列紧
+            $\Leftrightarrow {\rm dim\ }X<\infty$.
+        \end{theorem}
+        \begin{lemma}[Riesz]
+            赋范空间$(X,||\cdot||)$，$(Y,||\cdot||)$是$X$的闭子空间，$Y\neq X$，则
+            $\forall \varepsilon>0$，$\exists e\in X{\rm\ with\ }||e||=1$，使得
+            \begin{equation*}
+                {\rm dist}(e,Y):=\fun{inf}{y\in Y} ||e-y|| \geqslant 1-\varepsilon
+            \end{equation*}
+            \begin{proof}
+                取$x\in X\backslash Y$，令
+                \begin{equation*}
+                    d_i={\rm dist}(x,y)=\mathop{\rm inf}\limits_{y\in Y}||x-y||
+                \end{equation*}
+                $Y$是闭集，$d>0$，且存在$y_0\in Y$使得
+                \begin{equation*}
+                    d\leqslant ||x-y_0||\leqslant \frac{d}{1-\varepsilon}
+                \end{equation*}
+                令
+                \begin{equation*}
+                    e\mathop{=}\limits^{\rm def}
+                    \frac{x-y_0}{||x-y_0||}\Rightarrow ||e||=1,e\notin Y
+                \end{equation*}
+                $\forall \zeta\in Y$，
+                \begin{align*}
+                    ||e-\zeta||&=|| \frac{x-y_0}{||x-y_0||}-\zeta ||\\
+                    &=\frac{1}{||x-y_0||}\cdot ||x-\mathop{( y_0+||x-y_0||\zeta )}\limits_{\mbox{这一堆}\in Y}||\\
+                    &\geqslant \frac{1-\varepsilon}{d}\cdot d=1-\varepsilon
+                \end{align*}
+                所以${\rm dist}(e,Y)\geqslant 1-\varepsilon$.
+            \end{proof}
+        \end{lemma}
+        \begin{proof}
+            充分性：
+            \begin{equation*}
+                T:X\rightarrow \mathbb{K}^n,x=\sum \xi_i e_i\mapsto \xi
+            \end{equation*}
+            满足
+            \begin{equation*}
+                C_1|T(x)|\leqslant ||x||\leqslant C_2|T(x)|
+            \end{equation*}
+            于是$T(S_1)$有界，故列紧，
+            \begin{align*}
+                \Rightarrow& \forall \{x_n\}_{n=1}^\infty\subset S_1,\exists T(x_{n_k})\rightarrow y\in\mathbb{K}^n\\
+                \Rightarrow& x_{n_k}\rightarrow T^{-1}(y)\in X
+            \end{align*}
+            必要性：假设${\rm dim\ }X=\infty$，则存在一列向量$\{e_n\}_{n=1}^\infty $线性无关，令子空间
+            \begin{equation*}
+                X_n\mathop{=}\limits^{\rm def} \left< e_1,e_2,\cdots,e_n \right>,n=1,2,\cdots
+            \end{equation*}
+            于是$X_n\subsetneqq X_{n+1}$且是闭子空间，由引理，取$\varepsilon=\frac{1}{2}$，
+            $\forall n\in\mathbb{N}$，存在$x_n\in X_n{\rm\ with\ }||x_n||=1$，使得
+            \begin{equation*}
+                {\rm dist}(x_n,X_{n-1})\geqslant \frac{1}{2}
+            \end{equation*}
+            \begin{align*}
+                \Rightarrow & ||x_n-x_m||\geqslant \frac{1}{2},\forall n\neq m\\
+                \Rightarrow & \{ x_n \}_{n=1}^\infty\mbox{没有收敛子列}
+            \end{align*}
+            这与$S_1$列紧矛盾。
+        \end{proof}
+        \subsection{商空间}
+        \begin{definition}[商空间]
+            赋范空间$(X,||\cdot||)$，$(X_0,||\cdot||)$是$X$的闭子空间。
+            在$X$中定义
+            \begin{equation*}
+                x\sim y\mathop{\Leftrightarrow}\limits^{\rm def} x-y\in X_0
+            \end{equation*}
+            $[x]\mathop{=}\limits^{\rm def} x$所在的等价类，
+            \begin{equation*}
+                X/X_0\mathop{=}\limits^{\rm def}\{ [x]:x\in X \}
+            \end{equation*}
+            定义运算：
+            \begin{equation*}
+                [x]+[y]=[x+y],\lambda [x]=[\lambda x]
+            \end{equation*}
+            则$X/X_0$成为向量空间。并定义：
+            \begin{equation*}
+                ||[x]||_*\mathop{=}\limits^{\rm def} \mathop{\rm inf}\limits_{y\in [x]}||y||
+            \end{equation*}
+        \end{definition}
+        \begin{remark}
+            注意这里必须要求$X_0$是闭子空间。
+        \end{remark}
+        \begin{theorem}
+            $||\cdot ||_*$是$X/X_0$上的范数。
+        \end{theorem}
+        \begin{proof}
+            \begin{enumerate}
+                \item 正定性：$\forall y\in X,||y||\geqslant 0\Rightarrow ||[x]||_*\geqslant 0$，
+                    \begin{align*}
+                        ||[x]||_*=0 &\Rightarrow \exists \{x_n\}_{n=1}^\infty \subset [x]{\rm\ s.t.\ }||x_n||\rightarrow 0\\
+                        &\Rightarrow x_n\rightarrow 0
+                    \end{align*}
+                    $[x]=x+X_0$是闭集，所以$0\in [x]$，进而可得$[x]=[0]$.
+                \item 齐次性：显然。
+                \item 三角不等式：由下确界的定义，$\forall \varepsilon$，
+                    \begin{align*}
+                        \exists x'\in [x]{\rm\ s.t.\ }||x'||<||[x]||_*+\frac{\varepsilon}{2}\\
+                        \exists y'\in [y]{\rm\ s.t.\ }||y'||<||[y]||_*+\frac{\varepsilon}{2}
+                    \end{align*}
+                    \begin{align*}
+                        \Rightarrow & ||x'+y'||\leqslant ||x'||+||y'||\leqslant 
+                        ||[x]||_*+||[y]||_*+\varepsilon\\
+                        \mathop{\Rightarrow}\limits^{x'+y'\in [x+y]}&
+                        ||[x+y]||_*\leqslant ||[x]||_*+||[y]||_*+\varepsilon \\
+                        \mathop{\Rightarrow}\limits^{\varepsilon\rightarrow 0}& 
+                        ||[x+y]||_*\leqslant ||[x]||_*+||[y]||_*
+                    \end{align*}
+            \end{enumerate}
+        \end{proof}
+        \begin{theorem}
+            $(X,||\cdot||)$完备，则$(X/X_0,||\cdot||_*)$也完备。
+        \end{theorem}
+        \begin{lemma}
+            $X$完备$\Leftrightarrow \forall \{x_n\}_{n=1}^\infty \subset X$，
+            \begin{equation*}
+                \sum_{n=1}^\infty ||x_n||<\infty \Rightarrow \sum_{n=1}^\infty x_n\mbox{收敛}
+            \end{equation*}
+            \begin{proof}
+                习题1.4.7.
+            \end{proof}
+        \end{lemma}
+        \begin{proof}
+            由引理，只需证明$X/X_0$中任一绝对收敛级数都收敛。设
+            \begin{equation*}
+                \sum_{n=1}^\infty ||[x_n]||_*<\infty
+            \end{equation*}
+            对每个$n$，
+            \begin{align*}
+                &\exists y_n\in X_0{\rm\ s.t.\ }||x_n+y_n||\leqslant ||[x_n]||_*+\frac{1}{2^n}\\
+                \Rightarrow &
+                \sum_{n=1}^\infty ||x_n+y_n||\leqslant \sum_{n=1}^\infty ||[x_n]||_*+1<\infty\\
+                \mathop{\Leftrightarrow}\limits^{X\mbox{完备}}&
+                \exists x\in X{\rm\ s.t.\ }
+                ||\sum_{k=1}^n (x_k+y_k)-x||\rightarrow 0{\rm\ as\ }n\rightarrow\infty\\
+                \Rightarrow &
+                ||\sum_{k=1}^n [x_j]-[x]||_*
+                \mathop{=}\limits^{y_k\in X_0}
+                ||[ \sum_{k=1}^n (x_k+y_k)-x ]||_*
+                \leqslant ||\sum_{k=1}^n (x_k+y_k)-x||\rightarrow 0{\rm\ as\ }n\rightarrow\infty
+            \end{align*}
+        \end{proof}
+    
+\section{内积空间}
+        \subsection{Hilbert空间}
+        \begin{definition}
+            $X$是$\mathbb{K}$上的向量空间，如果函数
+            \begin{equation*}
+                \left< \cdot,\cdot \right>:X\times X\rightarrow \mathbb{K}
+            \end{equation*}
+            满足：
+            \begin{enumerate}
+                \item 对第一变元线性：$\left< \alpha x_1+\beta x_2,y \right>=\alpha
+                \left<x_1,y\right>+\beta\left<x_2,y\right>$.
+                \item 对第二变元共轭线性：
+                $\left< x,\alpha y_1+\beta y_2 \right>=\overline{\alpha}
+                \left<x,y_1\right>+\overline{\beta}\left<x,y_2\right>$.
+                \item 共轭对称：$\overline{\left<x,y\right>}=\left<y,x\right>$.
+                \item $\left<x,x\right>\geqslant 0,\forall x\in X$.等号成立当且仅当$x=0$.
+            \end{enumerate}
+            则称$\left< \cdot,\cdot \right>$是$X$上的一个内积，
+            $(X,\left< \cdot,\cdot \right>)$称为内积空间。
+        \end{definition}
+        \begin{lemma}[Cauthy-Schwarz]
+            $(X,\left< \cdot,\cdot \right>)$是内积空间，令
+            \begin{equation*}
+                ||x||\mathop{=}\limits^{\rm def}\sqrt{ \left<x,x\right> },x\in X
+            \end{equation*}
+            则$|\left<x,y\right>|\leqslant ||x||||y||,\forall x,y\in X$，等号成立当且仅当
+            存在$\lambda\in\mathbb{K}$，使得$x=\lambda y$.
+            \begin{proof}
+                不妨设$y\neq 0$，则$\forall \lambda\in\mathbb{K}$，
+                \begin{align*}
+                    0&\leqslant \left< x+\lambda y,x+\lambda y \right>\\
+                    &=\left<x,x\right>+\lambda \left<y,x\right>+\overline{\lambda}\left<x,y\right>+
+                    |\lambda|^2\left<y,y\right>\\
+                    &=||x||^2+2{\rm Re}\{ \overline{\lambda}\left<x,y\right> \}+|\lambda|^2 ||y||^2
+                \end{align*}
+                这里取$\lambda=-\frac{\left<x,y\right>}{||y||^2}$，
+                \begin{equation*}
+                    0\leqslant ||x||^2-2{\rm Re}\{ \frac{ |\left<x,y\right>|^2 }{||y||^2} \}+
+                    \frac{ |\left<x,y\right>|^2 }{||y||^4}\cdot ||y||^2
+                    =||x||^2-\frac{ |\left<x,y\right>|^2 }{||y||^2}
+                \end{equation*}
+                于是得证。
+            \end{proof}
+        \end{lemma}
+        \begin{proposition}
+            Cauthy-Schwarz引理中的$||x||$是一个范数。
+        \end{proposition}
+        \begin{proof}
+            只需验证三角不等式：
+            \begin{align*}
+                ||x+y||^2&=||x||^2+2{\rm Re}\left<x,y\right>+||y||^2\\
+                &\leqslant ||x||^2+2||x||||y||+||y||^2
+            \end{align*}
+        \end{proof}
+        \begin{definition}
+            如果一个内积空间在其内积诱导范数下是一个Banach空间，则称之为Hilbert空间。
+        \end{definition}
+        \begin{example}
+            $\ell^2$是一个Hilbert空间。（作业）
+        \end{example}
+        \begin{proof}
+            只需证明$\ell^2$完备。任取$\ell^2$上基本列$\{x^{(n)}\}_{n=1}^\infty$，
+            \begin{equation*}
+                \forall \varepsilon>0,\exists N{\rm\ s.t.\ }
+                ||x^{(n)}-x^{(m)}||_2<\varepsilon,\forall n,m\geqslant N
+            \end{equation*}
+            即
+            \begin{align*}
+                &\sum_{k=1}^\infty |x_k^{(n)}-x_k^{(m)}|^2<\varepsilon,\forall n,m\geqslant N\tag*{(1)}\\
+                \Rightarrow& \forall \mbox{固定}k,|x_k^{(n)}-x_k^{(m)}|<\varepsilon,\forall n,m\geqslant N\\
+                \Rightarrow& \{x_k^{n}\}_{n=1}^\infty \mbox{是$\R$中基本列}\\
+                \Rightarrow& \exists x_k\in\R{\rm\ s.t.\ }x_k^{(n)}\rightarrow x_k{\rm\ as\ }n\rightarrow\infty
+            \end{align*}
+            令$x\defeq \{x_k\}_{k=1}^\infty$，Claim：$x\in \ell^2$且$||x^{(n)}\rightarrow x||_2\rightarrow 0$.
+            由(1)，$\forall p\in \N$
+            \begin{align*}
+                &\sum_{k=1}^p |x_k^{(n)}-x_k^{(m)}|^2<\varepsilon^2,\forall n,m\geqslant N\\
+                \mathop{\Rightarrow}\limits^{m\rightarrow\infty}&\forall p,
+                \sum_{k=1}^p |x_k^{(n)}-x_k|^2\leqslant \varepsilon^2,\forall n\geqslant N\\
+                \mathop{\Rightarrow}\limits^{p\rightarrow\infty}&
+                \sum_{k=1}^\infty |x_k^{(n)}-x_k|^2\leqslant \varepsilon^2,\forall n\geqslant N\tag*{(2)}\\
+                \Rightarrow& x-x^{(N)}\in \ell^2\\
+                \Rightarrow& x=x-x^{(N)}+x^{(N)}\in \ell^2
+            \end{align*}
+            而且(2)就是
+            \begin{equation*}
+                ||x^{(n)}-x||_2\leqslant \varepsilon,\forall n\geqslant N
+                \Rightarrow ||x^{(n)}-x||_2\rightarrow 0{\rm\ as\ }n\rightarrow\infty
+            \end{equation*}
+        \end{proof}
+
+        \begin{proposition}[极化恒等式]
+            $(X,\left< \cdot,\cdot \right>)$是内积空间，内积诱导范数$||x||$，
+            \begin{enumerate}
+                \item $\mathbb{K}=\mathbb{R}$，则\begin{equation*}
+                    \left<x,y\right>=\frac{1}{2}( ||x+y||^2-||x||^2-||y||^2 )
+                \end{equation*}
+                \item $\mathbb{K}=\mathbb{C}$，则\begin{equation*}
+                    \left<x,y\right>=\frac{1}{4}\sum_{k=0}^3 {\rm i}^3 ||x+{\rm i}^ky||^2
+                \end{equation*}
+            \end{enumerate}
+            （作业）
+        \end{proposition}
+        \begin{proof}
+            $\K=\R$，
+        \begin{align*}
+            \frac{1}{2}( ||x+y||^2-||x||^2-||y||^2 )
+            &=\frac{1}{2}( \agl{x+y}{x+y}-\agl{x}{x}-\agl{y}{y} )\\
+            &=\frac{1}{2}( \agl{x+y}{x}+\agl{x+y}{y}-\agl{x}{x}-\agl{y}{y} )\\
+            &=\frac{1}{2}( \agl{y}{x}+\agl{x}{y} )\\
+            &=\agl{x}{y}
+        \end{align*}
+        $\K=\C$，
+        \begin{align*}
+            \frac{1}{4}\sum_{k=0}^3 {\rm i}^k||x+{\rm i}^ky||^2
+            &=\frac{1}{4}( 
+            \agl{x+y}{x+y}
+            +{\rm i}\agl{x+{\rm i}y}{x+{\rm i}y}
+            -\agl{x-y}{x-y}
+            -{\rm i}\agl{x-{\rm i}y}{x-{\rm i}y} )\\
+            &=\frac{1}{2}(
+            \agl{x}{y}+\agl{y}{x}+{\rm i}\agl{x}{{\rm i}y}+{\rm i}\agl{{\rm i}y}{x})\\
+            &=\frac{1}{2}(
+            \agl{x}{y}+\agl{y}{x}+\agl{x}{y}-\agl{y}{x})\\
+            &=\agl{x}{y}
+        \end{align*}
+        \end{proof}
+        \begin{proposition}[平行四边形法则，P.L.]
+            $(X,\left< \cdot,\cdot \right>)$是内积空间，内积诱导范数$||\cdot ||$，
+            \begin{equation*}
+                ||x+y||^2+||x-y||^2=2( ||x||^2+||y||^2 )
+            \end{equation*}
+            （作业）
+        \end{proposition}
+        \begin{proof}
+        \begin{align*}
+            ||x+y||^2+||x-y||^2&=\agl{x+y}{x+y}+\agl{x-y}{x-y}\\
+            &=2\agl{x}{x}+2\agl{y}{y}
+            +\agl{x}{y}+\agl{y}{x}+
+            +\agl{x}{-y}+\agl{-y}{x}\\
+            &=2\agl{x}{x}+2\agl{y}{y}
+            +\agl{x}{y}+\agl{y}{x}
+            -\agl{x}{y}-\agl{y}{x}\\
+            &=2(||x||^2+||y||^2)
+        \end{align*}
+        \end{proof}
+        \begin{theorem}[Frechet-von Neumann]
+            $(X,||\cdot ||)$是赋范空间，$||\cdot ||$可由某个内积诱导出
+            $\Leftrightarrow ||\cdot ||$满足P.L.（作业）
+        \end{theorem}
+        \begin{proof}
+            必要性显然，只说明充分性：
+        先考虑$\K=\R$，令
+        \begin{equation*}
+            \agl{x}{y}=\frac{1}{4}( ||x+y||^2-||x-y||^2 )
+        \end{equation*}
+        如果能证明$\agl{\cdot}{\cdot}$是一个内积，那么其诱导度量$||\cdot||$.
+        \begin{enumerate}[$(1)$]
+            \item $\agl{x}{x}=||x||\geqslant 0$，等号成立当且仅当$x=0$.
+            \item $\agl{x}{y}=\agl{y}{x}$.
+            \item 考虑
+            \begin{align*}
+                    \agl{x}{z}+\agl{y}{z}&=\frac{1}{4}( ||x+z||^2-||x-z||^2 )+\frac{1}{4}( ||y+z||^2-||y-z||^2 )\\
+                    &=\frac{1}{8}( 2||x+z||^2+2||y+z||^2 )-\frac{1}{8}( 2||x-z||^2+2||y-z||^2 )\\
+                    &=\frac{1}{8}( ||x+y+2z||^2+||x-y||^2 )-\frac{1}{8}( ||x+y-2z||^2+||x-y||^2 )\\
+                    &=\frac{1}{2}\agl{x+y}{2z}
+            \end{align*}
+            特别地，当$y=0$，
+            \begin{equation*}
+                    \agl{0}{z}=\frac{1}{4}( ||0+z||^2-||0-z||^2 )=0
+            \end{equation*}
+            \begin{equation*}
+                    \Rightarrow \agl{x}{z}=\agl{x}{z}+\agl{0}{z}
+                    =\frac{1}{2}\agl{x}{2z}
+            \end{equation*}
+            上式中$x$替换为$x+y$，
+            \begin{equation*}
+                    \agl{x+y}{z}=\frac{1}{2}\agl{x+y}{2z}
+            \end{equation*}
+            于是
+            \begin{equation*}
+                    \agl{x}{z}+\agl{y}{z}=\frac{1}{2}\agl{x+y}{2z}=\agl{x+y}{z}
+            \end{equation*}
+            \item 由$(3)$，
+            \begin{align*}
+                    &\agl{x}{y}+\agl{x}{-y}=\agl{x-x}{y}=\agl{0}{y}=0\\
+                    \Rightarrow &\agl{-x}{y}=-\agl{x}{y}
+            \end{align*}
+            \begin{equation*}
+                    n\agl{x}{y}=\agl{x}{y}+\cdots+\agl{x}{y}=\agl{nx}{y}
+            \end{equation*}
+            \begin{align*}
+                    &n\agl{\frac{m}{n}x}{y}=\agl{mx}{y}=m\agl{x}{y}\\
+                    \Rightarrow &
+                    \frac{m}{n}\agl{x}{y}=\agl{  \frac{m}{n}x}{y},\ n,m\in\mathbb{N}_+
+            \end{align*}
+            因此当$\lambda\in\Q$时，$\agl{\lambda x}{y}=\lambda\agl{x}{y}$.对于任意实数$a$，
+            取有理数列$a_n\rightarrow a$，则有
+            \begin{equation*}
+                    \agl{ax}{y}=\fun{lim}{n\rightarrow\infty}\agl{a_nx}{y}
+                    =\fun{lim}{n\rightarrow\infty}a_n\agl{x}{y}
+                    =a\agl{x}{y}
+            \end{equation*}
+        \end{enumerate}
+        综上可知$\agl{\cdot}{\cdot}$是一个内积。对于$\K=\C$的情况，取
+        \begin{equation*}
+            \agl{x}{y}=\frac{1}{4}\sum_{k=0}^3 {\rm i}^k||x+{\rm i}^ky||^2
+        \end{equation*}
+        其余过程同理。
+        \end{proof}
+        \begin{definition}
+            如果$\left<x,y\right>=0$，则称$x$与$y$正交，记为$x\perp y$.
+            对于$M\subset X$，如果$\forall y\in M$都有$x\perp y$，则记$x\perp M$.
+            \begin{equation*}
+                M^\perp \mathop{=}\limits^{\rm def} 
+                \{x\in X:x\perp M\}
+            \end{equation*}
+            称为$M$的正交补。
+        \end{definition}
+        \begin{proposition}[勾股定理]
+            $x\perp y\Rightarrow ||x+y||^2=||x||^2+||y||^2$
+        \end{proposition}
+        \begin{proposition}
+            $\overline{M}=X$，$x\perp M$，则$x=0$.
+        \end{proposition}
+        \begin{proof}
+            $x\in X$，存在$y_n\in M$使得$y_n\rightarrow x$，于是
+            \begin{equation*}
+                0=\left<x,y_n\right>\rightarrow \left<x,x\right>
+            \end{equation*}
+            所以$x=0$.
+
+            实际上证明的是$x\perp M\Rightarrow x\perp \overline{M}$.
+        \end{proof}
+        \begin{proposition}
+            $x\perp M\Rightarrow x\perp {\rm span\ }M$.
+        \end{proposition}
+        \begin{proposition}
+            $M^\perp$是闭子空间。
+        \end{proposition}
+        \begin{proof}
+            显然$M^\perp$是向量子空间，设$M^\perp \ni x_n\rightarrow x$，
+            \begin{align*}
+                &\forall y\in M,0=\left< x_n,y \right>\rightarrow \left< x,y \right>\\
+                \Rightarrow & \left< x,y \right>=0\\
+                \Rightarrow & x\in M^\perp
+            \end{align*}
+        \end{proof}
+        \subsection{正交与正交基}
+        \begin{definition}
+            如果$S=\{e_\alpha\}_{\alpha\in\Lambda}\subset X$满足
+            \begin{equation*}
+                e_\alpha\perp e_\beta,\forall \alpha,\beta\in\Lambda,\alpha\neq\beta
+            \end{equation*}
+            则称$S$是$X$中的一个正交集，如果$S$还满足$||e_\alpha||=1,\forall \alpha\in\Lambda$，则称之为规范正交集，
+            简记为O.N.S.
+
+            若一个正交集$S$满足$S^\perp=\{0\}$，则称$S$完备。
+        \end{definition}
+        \begin{theorem}
+            非平凡内积空间中一定有完备正交集。
+        \end{theorem}
+        \begin{definition}
+            非空集合$X$上的一个偏序“$\leqslant $”是指满足以下条件的一个关系：
+            \begin{enumerate}
+                \item 传递性：$x\leqslant y,y\leqslant z\Rightarrow x\leqslant z$.
+                \item 反身性：$x\leqslant x$.
+                \item $x\leqslant y,y\leqslant x\Rightarrow x=y$.
+            \end{enumerate}
+            $(X,\leqslant )$称为一个偏序集。
+
+            如果$\forall x,y\in X$，$x\leqslant y$或者$y\leqslant x$必有其一，则称
+            “$\leqslant $”是$X$上的一个全序。
+
+            对于$Y\subset X$，如果存在$p\in X$使得$\forall y\in Y$有$y\leqslant p$，称$p$是$Y$的一个上界。
+
+            如果存在$m\in X$使得$m\leqslant x\Rightarrow x=m$，则称$m$是$X$上的一个极大元。
+        \end{definition}
+        \begin{lemma}[Zorn]
+            $(X,\leqslant)$是一个偏序集，$X$的每个全序子集都有上界，则$X$必有极大元。
+        \end{lemma}
+        \begin{proof}
+            令$\mathcal{F}$为$X$中正交集全体，$\subset $是集合的包含关系，则
+            $(\mathcal{F},\subset )$是偏序集，设$M$是$\mathcal{F}$中的任一全序子集，令
+            \begin{equation*}
+                P\mathop{=}\limits^{\rm def} \bigcup_{C\in M}C
+            \end{equation*}
+            于是$P$是$M$的一个上界，这是因为任取$C\in X$都有$C\subset P$.
+            由Zorn引理，
+            $\mathcal{F}$有极大元$S$，则$S$完备，否则
+            $\exists x_0\neq 0{\rm\ s.t.\ }x_0\perp S$，
+            $S\cup \{x_0\}\in\mathcal{F}$，与$S$的极大性矛盾。
+        \end{proof}
+        \begin{definition}
+            $(X,\left< \cdot,\cdot \right>)$是内积空间，$S=\{e_\alpha\}_{\alpha\in\Lambda}$是O.N.S.
+            如果$\forall x\in X$均可表示为\footnote{其实对于不可数个量相加没有很合适的定义，这里的形式和需要要求
+            $\{\left<x,e_\alpha\right>\}_{\alpha\in\Lambda}$只有至多可数个非零。}
+            \begin{equation*}
+                x=\sum_{\alpha\in \Lambda}\left<x,e_\alpha\right>\cdot e_\alpha
+            \end{equation*}
+            则称$S$是$X$的一个规范正交基，简称O.N.B.其中的
+            $\{ \left<x,e_\alpha\right> \}$称为$x$的Fourier系数。
+        \end{definition}
+        \begin{theorem}[Bessel不等式]
+            $\{e_\alpha\}_{\alpha\in\Lambda}$是O.N.S.则
+            \begin{equation*}
+                \forall x\in X,\sum_{\alpha\in\Lambda} |\left<x,e_\alpha\right>|^2\leqslant ||x||^2
+            \end{equation*}
+        \end{theorem}
+        \begin{proof}
+            \textbf{Step1}：
+            \begin{equation*}
+                \forall \{\alpha_1,\cdots,\alpha_N\}\subset \Lambda,
+                \sum_{k=1}^N |\left< x,e_{\alpha_k} \right>|^2\leqslant ||x||^2
+            \end{equation*}
+            \begin{align*}
+                0\leqslant &\left< x-\sum_{i=1}^N\left< x,e_{\alpha_i} \right>e_{\alpha_i},
+                x-\sum_{i=1}^N\left< x,e_{\alpha_k} \right>e_{\alpha_k}\right>\\
+                =&||x||^2-\sum_{i=1}^N \left< x,e_{\alpha_i} \right>
+                \left< e_{\alpha_i},x \right>
+                -\sum_{i=1}^N \overline{\left< x,e_{\alpha_k} \right>}
+                \left< e_{\alpha_k},x \right>
+                +\sum_{i=1}^N \sum_{k=1}^N 
+                \left< e_{\alpha_i},x \right>\overline{\left< x,e_{\alpha_k} \right>}
+                \mathop{\left< e_{\alpha_i},e_{\alpha_k} \right>}\limits_{\mbox{这一项}=\delta_{ik}}\\
+                =& ||x||^2-\sum_{k=1}^N |\left< x,e_{\alpha_k} \right>|^2
+            \end{align*}
+
+            \textbf{Step2}：
+            \begin{equation*}
+                \Lambda'\mathop{=}\limits^{\rm def}
+                \{ \alpha\in \Lambda:\left< x,e_{\alpha} \right>\neq 0\}\mbox{至多可数}
+            \end{equation*}
+            令
+            \begin{equation*}
+                \lambda_n\mathop{=}\limits^{\rm def}
+                \{ \alpha\in\Lambda:|\left< x,e_{\alpha} \right>|>\frac{1}{n} \},n=1,2,\cdots
+            \end{equation*}
+            所有的$\Lambda_n$是有限集，否则存在$n_0$使得$\Lambda_{n_0}$是无限集，
+            取$N$充分大使得
+            \begin{equation*}
+                \frac{N}{n_0^2}>||x||^2
+            \end{equation*}
+            任取$\alpha_1,\cdots,\alpha_N\in\Lambda_{n_0}$，
+            \begin{equation*}
+                \sum_{k=1}^N |\left< x,e_{\alpha_k} \right>|^2>\frac{N}{n_0^2}>||x||^2
+            \end{equation*}
+            这与Step1矛盾，进而$\Lambda'=\bigcup_{n=1}^\infty \Lambda_n$至多可数。
+
+            \textbf{Step3}：
+            给$\Lambda'$一个排列，即设$\Lambda'=\{\alpha_k\}_{k=1}^\infty$，由
+            Step1，$\forall N$，
+            \begin{align*}
+                & \sum_{k=1}^N |\left< x,e_{\alpha_k} \right>|^2\leqslant ||x||^2\\
+                \Rightarrow & \sum_{k=1}^\infty |\left< x,e_{\alpha_k} \right>|^2\leqslant ||x||^2\\
+                \Rightarrow & \sum_{\alpha\in\Lambda} |\left< x,e_{\alpha} \right>|^2
+                =\sum_{\alpha\in\Lambda'} |\left< x,e_{\alpha} \right>|^2\leqslant ||x||^2
+            \end{align*}
+        \end{proof}
+
+            引入最佳逼近元的概念：用一组函数的线性组合去逼近一个给定的函数等价于给定$x\in X$，
+            $e_1,\cdots,e_n\in X$，求$\lambda_1,\cdots,\lambda_n\in\K $使得
+            \begin{equation*}
+                ||x-\sum_{k=1}^n \lambda_k e_k||=\fun{inf}{\alpha\in\K^n}||x-\sum_{k=1}^n \alpha_ke_k||
+            \end{equation*}
+            等价于：令$M\eq{def} {\rm span}\{e_1,\cdots,e_n\}$，求$y_0\in M$使得${\rm dist}(x,y_0)={\rm dist}(x,M)$.
+        \begin{theorem}
+            赋范空间$(X,||\cdot ||)$，$e_1,\cdots,e_n\in X$，$\forall x\in X$，存在$\lambda_1,\cdots,\lambda_n\in\K$使得
+            \begin{equation*}
+                ||x-\sum_{k=1}^n \lambda_k e_k||=\fun{inf}{\alpha\in\K^n}||x-\sum_{k=1}^n \alpha_ke_k||
+            \end{equation*}
+        \end{theorem}
+        \begin{proof}
+            不妨设$e_1,\cdots,e_n$线性无关，对$x\in X$，定义
+            \begin{equation*}
+                F:\K^n\rightarrow \R,\alpha\mapsto ||x-\sum_{k=1}^n \alpha_k e_k||
+            \end{equation*}
+            则：
+            \begin{enumerate}
+                \item $F$连续；
+                \item \begin{equation*}
+                    F(\alpha)\geqslant ||\sum_{k=1}^n \alpha_k e_k||-||x||
+                \end{equation*}
+            \end{enumerate}
+            令
+                \begin{equation*}
+                    |||\alpha|||\defeq ||\sum_{k=1}^n \alpha_k e_k||
+                \end{equation*}
+                于是$|||\cdot|||$是$\K^n$上的范数，由于有限维空间上范数等价，
+                \begin{equation*}
+                    \exists C>0{\rm\ s.t.\ }|||\alpha|||\geqslant C|\alpha|,\ \forall \alpha\in\K^n
+                \end{equation*}
+                \begin{equation*}
+                    \mathop{\Rightarrow}\limits^{2} F(\alpha)\geqslant C|\alpha|-||x||\rightarrow +\infty{\rm\ as\ }|\alpha|\rightarrow\infty
+                \end{equation*}
+                因此$F$在$\K^n$上可以取到最小值。
+        \end{proof}
+        \begin{lemma}[变分引理]
+            $H$是Hilbert空间，$M$是非空闭凸集，则
+            \begin{equation*}
+                \forall x\in X,\exists ! y\in M{\rm\ s.t.\ }||x-y||={\rm dist}(x,M)
+            \end{equation*}
+        \end{lemma}
+        \begin{proof}
+            设
+            \begin{equation*}
+                d\mathop{=}\limits^{\rm def}{\rm dist}(x,M)=
+                \mathop{\rm inf}\limits_{\zeta\in M}||x-\zeta||
+            \end{equation*}
+            则存在$y_n\in M,n=1,2,\cdots{\rm\ s.t.\ }d\leqslant ||y_n-x||\leqslant d+\frac{1}{n}$.
+
+            下面证明$\{y_n\}_{n=1}^\infty$是基本列。由P.L.
+            \begin{align*}
+                &||(y_n-x)+(y_m-x)||^2+||(y_n-x)-(y_m-x)||^2
+                = 2( ||y_n-x||^2+||y_m-x||^2 )\\
+                \Rightarrow& 
+                ||y_n-y_m||^2=
+                2( ||y_n-x||^2+||y_m-x||^2 )-4||\frac{y_n+y_m}{2}-x||^2\\
+                &\leqslant 2( (d+\frac{1}{n})^2+(d+\frac{1}{m})^2 )-4d^2\rightarrow 0{\rm\ as\ }n,m\rightarrow\infty
+            \end{align*}
+            $H$完备，设$y_n\rightarrow y$，因为$M$是闭集，故$y\in M$，因此：
+            \begin{equation*}
+                d\leqslant||y-x||\leqslant ||y-y_n||+||y_n-x||\leqslant ||y-y_n||+d+\frac{1}{n}
+            \end{equation*}
+            $n$充分大时，右式$\rightarrow d^+$，于是$||y-x||=d$.
+
+            唯一性：假设还有$y'\in M{\rm\ s.t.\ }||y'-x||=d$，
+            \begin{equation*}
+                ||y'-y||^2=2( ||y'-x||^2+||y-x||^2 )-4||\frac{y'+y}{2}-x||^2\leqslant 4d^2-4d^2=0
+            \end{equation*}
+            所以$y'=y$.
+        \end{proof}
+        \begin{theorem}[正交分解]
+            $H$是Hilbert空间，$M$是闭子空间，则$H=M\oplus M^\perp$，即
+            $\forall x\in H$，存在唯一的$y\in M$和$\zeta\in M^{\perp}$使得$x=y+\zeta$.
+        \end{theorem}
+        \begin{proof}
+            $\forall x\in H$，由变分引理，存在唯一$y\in M$使得
+            \begin{equation*}
+                ||x-y||={\rm dist}(x,M)
+            \end{equation*}
+            Claim:$x-y\in M^\perp$，$\forall 0\neq w\in M,\forall \lambda\in\mathbb{K}$，
+            \begin{align*}
+                \Rightarrow & y+\lambda w\in M\\
+                \Rightarrow & d^2\leqslant ||x-(y+\lambda w)||^2
+                =||x-y||^2-2{\rm Re}(\overline{\lambda}\left< x-y,w \right>)+|\lambda|^2||w||^2
+            \end{align*}
+            取$\lambda=\frac{ \left<x-y,w\right> }{||w||^2}$，
+            \begin{align*}
+                &d^2\leqslant ||x-y||^2-2\frac{ |\left<x-y,w\right>|^2 }{||w||^2}+\frac{ |\left<x-y,w\right>|^2 }{||w||^2}
+                =d^2-\frac{ |\left<x-y,w\right>|^2 }{||w||^2}\\
+                \Rightarrow & \left<x-y,w\right>=0\\
+                \Rightarrow & x-y\in M^\perp
+            \end{align*}
+        \end{proof}
+        \begin{definition}
+            映射$P_M:H\rightarrow M,x\mapsto y$，这里$y$是满足变分引理的$y$，称之为$x$在$M$中的最佳逼近元，此映射被称为
+            $H$到$M$的正交投影。
+        \end{definition}
+        \begin{corollary}
+            \begin{enumerate}
+                \item $P_M(x)\in M$，$x-P_M(x)\in M^\perp$.
+                \item ${\rm Im}(P_M)=M$，${\rm Ker}(P_M)=M^\perp$.
+                \item $||x-P_M(x)||={\rm dist}(x,M)$.
+                \item $P^2_M=P_M$.
+                \item $||P_M(x)||\leqslant ||x||$.
+                \item $I-P_M=P_{M^\perp}$.
+            \end{enumerate}
+        \end{corollary}
+
+            在Bessel不等式的证明中，
+            $\sum_{\alpha\in\Lambda'}|\left< x,e_{\alpha} \right>|^2$和$\Lambda'$的排列无关，那
+            $\sum_{\alpha\in\Lambda'}\left< x,e_{\alpha} \right>e_\alpha$呢？
+        \begin{lemma}
+            $H$是Hilbert空间，$\{e_k\}_{k=1}^\infty$是O.N.S.则
+            \begin{equation*}
+                \forall x\in H,\sum_{k=1}^\infty \left<x,e_k\right>e_k\in H 
+            \end{equation*}
+            令$M=\overline{ {\rm span}\{e_k\}_{k=1}^\infty }$，则
+            \begin{equation*}
+                \sum_{k=1}^\infty \left<x,e_k\right>e_k=P_M(x)
+            \end{equation*}
+        \end{lemma}
+        \begin{proof}
+            由Bessel，
+            \begin{align*}
+                &\sum_{k=1}^\infty |\left< x,e_k \right>|^2\leqslant ||x||^2\\
+                \Rightarrow & ||\sum_{k=n}^m \left<x,e_k\right>e_k||^2=\sum_[k=n]^\infty |\left< x,e_k \right>|^2\rightarrow 0{\rm\ as\ }n,m\rightarrow\infty\\
+                \Rightarrow & \left\{ \sum_{k=1}^n \left<x,e_k\right>e_k\right\}_{n=1}^\infty\mbox{是$H$中的基本列}\\
+                \Rightarrow & \sum_{k=1}^\infty \left<x,e_k\right>e_k
+                \mathop{=}\limits^{\rm def} \mathop{\rm lim}\limits^{n\rightarrow\infty}\sum_{k=1}^n 
+                \left<x,e_k\right>e_k\in H
+            \end{align*}
+            进而，由于
+            \begin{align*}
+                &\left< x-\sum_{k=1}^\infty \left<x,e_k\right>e_k,e_m \right>=0,\forall m\\
+                \Rightarrow & x-\sum_{k=1}^\infty \left<x,e_k\right>e_k\in M^\perp\\
+                \Rightarrow & \sum_{k=1}^\infty \left<x,e_k\right>e_k=P_M(x)
+            \end{align*}
+        \end{proof}
+        \begin{corollary}
+            对$\mathbb{N}$上任一置换$\sigma:\mathbb{N}\rightarrow \mathbb{N}$，
+            \begin{equation*}
+                \sum_{k=1}^\infty \left< x,e_{\sigma(k)} \right>e_{\sigma(k)}=\sum_{k=1}^\infty 
+                \left< x,e_k \right>e_k
+            \end{equation*}
+        \end{corollary}
+        \begin{proof}
+            令$M\mathop{=}\limits^{\rm def}\overline{ {\rm span}\{e_k\}_{k=1}^\infty }$，
+            $\tilde{M}\mathop{=}\limits^{\rm def}\overline{ {\rm span}\{e_{\sigma(k)}\}_{k=1}^\infty }$，
+            于是$M=\tilde{M}$，
+            \begin{equation*}
+                \sum_{k=1}^\infty 
+                \left< x,e_{\sigma(k)} \right>e_{\sigma(k)}
+                =P_{\tilde{M}}(x)=P_M(x)=\sum_{k=1}^\infty \left< x,e_{k} \right>
+            \end{equation*}
+        \end{proof}
+        \begin{corollary}
+            $H$是Hilbert空间，$\{e_\alpha\}_{\alpha\in\Lambda}$是O.N.S.则
+            $\forall x\in H$，
+            \begin{equation*}
+                \sum_{\alpha\in\Lambda}\left< x,e_{\alpha} \right>e_{\alpha}\in H
+            \end{equation*}
+            且
+            \begin{equation*}
+                ||x-\sum_{\alpha\in\Lambda}\left<x,e_\alpha\right>e_{\alpha}||^2
+                =||x||^2-\sum_{\alpha\in\Lambda}|\left<x,e_\alpha\right>|^2
+            \end{equation*}
+        \end{corollary}
+        \begin{proof}
+            设
+            \begin{equation*}
+                \Lambda'\mathop{=}\limits^{\rm def}
+                \{ \alpha\in\Lambda:\left< x,e_{\alpha} \right>\neq 0\}
+                =\{\alpha_k\}_{k=1}^\infty \mbox{（任一顺序）}
+            \end{equation*}
+            则
+            \begin{equation*}
+                \sum_{\alpha\in\Lambda}\left<x,e_\alpha\right>e_{\alpha}
+                =\sum_{k=1}^\infty \left<x,e_{\alpha_k}\right>e_{\alpha_k}\in H
+            \end{equation*}
+            且
+            \begin{align*}
+                &||x-\sum_{k=1}^N \left< x,e_{\alpha_k} \right>e_{\alpha_k}||^2
+                =||x||^2-\sum_{k=1}^N |\left< x,e_{\alpha_k} \right>|^2\\
+                \mathop{\Rightarrow}\limits^{N\rightarrow\infty}_{\mbox{范数连续}}
+                &||x-\sum_{k=1}^N \left< x,e_{\alpha_k} \right>e_{\alpha_k}||^2
+                =||x||^2-\sum_{k=1}^\infty |\left< x,e_{\alpha_k} \right>|^2
+            \end{align*}
+        \end{proof}
+        \begin{theorem}
+            $H$是Hilbert空间，$S=\{e_\alpha\}_{\alpha\in\Lambda}$是O.N.S.则
+            下列命题等价：
+            \begin{enumerate}
+                \item $S^{\perp}=\{0\}$.
+                \item $S$是O.N.B.
+                \item $S$满足：
+                \begin{equation*}
+                    \forall x\in H,||x||^2=\sum_{\alpha\in\Lambda}|\left<x,e_\alpha\right>|^2
+                \end{equation*}
+                这被称为Parseval恒等式，简称P.I.
+            \end{enumerate}
+        \end{theorem}
+        \begin{proof}
+            \textbf{Step1}：$S^\perp=\{0\}\Rightarrow S$是O.N.B.假设不然，则
+            \begin{align*}
+                &\exists x_0\in H{\rm\ s.t.\ }\sum_{\alpha\in\Lambda}\left<x_0,e_\alpha\right>e_{\alpha}
+                \neq x_0\\
+                &\forall \beta\in\Lambda,
+                \left< x_0-\sum_{\alpha\in\Lambda}\left<x_0,e_\alpha\right>e_{\alpha},e_\beta \right>
+                =\left<x_0,e_\beta\right>-\left<x_0,e_\beta\right>=0\\
+                \Rightarrow & 0\neq x_0-\sum_{\alpha\in\Lambda}\left<x_0,e_\alpha\right>e_{\alpha}\perp S\\
+                \Rightarrow & S^\perp\neq \{0\}
+            \end{align*}
+            矛盾。
+
+            \textbf{Step2}：由推论1.5.3，$S$是O.N.B.$\Rightarrow $满足Parseval。
+
+            \textbf{Step3}：满足Parseval$\Rightarrow S^\perp=\{0\}$，否则
+            \begin{align*}
+                &\exists x_0\neq 0{\rm\ s.t.\ }x_0\perp S\\
+                \Rightarrow & \left<x_0,e_\alpha\right>=0,\forall \alpha\in\Lambda\\
+                \Rightarrow & \sum_{\alpha\in\Lambda}|\left<x_0,e_\alpha\right>|^2=0\\
+                \mathop{\Rightarrow}\limits^{\rm Parseval}
+                ||x_0||^2=0
+            \end{align*}
+            矛盾。
+        \end{proof}
+        \begin{example}
+            数列空间$\ell^2$，$e_n$的第$n$个分量为$1$，其余分量为$0$，
+            则$\{e_n\}_{n=1}^\infty$是$\ell^2$的一个O.N.B.
+
+            但它不是$\ell^2$的Hamel基。\footnote{向量空间的Hamel基是指任何一个向量可以写成有限个基中向量的线性组合，此处不满足“有限”的条件。}
+        \end{example}
+        \begin{corollary}
+            非平凡Hilbert空间一定有O.N.B.
+        \end{corollary}
+        \subsection{正交化与同构}
+        \begin{theorem}[Gram-Schmidt正交化]
+            $(X,\left< \cdot,\cdot \right>)$是内积空间，
+            $\{x_n\}_{n=1}^\infty$线性无关，则存在一列$\{e_n\}_{n=1}^\infty$相互正交，且
+            \begin{equation*}
+                \forall n,{\rm span}\{e_k\}_{k=1}^n={\rm span}\{x_k\}_{k=1}^n
+            \end{equation*}
+        \end{theorem}
+        \begin{proof}
+            只需按照以下步骤构造即可：
+            \begin{equation*}
+                \begin{array}{ll}
+                    y_1=x_1& e_1=\frac{y_1}{||y_1||}\\
+                    y_2=x_2-\left<x_2,e_1\right>e_1& e_2=\frac{y_2}{||y_2||}\\
+                    \vdots&\\
+                    y_n=x_n-\sum_{k=1}^{n-1}\left<x_n,e_k\right>e_k& e_n=\frac{y_n}{||y_n||}
+                \end{array}
+            \end{equation*}
+            $\forall m\neq n$，设$m<n$，
+            \begin{align*}
+                \left< e_m,e_n \right>&=\frac{1}{||y_n||}\left< e_m,x-\sum_{k=1}^{n-1}\left<x_n,e_k\right>e_k \right>\\
+                &=\frac{1}{||y_n||}\left( \left< e_m,x-\sum_{k=1}^{n-1}\left<e_m,x\right>e_k \right>-\overline{\left< x_n,e_m \right>} \right)=0
+            \end{align*}
+            且
+            \begin{equation*}
+                y_k=x_k-\sum_{i=1}^{k-1}\left<x_k,e_i\right>e_i=x_k+\sum_{j=1}^{k-1}\alpha_{kj}x_j
+            \end{equation*}
+            得到
+            \begin{equation*}
+                \begin{pmatrix}
+                    y_1\\y_2\\\vdots\\y_n
+                \end{pmatrix}=
+                \begin{pmatrix}
+                    1&&&\\
+                    \alpha_{21}&1&&\\
+                    \vdots&&\ddots&\\
+                    \alpha_{n1}&\alpha_{n2}&&1
+                \end{pmatrix}
+                \begin{pmatrix}
+                    x_1\\x_2\\\vdots\\x_n
+                \end{pmatrix}
+            \end{equation*}
+            所以${\rm span}\{ y_k \}_{k=1}^n={\rm span}\{ x_k \}_{k=1}^n$，进而
+            ${\rm span}\{ e_k \}_{k=1}^n={\rm span}\{ x_k \}_{k=1}^n$.
+        \end{proof}
+        \begin{definition}
+            $(X_1,\left< \cdot,\cdot \right>_1)$和$(X_2,\left< \cdot,\cdot \right>_2)$是内积空间，
+            如果存在线性同构$T:X_1\rightarrow X_2$使得
+            \begin{equation*}
+                \left< T(x),T(y) \right>_2=\left< x,y \right>_1,\forall x,y\in X_1
+            \end{equation*}
+            则称$X_1$和$X_2$作为内积空间同构，记为$X_1\cong X_2$.
+        \end{definition}
+        \begin{theorem}
+            $H$是Hilbert空间，$H$可分$\Leftrightarrow H$有可数的O.N.B. 
+        \end{theorem}
+        \begin{proof}
+            必要性：如果${\rm dim\ }H\neq \infty$则显然，下面假设${\rm dim\ }H=\infty$,
+            \begin{align*}
+                \mbox{可分}\Rightarrow &
+                \exists \{x_n\}_{n=1}^\infty \subset H{\rm\ s.t.\ }\overline{\{x_n\}_{n=1}^\infty}=H\\
+                \Rightarrow &\exists \{y_n\}_{n=1}^\infty \subset\{x_n\}_{n=1}^\infty \mbox{线性无关}\\
+                \Rightarrow & \exists \{e_n\}_{n=1}^\infty \mbox{正交且}
+                {\rm span}\{ e_n \}_{n=1}^\infty={\rm span}\{ x_n \}_{k=n}^\infty\\
+                \Rightarrow &
+                \overline{ {\rm span}\{ e_n \}_{n=1}^\infty }
+                =\overline{ {\rm span}\{ x_n \}_{n=1}^\infty }=H\\
+                \Rightarrow & ( \{ e_n \}_{n=1}^\infty )^\perp=\{0\}\\
+                \Rightarrow & \{ e_n \}_{n=1}^\infty\mbox{是O.N.B.}
+            \end{align*}
+
+            充分性：令
+            \begin{equation*}
+                {\rm span}^{\mathbb{Q}}(\{ e_n \}_{n=1}^\infty)\mathop{=}\limits^{\rm def}
+                \{ e_n \}_{n=1}^\infty\mbox{中向量以$\mathbb{Q}+{\rm i}\mathbb{Q}$中元素为系数的线性组合全体}
+            \end{equation*}
+            于是${\rm span}^{\mathbb{Q}}(\{ e_n \}_{n=1}^\infty)$可数，下证
+            $\overline{{\rm span}^{\mathbb{Q}}(\{ e_n \}_{n=1}^\infty)}=H$.
+            \begin{align*}
+                &\forall \varepsilon>0,\forall n,\exists \alpha_n\in\mathbb{Q}+{\rm i}\mathbb{Q}{\rm\ s.t.\ }
+                |\alpha_n-\left<x,e_n\right>|<\frac{\varepsilon}{2^{n+1}}\\
+                \Rightarrow &
+                || \sum_{n=1}^N \left<x,e_n\right>e_n-\sum_{n=1}^N \alpha_n e_n ||^2
+                =\sum_{n=1}^N |\left<x,e_n\right>-\alpha_n|^2<\frac{\varepsilon^2}{4},\forall N
+            \end{align*}
+            而当$N$充分大时，
+            \begin{equation*}
+                ||\sum_{n=1}^N \left<x,e_n\right>e_n-x||<\frac{\varepsilon}{2}
+            \end{equation*}
+            于是
+            \begin{equation*}
+                ||\sum_{n=1}^N \alpha_n e_n-x||<\varepsilon
+            \end{equation*}
+        \end{proof}
+        \begin{theorem}
+            \begin{enumerate}
+                \item $n$维Hilbert空间$\cong \mathbb{K}^n$.
+                \item 无穷维可分Hilbert空间$\cong \ell^2$.
+            \end{enumerate}
+        \end{theorem}
+        \begin{proof}
+            1以前已经证明过，只说明一下2：
+            设$\{ e_n \}_{n=1}^\infty$是$H$的可数O.N.B.定义
+            \begin{equation*}
+                T:H\rightarrow \ell^2,x\mapsto \{ \left< x,e_n \right> \}_{n=1}^\infty
+            \end{equation*}
+            \begin{enumerate}[$1^\circ$]
+                \item 线性：显然。
+                \item 等距：由Parseval，\begin{equation*}
+                    \sum_{n=1}^\infty |\left< x,e_n \right>|^2=||x||^2
+                \end{equation*}
+                \item 单射：由等距可得。
+                \item 满射：\begin{align*}
+                    &\forall a\in \ell^2,
+                    ||\sum_{k=n}^m a_k e_k||^2=\sum_{k=n}^m |a_k|^2\rightarrow 0{\rm\ as\ }n,m\rightarrow\infty\\
+                    \Rightarrow &
+                    \sum_{k=1}^n a_ke_n\rightarrow x\in H{\rm\ and\ }\left< x,e_k \right>=a_k\\
+                    \Rightarrow &
+                    T(x)=a
+                \end{align*}
+                \item 保内积：\begin{align*}
+                    \left< x,y \right>&= 
+                    \left< \sum_{n=1}^\infty \left< x,e_n \right>e_n,\sum_{m=1}^\infty \left< y,e_m \right>e_m \right>\\
+                    &= \sum_{n,m}\left< x,e_n \right>\overline{\left< y,e_m \right>}\left< e_n,e_m \right>\\
+                    &= \sum_{n=1}^\infty \left< x,e_n \right>\overline{\left< y,e_n \right>}\\
+                    &= \left< T(x),T(y) \right>_{\ell^2}
+                \end{align*}
+            \end{enumerate}
+        \end{proof}
+    
+\section{应用：Fourier级数}
+    \begin{definition}
+        设
+        \begin{equation*}
+            \Pi\mathop{=}\limits^{\rm def}\{ z\in\mathbb{C}:|z|=1 \}
+        \end{equation*}
+        对于$\Pi$上的函数$F$，令
+        \begin{equation*}
+            f(t)\mathop{=}\limits^{\rm def}F( {\rm e}^{2\pi{\rm i}t} ),t\in\mathbb{R}
+        \end{equation*}
+        于是$f$是$\mathbb{R}$上周期为$1$的周期函数。令
+        \begin{equation*}
+            e_k(t)\mathop{=}\limits^{\rm def}{\rm e}^{2\pi {\rm i}kt},t\in [-\frac{1}{2},\frac{1}{2}),k=0,\pm 1,\pm 2,\cdots
+        \end{equation*}
+        于是$\{e_k\}_{k=-\infty}^\infty$是$L^2(\Pi)$中的O.N.S.称为三角函数系。
+        \begin{equation*}
+            \hat{f}(k)\mathop{=}\limits^{\rm def}\int_{-\frac{1}{2}}^{\frac{1}{2}}
+            f(t){\rm e}^{-2\pi {\rm i}kt}{\rm d}t=\left< f,e_k \right>
+        \end{equation*}
+        \begin{equation*}
+            f(x)\sim \sum_{k=-\infty}^\infty \hat{f}(k){\rm e}^{2\pi{\rm i}kx}
+            =\sum_{-\infty}^\infty \left<f,e_k\right>e_k
+        \end{equation*}
+    \end{definition}
+    \begin{theorem}
+        $\forall f\in L^2(\Pi)$，
+        \begin{equation*}
+            ||S_N(f)-f||_2\rightarrow 0{\rm\ as\ }N\rightarrow\infty
+        \end{equation*}
+        其中
+        \begin{equation*}
+            S_N(f)(x)\mathop{=}\limits^{\rm def}\sum_{k=-N}^N \hat{f}(k){\rm e}^{2\pi{\rm i}kx}
+        \end{equation*}
+    \end{theorem}
+    \begin{proof}
+        Thm$\Leftrightarrow \{e_k\}_{k=-\infty}^\infty$是$L^2(\Pi)$中的O.N.B.
+        $\Leftrightarrow (\{e_k\}_{k=-\infty}^\infty)^\perp=\{0\} $
+        $\Leftrightarrow \overline{{\rm span}\{e_k\}_{k=-\infty}^\infty}=L^2(\Pi)$.
+        从而约化为证明：$\forall f\in L^2(\Pi)$可由三角多项式以$L^2$范数逼近。
+        \begin{equation*}
+            S_N(f)(x)=(f* D_N)(x){\rm\ with\ }
+            D_N(t)=\sum_{k=-N}^N {\rm e}^{2\pi {\rm i}kt}=\frac{ {\rm sin}[ (2N+1)\pi t ] }{{\rm sin}(\pi t)}
+        \end{equation*}
+        令
+        \begin{align*}
+            \sigma_N\mathop{=}\limits^{\rm def}& \frac{1}{N+1}\sum_{k=0}^N S_k(f)\\
+            =& f *\left( \frac{1}{N+1}\sum_{k=1}^N D_k \right)=f* F_N
+        \end{align*}
+        这里$F_N(t)$是Fejér核：
+        \begin{equation*}
+            F_N(t)=\frac{1}{N+1}\sum_{k=1}^N D_k(t)=\frac{1}{N+1} \frac{ {\rm sin}^2 [(N+1)\pi t] }{{\rm sin}^2 (\pi t)}
+        \end{equation*}
+        \begin{lemma}
+            \begin{enumerate}
+                \item \begin{equation*}
+                    \int_{-\frac{1}{2}}^{\frac{1}{2}}F_N(t){\rm d}t=1
+                \end{equation*}
+                \item $\forall \delta>0$，
+                    \begin{equation*}
+                        \mathop{\rm lim}\limits_{N\rightarrow\infty}
+                        \int_{\delta<|t|<\frac{1}{2}}F_N(t){\rm d}t=0
+                    \end{equation*}
+            \end{enumerate}
+            \begin{proof}
+                1直接计算验证，只说明一下2：当$\delta<|t|<\frac{1}{2}$时，
+                \begin{equation*}
+                    0\leqslant F_N(t)\leqslant \frac{1}{N+1}\frac{1}{{\rm sin}^2(\pi\delta)}\rightarrow 0{\rm\ as\ }N\rightarrow\infty
+                \end{equation*}
+            \end{proof}
+        \end{lemma}
+        \begin{lemma}
+            $\forall f\in L^2(\Pi)$，
+            \begin{equation*}
+                ||\sigma_N(f)-f||_2\rightarrow 0{\rm\ as\ }N\rightarrow \infty
+            \end{equation*}
+            \begin{proof}
+                \begin{align*}
+                    ||\sigma_N(f)-f||_2=& \sqrt{ \int_{-\frac{1}{2}}^{\frac{1}{2}} 
+                    \left| \int_{-\frac{1}{2}}^{\frac{1}{2}}[ f(x-t)-f(x) ]F_N(t){\rm d}t \right|^2{\rm d}x}\\
+                    \mathop{\leqslant}\limits^{\rm Minkowski}&
+                    \int_{-\frac{1}{2}}^{\frac{1}{2}}|| f(\cdot-t)-f(\cdot) ||_2F_N(t){\rm d}t\\
+                    =& \int_{ |t|\leqslant \delta }\cdots+\int_{\delta<|t|<\frac{1}{2}}\cdots\\
+                    \leqslant &
+                    \mathop{\int_{ |t|\leqslant \delta }\cdots}\limits_{\mbox{积分的绝对连续性}}+
+                    \mathop{2||f||_2\int_{\delta<|t|<\frac{1}{2}}F_N(t){\rm d}t}\limits_{\mbox{引理1.6.1}}\rightarrow 0{\rm\ as\ }N\rightarrow \infty
+                \end{align*}
+            \end{proof}
+        \end{lemma}
+        注意
+        \begin{equation*}
+            \sigma_N(f)(x)=\sum_{k=-N}^N \left( 1-\frac{|k|}{N} \right)\hat{f}(k){\rm e}^{2\pi{\rm i}kx}
+        \end{equation*}
+        上述引理说明三角多项式全体在$L^2(\Pi)$中稠密。
+    \end{proof}

@@ -1,0 +1,2282 @@
+\chapter{线性算子与线性泛函}
+%\begin{center}
+%    线性算子=线性映射
+%\end{center}
+%\rightline{2023.10.27}
+%\vspace{-5pt}
+%\begin{center}
+%    \pgfornament[width=0.36\linewidth,color=lsp]{88}
+%\end{center}
+
+\section{线性算子}
+\subsection{有界线性算子}
+    \begin{definition}
+        $X$和$Y$是向量空间，如果映射$T:X\rightarrow Y$满足
+        \begin{equation*}
+            T(\alpha x+\beta y)=\alpha Tx+\beta Ty,\forall x,y\in X,\forall \alpha,\beta\in\mathbb{K}
+        \end{equation*}
+        则称$T$是线性算子，简称L.O.
+        
+        特别地，如果$Y=\mathbb{K}$，则称$T$是线性泛函。
+    \end{definition}
+    \begin{example}
+        微分算子：开集$\Omega\subset \mathbb{R}^n$，$X=Y=C^\infty (\Omega)$，定义
+        \begin{equation*}
+            T\mathop{=}\limits^{\rm def}
+            \sum_{|\alpha|\leqslant m}a_\alpha \partial^\alpha
+        \end{equation*}
+    \end{example}
+    \begin{example}
+        积分算子：$X=L^p(\Omega)$，$Y=L(\Omega)$，即全体可测函数。
+        $K(\cdot,\cdot)$是$\Omega\times\Omega$上的可测函数，称之为积分核。
+        \begin{equation*}
+            T:u(x)\mapsto \int_\Omega K(x,y)u(y){\rm d}y
+        \end{equation*}
+        如：Poisson积分：
+        \begin{equation*}
+            P[u](\zeta)\mathop{=}\limits^{\rm def} \frac{1}{2\pi}\int_0^{2\pi}
+            \frac{1-|\zeta|^2}{|1-\zeta {\rm e}^{-{\rm i}\theta}|^2}u( {\rm e}^{{\rm i}\theta}){\rm d}\theta
+        \end{equation*}
+        Fourier变换：
+        \begin{equation*}
+            (\mathcal{F}u)(x)\mathop{=}\limits^{\rm def}
+            \int_{\mathbb{R}^n} {\rm e}^{-2\pi{\rm i}x\cdot y}u(y){\rm d}y
+        \end{equation*}
+    \end{example}
+    \begin{example}
+        非线性的例子：
+        \begin{equation*}
+            f(u)\mathop{=}\limits^{\rm def} \int_{\Omega}u^2(x){\rm d}x
+        \end{equation*}
+    \end{example}
+    \begin{definition}
+        $(X,||\cdot||_X)$和$(Y,||\cdot||_Y)$是赋范空间，
+        $T:X\rightarrow Y$是L.O.如果存在$C>0$使得
+        \begin{equation*}
+            ||Tx||_Y\leqslant C||x||_X,\forall x\in X
+        \end{equation*}
+        则称$T$有界。
+    \end{definition}
+
+    \begin{theorem}
+        赋范空间$(X,\ms{\cdot}_{X}),(Y,\ms{\cdot}_{Y})$，$T:X\rightarrow Y$是线性映射，
+        $T$有界$\Leftrightarrow T$连续$\Leftrightarrow T$在$0$处连续。
+    \end{theorem}
+    \begin{proof}
+        有界$\Rightarrow $连续：
+        \begin{equation*}
+            ||x_n-x||_X\rightarrow 0\Rightarrow ||Tx_a-Tx||\leqslant C||x_n-x||\rightarrow 0
+        \end{equation*}
+        
+        在$0$处连续$\Rightarrow $有界：假设$T$在$0$连续，但无界，则
+        \begin{equation*}
+            \forall n,\exists x_n\in X{\rm\ s.t.\ }||Tx_n||_Y>n||x_n||_X
+        \end{equation*}
+        令$y_n=\frac{1}{n}\frac{x_n}{||x_n||_X}$，则$y_n\rightarrow 0$但
+        $|Ty_n|_Y\geqslant 1,\forall n$，这与$T$在$0$处连续矛盾。
+    \end{proof}
+    \begin{theorem}
+        有限维赋范空间之间的线性算子一定有界。
+    \end{theorem}
+    \begin{proof}
+        先假设$X=\mathbb{K}^n$，$Y=\mathbb{K}^m$，则
+        \begin{equation*}
+            Tx=Ax{\rm\ for\ some\ }A=(a_{ij})_{1\leqslant i\leqslant m,1\leqslant j\leqslant n}
+        \end{equation*}
+        \begin{align*}
+            \Rightarrow ||Tx||_{\mathbb{K}^m}
+            =&\left(
+                \sum_{i=1}^m 
+                \left|
+                    \sum_{j=1}^n a_{ij}x_j
+                \right|^2
+            \right)^{\frac{1}{2}}\\
+            \mathop{\leqslant}\limits^{\rm C-S}&
+            \left[
+                \sum_{i=1}^m
+                \left(
+                    \sum_{j=1}^n |a_{ij}|^2
+                \right)
+                \left(
+                    \sum_{j=1}^n |x_{j}|^2
+                \right)
+            \right]^{\frac{1}{2}}\\
+            =&\left(
+                \sum_{i=1}^m\sum_{j=1}^n |a_{ij}|^2
+            \right)^{\frac{1}{2}}||x||_{\mathbb{K}^n}
+        \end{align*}
+
+        一般情形：把$X$和$Y$同胚到一个有限维线性空间即可：
+        \begin{equation*}
+            \begin{matrix}
+                X&\mathop{\rightarrow}\limits^{T}&Y\\
+                \varphi\downarrow&&\downarrow \psi\\
+                \K^n&\mathop{\rightarrow}\limits^{\tilde{T}}&\K^m
+            \end{matrix}
+        \end{equation*}
+        $T=\psi^{-1}\circ \tilde{T}\circ \varphi$.
+    \end{proof}
+
+    \begin{proposition}
+        证明：${\rm dim\ }X<\infty$，$T:X\rightarrow Y$是线性算子，则$T$有界。（作业）
+    \end{proposition}
+    \begin{proof}
+        设$\{e_1,\cdots,e_n\}$是$X$上的一组{\rm Hamel}基，
+        记$M=\fun{max}{}\{ ||Te_1||_Y,\cdots,||Te_n||_Y \}$，
+        那么$\forall x\in X$，$x=\sum_{i=1}^n x_ie_i,x_i\in\K$，
+        \begin{align*}
+            ||Tx||_Y&=||x_1T(e_1)+\cdots+x_nT(x_n)||_Y\\
+            &\leqslant |x_1|\cdot||T(e_1)||_Y+\cdots+|x_n|\cdot ||T(e_n)||_Y\\
+            &\leqslant M(|x_1|+\cdots+|x_n|)
+        \end{align*}
+        由于有限维线性空间上范数都等价，不妨$||x||_X\defeq |x_1|+\cdots+|x_n|$，则
+        $||Tx||_Y\leqslant M||x||_X$，$T$有界。
+    \end{proof}
+
+    \begin{example}[无界算子的例子]
+        $X=C^1[0,1]$，$Y=C[0,1]$，赋以一致范数，
+        $T=\frac{{\rm d}}{{\rm d}t}$，设
+        \begin{equation*}
+            u_n(t)=t^n,t\in[0,1],n=1,2,\cdots
+        \end{equation*}
+        \begin{align*}
+            &\Rightarrow ||u_n||=1,||Tu_n||=n\\
+            &\Rightarrow \frac{||Tu_n||}{||u_n||}\rightarrow \infty\\
+            &\Rightarrow T\mbox{无界}
+        \end{align*}
+    \end{example}
+\subsection{算子范数}
+    \begin{definition}
+        $X$到$Y$的有界线性算子全体记作$\mathcal{L}(X,Y)$，对于
+        $T\in \mathcal{L}(X,Y)$，
+        \begin{equation*}
+            ||T||_{X\rightarrow Y}
+            \mathop{=}\limits^{\rm def}
+            \mathop{\mathop{\rm sup}\limits_{x\in X}}\limits_{x\neq 0}
+            \frac{||Tx||_Y}{||x||_X}=
+            \mathop{\mathop{\rm sup}\limits_{x\in X}}\limits_{||x||=1}||Tx||_Y
+        \end{equation*}
+        称为$T$的算子范数。
+    \end{definition}
+    \begin{example}
+        Hilbert空间$X$的一个闭子空间为$M$，正交投影$P_M:X\rightarrow M$
+        有$||P_M||_{X\rightarrow M}=1$.
+    \end{example}
+    \begin{theorem}
+        $(X,||\cdot||_X)$，$(Y,||\cdot||_Y)$，
+        $ (\mathcal{L}(X,Y),||\cdot||_{X\rightarrow Y}) $是赋范空间。
+        进而如果$Y$是Banach空间，则$\mathcal{L}(X,Y)$是Banach空间。特别地，
+        $X^*\defeq \{X\mbox{上全体有界线性泛函}\}$是Banach空间。
+    \end{theorem}
+    \begin{proof}
+        取$\mathcal{L}(X,Y)$上的柯西列$\{f_n\}$，
+        \begin{align*}
+            ||f_n-f_m||\leqslant \varepsilon\Rightarrow &
+            \fun{sup}{||x||=1} ||f_n(x)-f_m(x)|| \leqslant \varepsilon\\
+            \Rightarrow &\forall ||x||=1,\{f_n(x)\}\mbox{是$Y$上的柯西列}
+        \end{align*}
+        于是定义：
+        \begin{equation*}
+            f:x\mapsto \fun{lim}{n\rightarrow\infty} f_n(x)
+        \end{equation*}
+        $f$显然是线性映射，
+        \begin{equation*}
+            ||f_n-f||=\fun{sup}{||x||=1}||f_n(x)-f(x)||\rightarrow 0
+        \end{equation*}        
+        现只需证明$||f||$有界：$\{f_n\}$作为柯西列是有界的，不妨$||f_n||\leqslant M$，则
+        \begin{equation*}
+            ||f||=\fun{sup}{||x||=1}||f(x)||
+            =\fun{sup}{||x||=1}\fun{lim}{n\rightarrow \infty}||f_n(x)||
+            \leqslant 
+            \fun{sup}{||x||=1}\fun{liminf}{n\rightarrow \infty}||f_n||\leqslant M<+\infty
+        \end{equation*}
+        所以$f$有界。
+    \end{proof}
+
+\section{Riesz表示定理}
+    设$H$是Hilbert空间，给定$y\in H$，定义$f_y:H\rightarrow\mathbb{K},x\mapsto \left<x,y\right>$，
+    则由C-S不等式：$|f_y(x)|\leqslant ||y||||x||$，
+    于是$f_y\in H^*$且$||f_y\||\leqslant ||y||$.
+
+    问：是否$\forall f\in H^*$，$f(x)=\left<x,y\right>{\rm\ for\ some\ }y\in H$？
+    \begin{theorem}[Riesz表示定理]
+        $H$是Hilbert空间，$\forall f\in H^*$，存在唯一$y_f\in H$使得
+        \begin{equation*}
+            f(x)=\left<x,y_f\right>,x\in H
+        \end{equation*}
+        且$||y_f||=||f||$.
+    \end{theorem}
+    \begin{proof}
+        分析：$\mathbb{R}^n$上的线性代数$l(x)=\sum_{i=1}^n \alpha_ix_i=\left<x,a\right>$，
+        如果$f(x)=\left<x,y\right>,f(x)=0\Rightarrow y\perp x\Rightarrow y\perp {\rm Ker}(f)$.
+
+        存在性：如果$f=0\Rightarrow y_f=0$，下设$f\neq 0$，于是
+        ${\rm Ker}(f)\neq H$，且是闭子空间，因为$f\in H^*$.于是
+        存在$y_0\in {\rm Ker}(f)^\perp{\rm\ with\ }||y_0||=1$.
+        \begin{align*}
+            \forall x\in H,f( x-\frac{f(x)}{f(y_0)}y_0 )=0&\Rightarrow
+            x-\frac{f(x)}{f(y_0)}y_0\in {\rm Ker}(f)\\
+            &\Rightarrow \left<x-\frac{f(x)}{f(y_0)}y_0,y_0\right>=0\\
+            &\Rightarrow \left<x,y_0\right>-\frac{f(x)}{f(y_0)}||y_0||^2=0\\
+            &\Rightarrow f(x)=\left< x,\overline{f(y_0)}y_0 \right> 
+        \end{align*}
+        设$y_f=\overline{f(y_0)}y_0$即可。
+
+        唯一性：设$y,\zeta\in H$使得
+        \begin{equation*}
+            f(x)=\left<x,y\right>=\left<x,\zeta\right>,x\in H
+        \end{equation*}
+        于是$\forall x\in H$，$\left<x,y-\zeta\right>=0\Rightarrow y-\zeta=0$.
+
+        一方面，
+        \begin{equation*}
+            ||f(x)||=||\ag{x,y_f}||\leqslant ||x||\cdot ||y_f||\Rightarrow ||f||\leqslant ||y_f||
+        \end{equation*}
+        另一方面由$||y_0||=1$，
+        \begin{equation*}
+            ||y_f||=||f(y_0)||\leqslant ||f||
+        \end{equation*}
+        所以$||f||=||y_f||$.
+    \end{proof}
+
+    \begin{theorem}
+        $H$是Hilbert空间，$a(\cdot,\cdot)$是$H$上的共轭双线性函数，如果存在$C>0$使得
+        \begin{equation*}
+            |a(x,y)|\leqslant C||x||||y||,\forall x,y\in H
+        \end{equation*}
+        则存在$A\in \mathcal{L}(H)$，使得
+        \begin{equation*}
+            a(x,y)=\left<x,Ay\right>,x\in H
+        \end{equation*}
+        且
+        \begin{equation*}
+            ||A||=\mathop{\rm sup}\limits_{0\neq x,y\in H}
+            \frac{|a(x,y)|}{||x||||y||}
+        \end{equation*}
+    \end{theorem}
+    \begin{proof}
+        $y\in H$，定义
+        \begin{equation*}
+            f_y(x)=a(x,y),x\in H
+        \end{equation*}
+        于是$f_y\in H^*$且$||f_y||\leqslant C||y||$，由Riesz，
+        存在唯一$\zeta\in H$使得$f_y(x)=\left<x,\zeta\right>,x\in H$，定义
+        $A:H\rightarrow H,y\mapsto \zeta$，则
+        \begin{equation*}
+            a(x,y)=f_y(x)=\left<x,\zeta\right>=\left<x,Ay\right>
+        \end{equation*}
+        \begin{enumerate}
+            \item $A$是线性映射；
+            \item $\forall y\in H$，$||Ay||=||\zeta||=||f_y||\leqslant C||y||$，于是$A\in \mathcal{L}(H)$且$||A||\leqslant C$，
+                由$C$的任意性可得
+                \begin{equation*}
+                    ||A||\leqslant \mathop{\rm sup}\limits_{0\neq x,y\in H}
+                    \frac{|a(x,y)|}{||x||||y||}
+                \end{equation*}
+                另一方面，
+                \begin{equation*}
+                    |a(x,y)|=|\left<x,Ay\right>|\leqslant ||x||||Ay||\leqslant ||A||||x||||y||,\forall x,y\in H
+                \end{equation*}
+                于是
+                \begin{equation*}
+                    \mathop{\rm sup}\limits_{0\neq x,y\in H}
+                    \frac{|a(x,y)|}{||x||||y||}\geqslant ||A||
+                \end{equation*}
+        \end{enumerate}
+    \end{proof}
+
+\section{Baire纲定理}
+    \subsection*{定理内容}
+    \begin{definition}
+        $(X,d)$为度量空间，$E\subset X$，如果$\overline{E}$没有内点，则称$E$疏（朗）或无处稠密。
+    \end{definition}
+    \begin{example}
+        $\mathbb{R}$中，Cantor三分集是无处稠密集。
+    \end{example}
+    \begin{definition}
+        第一纲集，又称贫集、瘦集：可数个无处稠密集之并；
+
+        第二纲集：不是第一纲集的集合；
+
+        剩余集：第一纲集的余集。
+    \end{definition}
+    \begin{example}
+        可数集是第一纲集。
+    \end{example}
+    \begin{lemma}[闭球套]
+        设$(X,d)$完备，$\{B_n\}_{n=1}^\infty$是一列闭球，使得
+        \begin{enumerate}
+            \item $B_1\supset B_2\supset \cdots$
+            \item ${\rm diam}B_n\rightarrow 0$
+        \end{enumerate}
+        则存在唯一$x\in X$使得
+        \begin{equation*}
+            \bigcap_{n=1}^\infty B_n=\{x\}
+        \end{equation*}
+    \end{lemma}
+    \begin{proof}
+        存在性：设$B_n=\overline{ B(x_n,r_n) }$，
+        \begin{align*}
+            \forall n\geqslant m,x_n\in B_n\subset B_m
+            \Rightarrow & d(x_n,x_m)\leqslant r_m\rightarrow 0{\rm\ as\ }n,m\rightarrow\infty\\
+            \Rightarrow & \{x_n\}_{n=1}^\infty \mbox{是基本列}\\
+            \mathop{\Rightarrow}\limits^{X\mbox{完备}}& \exists x\in X{\rm\ s.t.\ }d(x_n,x)\rightarrow 0{\rm\ as\ }n\rightarrow\infty\\
+            \mathop{\Rightarrow}\limits^{B_n\mbox{闭}}& x\in B_n,n=1,2,\cdots\\
+            \Rightarrow & x\in\bigcap_{n=1}^\infty B_n
+        \end{align*}
+        
+        唯一性：如果$y\in \bigcap_{n=1}^\infty B_n$，则
+        \begin{equation*}
+            d(x,y)\leqslant d(x,x_n)+d(x_n,y)\leqslant 2r_n\rightarrow 0{\rm\ as\ }n\rightarrow\infty
+        \end{equation*}
+        于是$y=x$.
+    \end{proof}
+    \begin{theorem}[Baire Category Theorem 1，BCT1]
+        完备度量空间是第二纲集。
+    \end{theorem}
+    \begin{proof}
+        假设$(X,d)$完备，是第一纲集，则$X$可以被表示成
+        可数个无处稠密集之并，设为
+        \begin{equation*}
+            X=\bigcup_{n=1}^\infty E_n
+        \end{equation*}
+        任取$B(x_0,r_0)$，
+        \begin{align*}
+            E_1\mbox{疏}\Rightarrow &\overline{E_1}\mbox{无内点}\\
+            \Rightarrow &\exists x_1\in B(x_0,r_0)\backslash \overline{E_1}\\
+            \Rightarrow &{\rm dist}(x_1,\overline{E_1})>0\\
+            \Rightarrow &
+            \exists B(x_1,r_1)\subset B(x_0,r_0),r_1<1{\rm\ s.t.\ }
+            \overline{ B(x_1,r_1) }\cap \overline{E_1}=\varnothing
+        \end{align*}
+        对$E_2$做同样的操作，
+        \begin{equation*}
+            \exists B(x_2,r_2)\subset B(x_1,r_1),r_2<\frac{1}{2}{\rm\ s.t.\ }
+            \overline{ B(x_2,r_2) }\cap \overline{E_2}=\varnothing
+        \end{equation*}
+        以此类推，
+        \begin{equation*}
+            \exists B(x_n,r_n)\subset B(x_{n-1},r_{n-1}),r_n<\frac{1}{n}{\rm\ s.t.\ }
+            \overline{ B(x_n,r_n) }\cap \overline{E_n}=\varnothing
+        \end{equation*}
+        由闭球套引理，
+        \begin{equation*}
+            \bigcap_{n=1}^\infty \overline{ B(x_n,r_n) }=\{x\}
+        \end{equation*}
+        另一方面，由于$\forall n,\overline{ B(x_n,r_n) }\cap \overline{E_n}=\varnothing$，故
+        $\forall n,x\notin \overline{E_n}$，进而
+        \begin{equation*}
+            x\notin \bigcup_{n=1}^\infty \overline{E_n}=X
+        \end{equation*}
+        矛盾。
+    \end{proof}
+    \begin{theorem}[Baire Category Theorem 2，BCT2]
+        $(X,d)$是完备度量空间，$\{U_n\}$是一列开集，且满足
+        $\overline{U_n}=X$，则
+        \begin{equation*}
+            \overline{\left(\bigcap_{n=1}^\infty U_n\right)}=X
+        \end{equation*}
+    \end{theorem}
+    \begin{proof}
+        设$B_0$是$X$上的任一非空开集，
+        $U_1$稠密$\Rightarrow \exists x_0\in U_1\cap B_{0}$，
+        因为$U_1\cap B_{0}$是开集，
+        所以存在$x_0$的邻域$B_1$满足
+        $\overline{B_1}\subset U_1\cap B_{0}$.
+        又因为$U_2$稠密，类似地存在$B_2$满足$\overline{B_2}\subset U_2\cap B_1$，
+        以此类推可得一列开集$\{B_n\}_{n=1}^\infty$，满足
+        \begin{equation*}
+            \overline{B_n}\subset U_n\cap B_{n-1}
+        \end{equation*}
+        不妨令$B_n$为半径小于$\frac{1}{n}$的开球，根据闭球套定理可知
+        \begin{equation*}
+            K=\bigcap_{n=1}^\infty \overline{B_n}\neq \varnothing
+        \end{equation*}
+        根据构造过程可得$K\subset B_0$，
+        $K\subset U_n$，从而$B_0$与$\cap_{n=1}^\infty U_n$相交，
+        所以$\cap_{n=1}^\infty U_n$也是稠密的。
+    \end{proof}
+\subsection*{应用和推论}
+    \begin{example}
+        $l^2$的Hamel基是不可数集。（把$l^2$换成任一无穷维Banach空间也可以。）
+    \end{example}
+    \begin{proof}
+        假设$l^2$的Hamel基$B$可数，设$B=\{x_n\}_{k=1}^\infty$，设
+        $A_n={\rm span}\{x_1,\cdots,x_n\}$，则$A_n$闭且$l^2=\bigcup_{n=1}^\infty A_n$.由BCT，存在$n_0$使得$A_{n_0}$有内点，那么
+        \begin{align*}
+            &\exists B(x_0,r)\subset A_{n_0}\\
+            \Rightarrow& B(0,r)=B(x_0,r)-x_0\subset A_{n_0}\\
+            \Rightarrow& \forall 0\neq x\in l^2,\frac{r}{2}\cdot \frac{x}{||x||}\in B(0,r)\subset A_{n_0}\\
+            \Rightarrow& x\in A_{n_0}
+        \end{align*}
+    \end{proof}
+    \begin{theorem}[Banach, 1931]
+        $C[0,1]$中处处不可微函数全体是一个剩余集，从而是第二纲集。
+    \end{theorem}
+    \begin{proof}
+        记$X=C[0,1]$，$E=\{ f\in C[0,1]:f\mbox{处处不可微} \}$，于是
+        $X\backslash E=\{ f\in C[0,1]:f\mbox{至少在某一点可微} \}$.令
+        \begin{equation*}
+            A_n=\left\{
+                f\in X:  \exists t\in (0,1) {\rm\ s.t.\ }
+                \mathop{\rm sup}\limits_{ h\in (-\frac{1}{n},\frac{1}{a}),t+h\in [0,1] }
+                \left| \frac{f(t+h)-f(t)}{h} \right|\leqslant n
+            \right\}
+        \end{equation*}
+        于是$\forall f\in X\backslash E$，存在$n$使得$f\in A_n$，所以
+        \begin{equation*}
+            X\backslash E=\bigcup_{n=1}^\infty A_n
+        \end{equation*}
+        约化为证明每个$A_n$疏。
+        
+        \textbf{Step1:}每个$A_n$都是闭集。设一列$f_k\in A_n$，
+        $f_k$一致收敛到$f$，对于每个$k$存在$t_k\in (0,1)$使得
+        \begin{equation*}
+            |f_k(t_k+h)-f_k(t_k)|\leqslant n|h|,\forall h\in (-\frac{1}{n},\frac{1}{n}){\rm\ with\ }t_k+h\in [0,1]
+        \end{equation*}
+        $\{t_k\}_{k=1}^\infty$有收敛子列，不妨设$t_k\rightarrow t_0$，
+        由$f_k\rightrightarrows f$，
+        \begin{equation*}
+            |f(t_0+h)-f(t_0)|\leqslant n|h|,\forall h\in (-\frac{1}{n},\frac{1}{n}){\rm\ with\ }t_k+h\in [0,1]
+        \end{equation*}
+        于是$f\in A_n$.
+
+        \textbf{Step2:}$A_n$无内点，即：$\forall f\in A_n$，$\forall \varepsilon>0$，$B(f,\varepsilon)\nsubseteq A_n$.
+        首先，by Weierstrass，
+        \begin{equation*}
+            \exists p\in P[0,1]{\rm\ s.t.\ }||f-p||<\frac{\varepsilon}{2}
+        \end{equation*}
+        令$M=\mathop{\rm max}\limits_{t\in [0,1]}|p'(t)|$，则$M<\infty$且
+        \begin{equation*}
+            |p(t+h)-p(t)|\leqslant M|h|,\forall t\in (0,1),\forall h{\rm\ with\ }t+h\in (0,1)
+        \end{equation*}
+        取分段仿射的连续函数$g$，使得
+        \begin{enumerate}
+            \item $||g||<\frac{\varepsilon}{2}$
+            \item 各段斜率的绝对值$>M+n$
+        \end{enumerate}
+        则$p+g\in B(f,\varepsilon)$，但$p+g\notin A_n$，
+        因为
+        \begin{equation*}
+            |(p+g)'(t)|\geqslant |g'(t)|-|p'(t)|>n
+        \end{equation*}
+    \end{proof}
+
+
+\section{共鸣定理}
+    \subsection*{定理内容}
+    \begin{theorem}[一致有界原理，共鸣定理，UBP]
+        $X$是Banach空间，$Y$是赋范空间，$\mathcal{F}\subset \mathcal{L}(X,Y)$，
+        \begin{equation*}
+            \forall x\in X,\mathop{\rm sup}\limits_{T\in \mathcal{F}}||Tx||<\infty \Rightarrow
+            \mathop{\rm sup}\limits_{T\in \mathcal{F}}||T||<\infty
+        \end{equation*}
+        等价地，
+        \begin{equation*}
+            \mathop{\rm sup}\limits_{T\in \mathcal{F}}||T||=+\infty \Rightarrow 
+            \exists x_0\in X{\rm\ s.t.\ }
+            \mathop{\rm sup}\limits_{T\in \mathcal{F}}||Tx_0||=+\infty
+        \end{equation*}
+    \end{theorem}
+    \begin{proof}
+        令
+        \begin{equation*}
+            F_n=\{ x\in X: 
+            \mathop{\rm sup}\limits_{T\in \mathcal{F}}||Tx||\leqslant n
+            \}=\bigcap_{T\in \mathcal{F}}
+            \{ x\in X:||Tx||\leqslant n \}
+        \end{equation*}
+        因为$T$连续，$\{ x\in X:||Tx||\leqslant n \}$是闭集，进而$F_n$是闭集，
+        \begin{align*}
+            \forall x\in X,\mathop{\rm sup}\limits_{T\in \mathcal{F}}||Tx||<\infty
+            \Rightarrow & X=\bigcup_{n=1}^\infty F_n\\
+            \mathop{\Rightarrow}\limits^{\rm BCT1}
+            & \exists n_0{\rm\ s.t.\ }F_{n_0}\mbox{有内点}\\
+            \Rightarrow & \exists B(x_0,r)\subset F_{n_0}\\
+            \Rightarrow & ||T(x_0+rx)||\leqslant n_0,\forall x\in B(0,1),\forall T\in\mathcal{F}\\
+            \Rightarrow & ||T(rx)||\leqslant n_0+||Tx_0||\leqslant 2n_0\\
+            \Rightarrow & ||Tx||\leqslant \frac{2n_0}{r},\forall x\in B(0,1),\forall T\in\mathcal{F}\\
+            \Rightarrow & \mathop{\rm sup}\limits_{T\in\mathcal{F}}
+            \mathop{\rm sup}\limits_{x\in X,||x||\leqslant 1}
+            ||Tx||\leqslant \frac{2n_0}{r} 
+        \end{align*}
+    \end{proof}
+\subsection*{应用和推论}
+    \begin{theorem}[Banach-Steinhaus]
+        $X$是Banach空间，$Y$是赋范空间，$\overline{M}=X$，
+        $T,T_n\in\mathcal{L}(X,Y),n=1,2,\cdots$
+        \begin{equation*}
+            T_nx\rightarrow T_x,\forall x\in X\Leftrightarrow
+            \mathop{\rm sup}\limits_n ||T_n||<\infty{\rm\ and\ }
+            T_n x\rightarrow Tx,\forall x\in M
+        \end{equation*}
+    \end{theorem}
+    \begin{proof}
+        必要性：逐点收敛$\Rightarrow $逐点有界$\mathop{\Rightarrow }\limits^{\rm UBP}$一致有界。
+
+        充分性：记$C=\mathop{\rm sup}\limits_n ||T_n||$，
+        \begin{align*}
+            \overline{M}=X\Rightarrow & \forall x\in X,\forall \varepsilon>0,\exists y\in M
+            {\rm\ s.t.\ }||x-y||<\frac{\varepsilon}{4( ||T||+C )}\\
+            \Rightarrow & 
+            ||T_nx-Tx||\leqslant 
+            \mathop{||T_nx-T_ny||}\limits_{\leqslant C||x-y||}+
+            \mathop{||T_ny-Ty||}\limits_{<\frac{\varepsilon}{2},n\mbox{充分大}}+
+            \mathop{||T_y-Tx||}\limits_{\leqslant ||T||||x-y||}
+        \end{align*}
+    \end{proof}
+    \begin{theorem}
+        $X,Y$是Banach空间，$T_n\in \mathcal{L}(X,Y),n=1,2,\cdots$，如果
+        $\forall x\in X$，$\mathop{\rm lim}\limits_{n\rightarrow\infty}T_nx$存在，定义
+        $T:X\rightarrow Y,X\mapsto\mathop{\rm lim}\limits_{n\rightarrow\infty}T_nx$，
+        则$T\in \mathcal{L}(X,Y)$，且
+        \begin{equation*}
+            ||T||\leqslant \mathop{\rm liminf}\limits_{n\rightarrow\infty}||T_n||
+        \end{equation*}
+    \end{theorem}
+    \begin{proof}
+        见习题2.3.7.
+    \end{proof}
+    我们设
+    \begin{equation*}
+        S_N(f)(x)=\sum_{k=-N}^N \hat{f}(k){\rm e}^{2\pi{\rm i}kx}
+    \end{equation*}
+    问：是否$\forall f\in C(\Pi)$，$S_N(f)(x)\rightarrow f(x),\forall x\in [-\frac{1}{2},\frac{1}{2})$？
+    \begin{theorem}[Du Bois-Reymond,1876]
+        $\exists f\in C(\Pi){\rm\ s.t.\ }S_N(f)(0)$发散。
+    \end{theorem}
+    \begin{proof}
+        \begin{equation*}
+            S_N(f)(x)=(f* D_N)(x)
+        \end{equation*}
+        其中
+        \begin{equation*}
+            D_N(t)\defeq \frac{\sin{ [(2N+1)\pi t] }}{\sin{ (\pi t) }}
+        \end{equation*}
+        定义$T_N:C(\Pi)\rightarrow \R,f\mapsto S_N(f)(0)$，
+        \begin{align*}
+            \Rightarrow & |T_N(f)|=\left| \int_{-\frac{1}{2}}^{\frac{1}{2}} f(t)D_N(-t)\d t \right|\leqslant ||D_N||_1 \cdot ||f||\\
+            \Rightarrow & T_N\in C(\Pi)^*,||T_N||\leqslant ||D_N||_1
+        \end{align*}
+        Claim：$||T_N||=||D_N||_1$.因为$D_N$在$[-\frac{1}{2},\frac{1}{2}]$上只有有限多个零点，故
+        ${\rm sgn\ }D_N$只有有限个间断点。$\forall \varepsilon>0$，存在$f_\varepsilon\in C(\Pi)$，分段仿射使得
+        \begin{enumerate}
+            \item $||f_\varepsilon||=1$.
+            \item $f_\varepsilon={\rm sgn\ }D_N {\rm\ on\ }[-\frac{1}{2},\frac{1}{2}]\backslash I_\varepsilon{\rm\ with\ }|I_\varepsilon|<\frac{\varepsilon}{4N+3}$.
+        \end{enumerate}
+        \begin{align*}
+            \Rightarrow |T_N(f_\varepsilon)|=&\left| \int_{-\frac{1}{2}}^{\frac{1}{2}}f_\varepsilon(t)D_N(t)\d t \right|\\
+            \geqslant & \int_{[-\frac{1}{2},\frac{1}{2}]\backslash I_\varepsilon} |D_N(t)|\d t-\int_{I_\varepsilon}|D_N(t)|\d t\\
+            \geqslant & ||D_N||_1-2\int_{I_\varepsilon}|D_N(t)|\d t\\
+            >& ||D_N||_1-\varepsilon\\
+            \Rightarrow ||T_N||\geqslant & \frac{|T_N(f_\varepsilon)|}{||f_\varepsilon||}>||D_N||_1-\varepsilon
+        \end{align*}
+        令$\varepsilon\rightarrow0$则Claim得证，而
+        \begin{align*}
+            ||D_N||_1=& 2\int_0^\frac{1}{2}\left| \frac{\sin [(2N+1)\pi t]}{\sin (\pi t)} \right|\d t\\
+            \geqslant& 2\int_0^\frac{1}{2}\left| \frac{\sin [(2N+1)\pi t]}{\sin (\pi t)} \right|\d t\\
+            \eq{x=(2N+1)\pi t}&\frac{2}{\pi}\int_0^{\frac{\pi}{2}(2N+1)}\left| \frac{\sin{x}}{x} \right|\d x\rightarrow \infty{\rm\ as\ }N\rightarrow\infty
+        \end{align*}
+        于是
+        \begin{align*}
+            {\rm Claim}\Rightarrow& \fun{sup}{N}||T_N||=+\infty\\
+            \Ra{\rm UBP}& \exists f\in C(\Pi){\rm\ s.t.\ }\fun{sup}{N}|T_N(f)|=+\infty\\
+            \Rightarrow& \fun{limsup}{N\rightarrow\infty}|S_N(f)(0)|=+\infty\\
+            \Rightarrow& \{ S_N(f)(0) \}_{N=1}^\infty\mbox{发散}
+        \end{align*}
+    \end{proof}
+
+
+\section{开映射定理}
+    方程$Tx=y$，当$y$变化很小时$x$是不是变化很小（解的稳定性）？这就要考虑$T^{-1}$的连续性。
+\subsection*{定理内容}
+    \begin{definition}
+        将任意开集都映为开集的映射，称为开映射。
+    \end{definition}
+    
+    \begin{theorem}[开映射定理，OMT]
+        $X,Y$是Banach空间，$T\in \mathcal{L}(X,Y)$，则
+        $T$是满射$\Rightarrow T$是开映射。
+    \end{theorem}
+    \begin{lemma}
+        $X,Y$是Banach空间，$T\in \mathcal{L}(X,Y)$，如果$T$满射，则$\exists \delta>0{\rm\ s.t.\ }\delta B_Y\subset T(B_X)$.
+        \begin{proof}
+            \textbf{Step1}：$\exists r>0{\rm\ s.t.\ }rB_Y\subset\overline{T(B_X)}$，
+            \begin{align*}
+                X=\bigcup_{n=1}^\infty nB_X\Ra{T\mbox{满}}&Y=T(X)=\bigcup_{n=1}^\infty T(nB_X)\\
+                \Rightarrow& Y=\bigcup_{n=1}^\infty \overline{T(nB_X)}\\
+                \Ra{\rm BCT}& \exists n_0{\rm\ s.t.\ }\overline{T(n_0B_X)}\mbox{有内点}\\
+                \Rightarrow& \exists B_Y(y_0,t)\subset \overline{T(n_0B_X)}
+            \end{align*}
+            令$r\defeq t/n_0$，Claim：$rB_y\subset \overline{T(B_X)}$.
+            \begin{align*}
+                \forall y\in rB_Y,y_0\pm n_0y\in B_Y(y_0,t)\subset \overline{T(n_0 B_X)}\Rightarrow &
+                \exists \{x_n\}_{n=1}^\infty,\{x_n'\}_{n=1}^\infty \subset n_0B_X{\rm\ s.t.\ }\\
+                &Tx_n\rightarrow y_0+n_0y,Tx_n'\rightarrow y_0-n_0y\\
+                \Rightarrow& T\left( \frac{x_n-x_n'}{2n_0} \right)\rightarrow y\\
+                \Rightarrow& y\in \overline{T(B_X)} 
+            \end{align*}
+
+            \textbf{Step2}：令$\delta\defeq r/3$，则$\delta B_Y\subset T(B_X)$，即
+            \begin{equation*}
+                \forall y\in\delta B_Y,\exists x\in B_X{\rm\ s.t.\ }Tx=y
+            \end{equation*}
+            \begin{align*}
+                {\rm Step1}\Rightarrow &\forall y\in \delta B_Y,3y\in rB_Y\subset\overline{T(B_X)}\\
+                \Rightarrow &\exists \tilde{x}_1\in B_X{\rm\ s.t.\ }||3y-T\tilde{x}_1||_Y<\delta
+            \end{align*}
+            令$x_1\defeq \tilde{x}_1/3$，则$||y-Tx_1||_Y<\delta/3$.
+            令$y_1\defeq y-Tx_1$，则
+            \begin{align*}
+                y_1\in \frac{\delta}{3}B_Y\Rightarrow& 9y_1\in rB_Y\subset \overline{T(B_X)}\\
+                \Rightarrow& \exists x_2\in \frac{1}{3^2}B_X{\rm\ s.t.\ }||y_1-Tx_2||_Y<\frac{\delta}{3^2}\\
+                &\vdots\\
+                &y_n\defeq y_{n-1}-Tx_n\in\frac{\delta}{3^n}B_Y\\
+                &\exists x_{n+1}\in \frac{1}{3^{n+1}}B_X{\rm\ s.t.\ }||y_n-Tx_{n+1}||_Y<\frac{\delta}{3^{n+1}}\\
+                \Rightarrow& \ms{ \sum_{k=n+1}^{n+p}x_k }_{X}<\frac{\frac{1}{3^{n+1}}}{1-\frac{1}{3}}<\frac{1}{2^n}\\
+                \Rightarrow& \left\{ \sum_{k=1}^n x_k \right\}_{n=1}^\infty \mbox{是}X\mbox{中的基本列}\\
+                \Ra{X\ Banach}&\exists x\in X{\rm\ s.t.\ }\sum_{k=1}^n x_k\rightarrow x{\rm\ and\ }||x||_X\leqslant \ms{ x-\sum_{k=1}^N x_k}_{X}+\ms{ \sum_{k=1}^N x_k}_{X}<1\\
+                \Rightarrow& x\in B_X{\rm\ and\ }\frac{\delta}{3^n}>||y_n||_Y=||y_{n-1}-Tx_n||_Y=\cdots=||y-T(x_1+\cdots+x_n)||_Y\\
+                \Rightarrow& T\left( \sum_{k=1}^n x_k \right)\rightarrow y\\
+                \Rightarrow& Tx=y
+            \end{align*}
+        \end{proof}
+    \end{lemma}
+    \begin{proof}
+        设$U$是$X$上的开集，$\forall y\in T(U)$，$\exists x\in U{\rm\ s.t.\ }Tx=y$，令$V\defeq U-x$，
+        \begin{align*}
+            0\in V\mathop{\subset}\limits^{\rm open}X
+            \Rightarrow & \exists t>0{\rm\ s.t.\ }tB_X\subset V\\
+            \Ra{\rm Lemma} & \exists \delta>0{\rm\ s.t.\ }\delta B_Y\subset T(B_X)\subset \frac{1}{t}T(V)\\
+            \Rightarrow & 0\mbox{是$T(V)$的内点}\\
+            T(U)=T(V)+Tx \Rightarrow& y=Tx\mbox{是$T(U)$的内点}
+        \end{align*}
+    \end{proof}
+    
+    \begin{theorem}[逆算子定理，IMT]
+        $X,Y$是Banach空间，$T\in \mathcal{L}(X,Y)$，则
+        $T$是双射$\Rightarrow T^{-1}\in\mathcal{L}(Y,X)$.
+    \end{theorem}
+    \begin{proof}
+        $f:X\rightarrow Y$连续$\Leftrightarrow \forall $开集
+        $U\subset Y,f^{-1}(U)$是$X$上的开集。
+
+        $T^{-1}:Y\rightarrow X$连续$\Leftrightarrow \forall $开集
+        $U\subset X$，由OMT，$(T^{-1})^{-1}(U)=T(U)$是$Y$上的开集。
+    \end{proof}
+\subsection*{应用和推论}
+    \begin{theorem}[Lax-Milgram]
+        $H$是Hilbert空间，如果共轭双线性函数$a(\cdot,\cdot)$满足
+        \begin{enumerate}
+            \item 连续：$\exists C>0$使得$|a(x,y)|\leqslant C||x||||y||,\forall x,y\in H$.
+            \item 强制(coersive)：$\exists\delta>0$使得$\delta ||x||^2\leqslant a(x,x),\forall x\in H$.
+        \end{enumerate}
+        则存在唯一$A\in\mathcal{L}(H)$使得
+        \begin{enumerate}[$1^\circ$]
+            \item $a(x,y)=\ag{x,Ay},x,y\in H$.
+            \item $A^{-1}$存在、有界且$||A^{-1}||\leqslant \frac{1}{\delta}$.
+        \end{enumerate}
+    \end{theorem}
+    \begin{proof}
+        Claim1：$A$是双射：
+        \begin{enumerate}[(1).]
+            \item $A$是单射：对于线性映射而言，单射$\Leftrightarrow {\rm Ker}(A)=A^{-1}(\{0\})=\{0\}$.
+                \begin{align*}
+                    Ay=0\Rightarrow& a(x,y)=\ag{x,Ay}=0,\forall x\in H\\
+                    \Rightarrow& 0=a(y,y)\geqslant \delta||y||^2\\
+                    \Rightarrow& y=0
+                \end{align*}
+            \item $A$是满射：先证明${\rm Ran}(A)$闭，设${\rm Ran}(A)\ni Ax_n\rightarrow y$，
+                \begin{align*}
+                    &\delta||x_n-x_m||^2\leqslant a(x_n-x_m,x_n-x_m)
+                    =\ag{x_n-x_m,Ax_n-Ax_m}\leqslant ||x_n-x_m||\cdot ||Ax_n-Ax_m||\\
+                    \Rightarrow&
+                    ||x_n-x_m||\leqslant \frac{1}{\delta}||Ax_n-Ax_m||\rightarrow 0{\rm\ as\ }n,m\rightarrow\infty\\
+                    \Rightarrow&\{x_n\}_{n=1}^\infty\mbox{是基本列}
+                \end{align*}
+                设$x_n\rightarrow x\in H$，
+                $A$连续所以$Ax_n\rightarrow Ax$，而$Ax_n\rightarrow y$，
+                所以$y=Ax\in{\rm Ran}(A)$，那么$H={\rm Ran}(A)\oplus {\rm Ran}(A)^\perp$.
+                为了证明$A$满射，只需证明${\rm Ran}(A)^\perp=\{0\}$，
+                \begin{equation*}
+                    y\in {\rm Ran}(A)^\perp\Rightarrow 
+                    \ag{y,Ax}=a(y,x)=0,\forall x\in H
+                \end{equation*}
+                特别地，考虑$x=y$，则$0=a(y,y)\geqslant \delta||y||^2\Rightarrow y=0$.
+        \end{enumerate}
+        那么由IMT，$A^{-1}\in\mathcal{L}(H)$，
+        \begin{align*}
+            \delta||x||^2\leqslant a(x,x)=\ag{x,Ax}\leqslant ||x||\cdot ||Ax||
+            \Rightarrow& ||x||\leqslant \frac{1}{\delta}||Ax||,\forall x\in H\\
+            \Rightarrow& ||A^{-1}y||\leqslant \frac{1}{\delta}||y||,\forall y\in H\\
+            \Rightarrow& ||A^{-1}||\leqslant \frac{1}{\delta}
+        \end{align*}
+    \end{proof}
+
+    \begin{theorem}[等价范数定理]
+        $(X,\ms{\cdot}_{1}),(X,\ms{\cdot}_{2})$都是Banach空间，
+        则$\ms{\cdot}_{2}\lesssim \ms{\cdot}_{1}\Rightarrow 
+        \ms{\cdot}_{1}\cong \ms{\cdot}_{2}$.
+    \end{theorem}
+    \begin{proof}
+        考虑恒等映射$I:(X,\ms{\cdot}_{1})\rightarrow (X,\ms{\cdot}_{2}),x\mapsto x$.
+        \begin{align*}
+            \exists C>0{\rm\ s.t.\ }\ms{x}_{2}\leqslant C\ms{x}_{1},\forall x\in X
+            \Rightarrow& \frac{||I(x)||_2}{||x||_1}\leqslant C \\
+            \Rightarrow& I\in\mathcal{L}( (X,\ms{\cdot}_{1}),(X,\ms{\cdot}_{2}) )\\
+            \Ra{\rm IMT}&I^{-1}\in\mathcal{L}( (X,\ms{\cdot}_{1}),(X,\ms{\cdot}_{2}) )\\
+            \Rightarrow&\exists C'>0{\rm\ s.t.\ }\ms{x}_{1}\leqslant C'\ms{x}_{2},\forall x\in X\\
+            \Rightarrow&\frac{1}{C'}\ms{x}_{1}\leqslant \ms{x}_{2}\leqslant C\ms{x}_{1},\forall x\in X
+        \end{align*}
+    \end{proof}
+
+
+\section{闭图像定理}
+    \begin{definition}[乘积度量空间]
+        $(X,\ms{\cdot}_{X}),(Y,\ms{\cdot}_{Y})$是两个度量空间，定义：
+        \begin{equation*}
+            \ms{ (x,y) }_{X\times Y}\defeq \ms{x}_{X}+\ms{y}_{Y}
+        \end{equation*}
+        可以证明，$( X\times Y,\ms{\cdot}_{X\times Y} )$构成一个新的度量空间，称为乘积空间。
+    \end{definition}
+    \begin{corollary}
+        $X,Y$都是Banach空间，则其乘积空间$X\times Y$也是Banach空间。
+    \end{corollary}
+    \begin{definition}[闭算子]
+        $T:X\rightarrow Y$是线性映射，
+        \begin{equation*}
+            {\rm Gr}(T)\defeq \{ (x,Tx):x\in {\rm Dom}(T) \}
+        \end{equation*}
+        称为$T$的图像，其中${\rm Dom}(T)\subset X$是指$T$的定义域，为$X$的子集.
+
+        如果${\rm Gr}(T)$是$X\times Y$的闭子空间，则称$T$是闭算子。
+    \end{definition}
+    \begin{lemma}
+        $T$是闭算子当且仅当
+        \begin{equation*}
+            {\rm Dom(T)}\ni x_n\rightarrow x,Tx_n\rightarrow y
+        \end{equation*}
+        蕴含(imply)
+        \begin{equation*}
+            x\in {\rm Dom}(T),y=Tx
+        \end{equation*}
+        即，如果$T$将${\rm Dom}(T)$上的收敛列$\{x_n\}$映为收敛列$\{y_n=Tx_n\}$，
+        则收敛列$\{x_n\}$的极限$x\in {\rm Dom}(T)$且收敛列$\{y_n=Tx_n\}$的极限为$y=Tx$.
+    \end{lemma}
+    \begin{proof}
+        ${\rm Gr}(T)$闭当且仅当：
+        \begin{equation*}
+            (x_n,Tx_n)\rightarrow (x,y)\Rightarrow (x,y)\in G_r(T)
+        \end{equation*}
+    \end{proof}
+
+    \begin{remark}
+        ${\rm Dom}(T)$不一定是闭集。
+    \end{remark}
+
+    \begin{example}[无界的闭算子]
+        \begin{equation*}
+            T=\frac{\d}{\d t}:C[0,1]\rightarrow C[0,1],\ {\rm Dom}(T)=C^1[0,1]
+        \end{equation*}
+    \end{example}
+
+    \begin{proposition}
+        $A$有界，$D={\rm Dom}(A)$闭，则$A$闭。
+    \end{proposition}
+    \begin{proof}
+        设$\{x_n\}\subset D$收敛到$x$，$Ax_n\rightarrow y$，则
+        $D$闭$\Rightarrow x\in D$，$A$连续$\Rightarrow Ax_n\rightarrow Ax$，所以$Ax=y$，$A$是闭算子。
+    \end{proof}
+
+\subsection*{定理内容}
+    \begin{theorem}[B.L.T.]
+        $X$是赋范空间，$Y$是Banach空间，
+        任一$T\in \mathcal{ L }( {\rm Dom}(T),Y )$可唯一地、保范数地延拓为
+        $\tilde{T}\in \mathcal{L}( \overline{{\rm Dom}(T)},Y )$.即
+        \begin{equation*}
+            \tilde{T}|_{ {\rm Dom}(T) }=T{\rm\ and\ }||\tilde{T}||=||T||.
+        \end{equation*}
+    \end{theorem}
+    \begin{proof}
+        \begin{align*}
+            &\forall x\in 
+            \overline{{\rm Dom}(T)},\exists x_n\in {\rm Dom}(T),n=1,2,\cdots{\rm\ s.t.\ }x_n\rightarrow x\\
+            \Ra{ T\mbox{有界}}&||Tx_n-Tx_m ||\leqslant ||T|| ||x_n-x_m||\rightarrow 0{\rm\ as\ }n,m\rightarrow\infty\\
+            \Rightarrow& \{Tx_n\}_{n=1}^\infty \mbox{是$Y$中的基本列}\\
+            \Ra{Y\rm\ Banach}& \exists y\in Y{\rm\ s.t.\ }Tx_n\rightarrow y
+        \end{align*}
+        定义映射
+        \begin{equation*}
+            \tilde{T}:\overline{{\rm Dom}(T)}\rightarrow Y,x\mapsto y
+        \end{equation*}
+        容易验证良定，且$\tilde{T}$是线性映射。下面证明$\tilde{T}$有界：
+        \begin{align*}
+            &\forall x\in \overline{ {\rm Dom}(T) }, 
+            ||\tilde{T}x||=||y||=\fun{lim}{n\rightarrow \infty}||Tx_n||
+            \leqslant \fun{lim}{n\rightarrow\infty} ||T||||x_n||=||T||||x||\\
+            \Rightarrow& \tilde{T}\in\mathcal{ L }(\overline{ {\rm Dom}(T) },Y){\rm\ and\ }||\tilde{T}||\leqslant ||T||
+        \end{align*}
+        另一方面，平凡地，$||\tilde{T}||\geqslant ||T||$.
+    \end{proof}
+
+    \begin{example}[Fourier变换]
+        \begin{equation*}
+            \hat{f}(\xi)\defeq \int_{\R^n}f(x){\rm e}^{-2\pi {\rm i}x\cdot \xi}\d x
+        \end{equation*}
+        其中$f\in L^1$，如何在$L^2$上定义？
+
+        $L^1\cap L^2$在$L^2$上稠密，$||\hat{f}||_2=||f||_2,\forall f\in L^1\cap L^2$(Planchered)，
+        由B.L.T.可得$\mathcal{F}:f\mapsto \hat{f}$可唯一地、保范数地延拓到$L^2$上。
+    \end{example}
+    
+    \begin{remark}
+        由B.L.T和命题2.6.1，有界算子可以将其定义域延拓为闭集，从而成为闭算子。
+    \end{remark}
+
+    \begin{theorem}[闭图像定理，CGT]
+        $X,Y$是Banach空间，$T:X\rightarrow Y$是闭线性算子，如果
+        ${\rm Dom}(T)$是闭集，则$T$有界。
+    \end{theorem}
+    \begin{proof}
+        ${\rm Gr}(T)$是$X\times Y$的闭子空间，所以$({\rm Gr}(T),||\cdot||_{X\times Y})$是Banach空间，定义：
+        \begin{equation*}
+            \Pi_1:{\rm Gr}(T)\rightarrow {\rm Dom}(T),\ (x,Tx)\mapsto x
+        \end{equation*}
+        \begin{equation*}
+            \Pi_2:{\rm Gr}(T)\rightarrow Y,\ (x,Tx)\mapsto Tx
+        \end{equation*}
+        并设$T=\Pi_2\prod \Pi_1^{-1}$，
+        \begin{equation*}
+            \Pi_1\mbox{是双射}\mathop{\Rightarrow}\limits_{ {\rm Dom}(T)\mbox{闭用在这里} }^{ \rm IMT }
+            \Pi^{-1}\mbox{有界}\Rightarrow T=\Pi_1\circ\Pi_1^{-1}\mbox{有界}
+        \end{equation*}
+    \end{proof}
+    \begin{proof}
+        $( {\rm Dom}(T),||\cdot||_X )$是Banach空间，令
+        \begin{equation*}
+            ||x||_G\defeq ||x||_X+||Tx||_Y,\ x\in {\rm Dom}(T)
+        \end{equation*}
+        {\rm Claim}：$( {\rm Dom}(T),||\cdot||_G )$也是Banach空间。实际上，
+        \begin{equation*}
+            ||x_n-x_m||_G=||x_n-x_m||_X+||Tx_n-Tx_m||_Y\rightarrow 0{\rm\ as\ }n,m\rightarrow\infty
+        \end{equation*}
+        $X,Y$是Banach，所以存在$x_n\rightarrow x,Tx_n\rightarrow y$，因为$T$闭所以
+        $x\in{\rm Dom}(T),y=Tx$.于是
+        \begin{equation*}
+            ||x_n-x||_G=||x_n-x||_X+||Tx_n-Tx||_Y\rightarrow 0
+        \end{equation*}
+        那么$||\cdot||_X$弱于$||\cdot||_G$，因此$||\cdot||_X$等价于$||\cdot||_G$，
+        所以存在$C>0$使得
+        \begin{equation*}
+            ||Tx||_Y\leqslant ||x||_G\leqslant C||x||_X,\forall x\in {\rm Dom}(T)
+        \end{equation*}
+    \end{proof}
+\subsection*{应用和推论}
+    \begin{example}[Hellinger-Toeplitz]
+        $H$是Hilbert空间，如果$T:H\rightarrow H$满足
+        $\ag{Tx,y}=\ag{x,Ty},\forall x,y\in H$，则$T$有界。
+    \end{example}
+    \begin{proof}
+        先证明$T$闭：设$x_n\rightarrow x$，$Tx_n\rightarrow y$，存在$\delta\in H$使得
+        \begin{equation*}
+            \ag{\delta,Tx}=\ag{T\delta,x}
+            =\fun{lim}{n\rightarrow\infty}\ag{T\delta,x_n}
+            =\fun{lim}{n\rightarrow\infty}\ag{\delta,Tx_n}
+            =\ag{\delta,y}
+        \end{equation*}
+        所以$Tx=y$.于是由CGT可知$T$有界。
+    \end{proof}
+
+
+\section{Hahn-Banach定理}
+\subsection{代数形式——线性泛函的延拓}
+    \begin{definition}
+        $X$是向量空间，如果函数$p:X\rightarrow \R$使得
+        \begin{enumerate}
+            \item 正齐性：$p(tx)=tp(x),\forall x\in X,t>0$.
+            \item 次可加性：$p(x+y)\leqslant p(x)+p(y),\forall x,y\in X$.
+        \end{enumerate}
+        则称$p$是$X$上的一个次线性泛函。
+
+        如果$p$还满足齐次性，即
+        \begin{equation*}
+            p(\lambda x)=|\lambda |p(x),\forall x\in X,\forall \lambda\in \K
+        \end{equation*}
+        则称$p$是一个半范数。
+    \end{definition}
+    \begin{remark}
+        \begin{enumerate}
+            \item 半范数非负：$\forall x\in X,2p(x)=p(x)+p(-x)\geqslant p(0)=0$.
+            \item 如果半范数$p$满足$p(x)=0\Rightarrow x=0$，则$p$是一个范数。
+        \end{enumerate}
+    \end{remark}
+    
+    \begin{theorem}[HBT for real version]
+        设$X$为实向量空间，$p$是$X$上次线性泛函，$M$是$X$的子空间，
+        $f$是$M$上的线性泛函，并满足$f(x)\leqslant p(x),\forall x\in M$.
+        则存在$X$上的线性泛函$F$满足
+        \begin{enumerate}
+            \item $F|_M=f$.
+            \item $F(x)\leqslant p(x),\forall x\in X$.
+        \end{enumerate}
+    \end{theorem}
+    \begin{lemma}
+        在定理条件下，设$x_0\in X\backslash M$，定义
+        \begin{equation*}
+            \tilde{M}\defeq M\oplus {\rm span}{x_0}
+        \end{equation*}
+        则存在线性映射$\tilde{f}:\tilde{M}\rightarrow\R$，满足
+        \begin{enumerate}
+            \item $\tilde{f}|_M=f$.
+            \item $\tilde{f}(x)\leqslant p(x),\forall x\in \tilde{M}$.
+        \end{enumerate}
+        \begin{proof}
+            \begin{align*}
+                &\forall x,y\in M,f(x)+f(y)=f(x+y)\leqslant p(x+y)\leqslant p(x-x_0)+p(y+x_0)\\
+                \Rightarrow&
+                f(x)-p(x-x_0)\leqslant p(y+x_0)-f(y)\\
+                \Rightarrow& \fun{sup}{x\in M}[ f(x)-p(x-x_0) ]
+                \leqslant \fun{inf}{y\in M}[ p(y+x_0)-f(y) ]\\
+                \Rightarrow& \exists \beta\in\R{\rm\ s.t.\ }
+                f(x)-p(x-x_0)\leqslant \beta\leqslant p(y+x_0)-f(y),\forall x,y\in M\tag{*}
+            \end{align*}
+            令
+            \begin{equation*}
+                \tilde{f}:\tilde{M}\rightarrow \R,x+\lambda x_0\mapsto f(x)+\lambda\beta
+            \end{equation*}
+            于是$\tilde{f}$是线性映射，且$\tilde{f}|_M=f$.下面证明：
+            \begin{equation*}
+                \tilde{f}(x+\lambda x_0)\leqslant p(x+\lambda x_0),\forall x\in M,\forall \lambda\in\R
+            \end{equation*}
+            $\lambda=0$显然，$\lambda\neq 0$时，
+            不妨设$\lambda>0$，(*)式中$x,y$均代以$\frac{x}{\lambda}$可得
+            \begin{align*}
+                & f(\frac{x}{\lambda})-p(\frac{x}{\lambda}-x_0)\leqslant \beta\leqslant p(\frac{x}{\lambda}+x_0)-f(\frac{x}{\lambda})\\
+                \Rightarrow &
+                f(x)-p(x-\lambda x_0)\leqslant \lambda\beta\leqslant p(x+\lambda x_0)-f(x)\\
+                \Rightarrow &
+                \left\{ \begin{array}{l}
+                    f(x)-\lambda \beta=\tilde{f}(x-\lambda x_0)\leqslant p(x-\lambda x_0)\\
+                    f(x)+\lambda \beta=\tilde{f}(x+\lambda x_0)\leqslant p(x+\lambda x_0)
+                \end{array} \right.
+            \end{align*}
+        \end{proof}
+    \end{lemma}
+    \begin{proof}
+        对两个线性泛函$g,h$，如果${\rm Dom}(g)$是
+        ${\rm Dom}(h)$的闭子空间，且
+        $h_{ {\rm Dom}(g) }=g$，则称$h$是$g$的一个延拓。令
+        \begin{equation*}
+            \mathcal{F}\defeq \{ g:g\mbox{是}f\mbox{的延拓，}g(x)\leqslant p(x),\forall x\in {\rm Dom}(g) \}
+        \end{equation*}
+        引入偏序：
+        \begin{equation*}
+            g\leqslant h\Leftrightarrow h\mbox{是}g\mbox{的延拓}
+        \end{equation*}
+        设$\mathcal{T}$是$\mathcal{F}$的任一全序子集，令
+        \begin{equation*}
+            Y\defeq \bigcup_{g\in \mathcal{T}}{\rm Dom}(g)
+        \end{equation*}
+        于是$Y$是$X$的闭子空间，令
+        \begin{equation*}
+            G:Y\rightarrow\R,x\mapsto g(x){\rm\ if\ }x\in {\rm Dom}(g)
+        \end{equation*}
+        $\mathcal{T}$全序$\Rightarrow G$良定且是$\mathcal{T}$的一个上界，
+        由Zorn引理可得$\mathcal{F}$有极大元$F$，下面证明${\rm Dom}(F)=X$，从而$F$即为所求。
+
+        假设不然，即存在$x_0\in X\backslash {\rm Dom}(F)$，那么由引理可得
+        存在${\rm Dom}(F)\oplus {\rm span}\{x_0\}$上的线性泛函$\tilde{F}$，满足
+        \begin{enumerate}
+            \item $\tilde{F}|_{{\rm Dom}(F)}=F$.
+            \item $\tilde{F}(x)\leqslant p(x),\forall x\in {\rm Dom}(F)\oplus {\rm span}\{x_0\}$.
+        \end{enumerate}
+        于是$\tilde{F}\in \mathcal{F}$且$F\leqslant \tilde{F}$，这与$F$的极大性矛盾。
+    \end{proof}
+
+    \begin{theorem}[HBT for complex version]
+        设$X$为复向量空间，$p$是$X$上次线性泛函，$M$是$X$的子空间，
+        $f:M\rightarrow \C$是$M$上的线性泛函，
+        并满足$|f(x)|\leqslant p(x),\forall x\in M$.
+        则存在$X$上的线性泛函$F:X\rightarrow\C$满足
+        \begin{enumerate}
+            \item $F|_M=f$.
+            \item $|F(x)|\leqslant p(x),\forall x\in X$.
+        \end{enumerate}
+    \end{theorem}
+    \begin{proof}
+        \textbf{Step1}：先把$X$看作实向量空间，令
+        $g\defeq {\rm Re\ }f$，则$g$是$M$上的实线性泛函，且满足
+        \begin{equation*}
+            g(x)\leqslant |f(x)|\leqslant p(x),\forall x\in M
+        \end{equation*}
+        那么由实HBT，存在线性映射$G:X\rightarrow \R$，满足
+        \begin{enumerate}
+            \item $G|_M=g$.
+            \item $G(x)\leqslant p(x),\forall x\in X$.
+        \end{enumerate}        
+
+        \textbf{Step2}：复化。令
+        \begin{equation*}
+            F(x)\defeq G(x)-\i G( \i x )
+        \end{equation*}
+        显然有
+        \begin{align*}
+            &F(x+y)=F(x)+F(y)\\
+            &F(\alpha x)=\alpha F(x),\forall x\in X,\forall \alpha\in \R
+        \end{align*}
+        所以
+        \begin{equation*}
+            F( (\alpha_1+\i \alpha_2)x )
+            =F(\alpha_1 x)+F(\i \alpha_2 x)
+            =\alpha_1 F(x)+\alpha_2 F(\i x),\forall x\in X,\forall \alpha_1,\alpha_2\in\R
+        \end{equation*}
+        故只需证明$F(\i x)=\i F(x)$，
+        \begin{equation*}
+            F(\i x)=G(\i x)-\i G(-x)
+            =G(\i x)+\i G(x)
+            =\i (-\i G(\i x)+G(x))
+            =\i F(x)
+        \end{equation*}
+        得证。
+
+        \textbf{Step3}：证明$F|_M=f$.
+        \begin{align*}
+            \forall x\in M,F(x)&=G(x)-\i G(\i x)\\
+            &=g(x)-\i g(\i x)\\
+            &={\rm Re\ }f(x)-\i\cdot {\rm Re\ }f(\i x)\\
+            &={\rm Re\ }f(x)-\i\cdot {\rm Re\ }\{\i f(x)\}\\
+            &={\rm Re\ }f(x)+\i\cdot {\rm Im\ }f(x)=f(x)
+        \end{align*}
+
+        \textbf{Step4}：证明$|F(x)|\leqslant p(x),\forall x\in X$.
+        $F(x)=0$时显然，设$F(x)\neq 0$，存在$\theta\in\R$使得$|F(x)|=\e^{-\i \theta}F(x)$，于是
+        \begin{equation*}
+            |F(x)|=F(\e^{-\i \theta}x)
+            =G(\e^{-\i \theta}x)-\i G( \i\e^{-\i \theta}x )
+            =G(\e^{-\i \theta}x)\leqslant p(\e^{-\i \theta}x)
+            =p(x)
+        \end{equation*}
+    \end{proof}
+
+    \begin{theorem}[HBT]
+        $X$为度量空间，$M$是其子空间，则
+        \begin{equation*}
+            \forall f\in M^*,\exists F\in X^*{\rm\ s.t.\ }
+            F|_M=f{\rm\ and\ }||F||=||f||
+        \end{equation*}
+        这称为保范延拓。
+    \end{theorem}
+    \begin{proof}
+        令
+        \begin{equation*}
+            p(x)\defeq ||f||\cdot ||x||,x\in X
+        \end{equation*}
+        则$|f(x)|\leqslant ||f||\cdot ||x||$，由复HBT可得
+        存在$X$上线性泛函$F:X\rightarrow \C$满足
+        $F|_M=f$且$|F(x)|\leqslant p(x)$，进而
+        $|F(x)|\leqslant ||F||\cdot ||x||$，因此
+        $F$是$X$上有界线性泛函，且$||F||\leqslant ||f||$.
+        同时显然有$||F||\geqslant ||f||$.
+    \end{proof}
+
+    \begin{example}[HBT中延拓不唯一]
+        $X=(\R^2,||\cdot||_1)$，其中$||(x_1,x_2)||_1\defeq |x_1|+|x_2|$，
+        取$M=\R\times \{0\}$，$f:M\rightarrow\R,(x,0)\mapsto x$，那么$f$
+        是$M$上有界线性泛函，且$||f||=1$.
+
+        令
+        \begin{equation*}
+            F_t:\R^2\rightarrow\R,(x_1,x_2)\mapsto x_1+tx_2
+        \end{equation*}
+        那么$F_t|_M=f$，而且对于$\forall t\in (-1,1)$，
+        \begin{equation*}
+            |F_t(x_1,x_2)|=|x_1+tx_2|\leqslant |x_1|+|t||x_2|\leqslant ||(x_1,x_2)||_1
+            \Rightarrow ||F_t||\leqslant 1
+        \end{equation*}
+    \end{example}
+\subsection*{应用和推论}
+    \begin{corollary}
+        $\forall x_0\in X$，$\exists f\in X^*$满足$||f||=1$且$f(x_0)=||x_0||$.
+    \end{corollary}
+    \begin{proof}
+        令$M\defeq {\rm span}\{x_0\}$，
+        \begin{equation*}
+            f_0:M\rightarrow\K,x=\lambda x_0\mapsto \lambda||x_0||
+        \end{equation*}
+        于是$|f_0(x)|\leqslant |\lambda| \cdot ||x_0||=||x||$，
+        进而$f_0\in M^*$且$||f_0||=1$，由HBT可得存在$f\in X^*$满足
+        $f|_M=f_0$，即$f(x_0)=f_0(x_0)=||x_0||$，同时$||f||=||f_0||=1$.
+    \end{proof}
+
+    \begin{corollary}
+        $X\neq \{0\}\Rightarrow X^* \neq \{0\}$.
+    \end{corollary}
+    \begin{proof}
+        取$0\neq x\in X$，由推论2.7.1可得存在$f\in X^*$满足$||f||=1$且
+        $f(x)=||x||\neq 0$，此即为$0\neq f\in X^*$.
+    \end{proof}
+
+    \begin{corollary}
+        $x,y\in X,x\neq y\Rightarrow \exists f\in X^*{\rm\ s.t.\ }f(x)\neq f(y)$.
+    \end{corollary}
+    \begin{proof}
+        取$x_0=x-y\neq 0$，由推论2.7.1可得存在$f\in X^*$使得
+        $f(x-y)=||x-y||\neq 0\Rightarrow f(x)\neq f(y)$.
+    \end{proof}
+
+    \begin{corollary}
+        $f(x)=0,\forall f\in X^*\Rightarrow x=0$
+    \end{corollary}
+    \begin{proof}
+        假设$x\neq 0$，由推论2.7.3可得存在$f\in X^*$使得
+        $f(x)\neq f(0)=0$，矛盾。
+    \end{proof}
+
+    \begin{corollary}
+        $||x||=\fun{sup}{f\in X^*,||f||=1}  |f(x)|$.
+    \end{corollary}
+    \begin{proof}
+        $\forall f\in X^*$满足$||f||=1$，
+        \begin{equation*}
+            |f(x)|\leqslant ||f||\cdot ||x||=||x||
+        \end{equation*}
+        于是
+        \begin{equation*}
+            \fun{sup}{f\in X^*,||f||=1}  |f(x)|\leqslant ||x||
+        \end{equation*}
+        另一方面，存在$f\in X^*$满足$||f||=1$且$f(x)=||x||$，得证。
+    \end{proof}
+
+    \begin{theorem}
+        $X$是度量空间，$M$是其子空间，$x_0\in X$满足
+        $d={\rm dist}(x_0,M)>0$，则存在
+        $f\in X^*$满足$||f||=1$且
+        \begin{equation*}
+            f(M)=\{0\},f(x_0)=d
+        \end{equation*}
+    \end{theorem}
+    \begin{proof}
+        令$\tilde{M}\defeq M\oplus {\rm span}\{x_0\}$，定义
+        \begin{equation*}
+            f_0:\tilde{M}\rightarrow \K,x=y+\lambda x_0\mapsto \lambda d
+        \end{equation*}
+        于是$f_0(M)=\{0\}$且$f(x_0)=d$，而且对于
+        $\forall x=y+\lambda x_0$，其中$y\in M$，
+        \begin{enumerate}[$1^\circ$]
+            \item 如果$\lambda=0$，则$f_0(x)=0$.
+            \item 如果$\lambda\neq 0$，
+                \begin{equation*}
+                    |f_0(x)|=|\lambda d|=|\lambda|\cdot d
+                    \leqslant |\lambda |\cdot \ms{x_0+\frac{y}{\lambda}}
+                    =\ms{y+\lambda x_0}=\ms{x}.
+                \end{equation*}
+                于是$f_0\in \tilde{M}^*$且$\ms{f_0}=1$，由HBT可得存在$f\in X^*$满足
+                $f|_{\tilde{M}^*}=f_0$且$||f||=||f_0||\leqslant 1$，则
+                $f(M)=\{0\},f(x_0)=d$.
+        \end{enumerate}
+        只需证明$||f||\geqslant 1$.
+        \begin{align*}
+            d=\fun{inf}{y\in M}\ms{x_0-y}\Rightarrow&
+            \forall n,\exists y_n\in M{\rm\ s.t.\ }\ms{x_0-y_n}<d+\frac{1}{n}\\
+            \Rightarrow& 
+            \frac{ |f(x_0-y_n)| }{\ms{x_0-y_n}}
+            =\frac{|f(x_0)|}{\ms{x_0-y_n}}>
+            \frac{d}{d+\frac{1}{n}}\rightarrow 1{\rm\ as\ }n\rightarrow \infty\\
+            \Rightarrow& \fun{sup}{n}\frac{ |f(x_0-y_n)| }{\ms{x_0-y_n}}\geqslant 1\\
+            \Rightarrow& ||f||\geqslant 1
+        \end{align*}
+    \end{proof}
+
+    \begin{theorem}
+        $X$是度量空间，$M$是其子空间，$0\neq x_0\in X$，那么
+        \begin{equation*}
+            x_0\in \overline{ {\rm span\ }M }
+            \Leftrightarrow 
+            f(x_0)=0,\forall f\in X^*{\rm\ with\ }f(M)=\{0\}
+        \end{equation*}
+    \end{theorem}
+    \begin{proof}
+        必要性：设$x_0\in \overline{ {\rm span\ }M }$，对于$\forall f\in X^*$满足$f(M)=\{0\}$，有：
+        \begin{equation*}
+            f({\rm span\ }M)=f(\overline{ {\rm span\ }M })=\{0\}
+        \end{equation*}
+        从而$f(x_0)=0$.
+
+        充分性：假设$x_0\notin \overline{ {\rm span\ }M }$，
+        则
+        \begin{equation*}
+            d\defeq {\rm dist}(x_0,\overline{ {\rm span\ }M })>0
+        \end{equation*}
+        由定理2.7.4，存在$f\in X^*$满足$||f||=1$且
+        \begin{equation*}
+            f( \overline{ {\rm span\ }M} )=\{0\},f(x_0)=d>0
+        \end{equation*}
+        矛盾。
+    \end{proof}
+\subsection{几何形式——凸集分离}
+    \begin{definition}
+        $X$是向量空间，$C\subset X$，
+        \begin{enumerate}
+            \item 如果$-C=C$，称$C$对称。
+            \item 如果$\forall x,y\in C$，$\forall t\in [0,1]$，都有$tx+(1-t)y\in C$，称$C$是凸集(Convex set)。
+            \item 如果$\forall x\in X$，存在$t>0$使得$\frac{x}{t}\in C$，称$C$是吸收的。
+        \end{enumerate}
+    \end{definition}
+    \begin{proposition}
+        任一族凸集之交仍然是凸集。
+    \end{proposition}
+    \begin{definition}
+        对于集合$A$，包含$A$的所有凸集之交称为$A$的凸包，记作
+        \begin{equation*}
+            {\rm conv}(A)\defeq 
+            \bigcap_{{\rm Convex\ }C\supset A} C
+        \end{equation*}
+    \end{definition}
+    \begin{definition}
+        对于
+        \begin{equation*}
+            \sum_{k=1}^n \lambda_k=1,\{ \lambda_k \}_{k=1}^n
+        \end{equation*}
+        称
+        \begin{equation*}
+            \sum_{k=1}^n \lambda_k x_k
+        \end{equation*}
+        为$x_1,\cdots,x_n$的一个凸组合。
+    \end{definition}
+
+    \begin{proposition}
+        ${\rm conv}(A)$就是$A$中向量的凸组合全体。
+    \end{proposition}
+
+    \begin{definition}
+        $X$是向量空间，$C$是包含$0$的凸集，广义实值函数$P_C:X\rightarrow [0,+\infty]$，
+        \begin{equation*}
+            P_C(x)\defeq {\rm inf}\{ t>0:\frac{x}{t}\in C \}
+        \end{equation*}
+        称为$C$的Minkowski泛函。
+        \begin{equation*}
+            P_C(x)=+\infty\Leftrightarrow \{ t>0:\frac{x}{t}\in C \}=\varnothing
+        \end{equation*}
+    \end{definition}
+    \begin{proposition}
+        关于$P_C$，
+        \begin{enumerate}
+            \item $P_C(0)=0$.
+            \item 正齐次性：$P_C(tx)=tP_C(x),\forall x\in X,\forall t>0$.
+            \item 次可加性：$P_C(x+y)\leqslant P_C(x)+P_C(y)$
+        \end{enumerate}
+        注意$P_C$可能取$+\infty$，不一定是次线性泛函。
+    \end{proposition}
+    \begin{proof}
+        只说明3.不妨设$P_C(x),P_C(y)\in \R$，
+        \begin{equation*}
+            \forall \varepsilon>0,\lambda\defeq P_C(x)+\frac{\varepsilon}{2},
+            \mu\defeq P_C(y)+\frac{\varepsilon}{2}
+        \end{equation*}
+        于是
+        \begin{align*}
+            \frac{x}{\lambda},\frac{y}{\mu}\in C\Rightarrow&
+            \frac{x+y}{\lambda+\mu}=\frac{\lambda}{\lambda+\mu}\frac{x}{\lambda}+\frac{\mu}{\lambda+\mu}\frac{y}{\mu}\in C\\
+            \Rightarrow& \lambda+\mu\geqslant P_C(x+y)\\
+            \Rightarrow& P_C(x+y)\leqslant P_C(x)+P_C(y)+\varepsilon
+        \end{align*}
+        令$\varepsilon\rightarrow 0$即得到结论。
+    \end{proof}
+
+    \begin{definition}
+        $X$是复向量空间，$C$是包含$0$的凸集，
+        如果$\forall x\in C,\forall \theta\in\R$，都有$\e^{\i \theta}x\in C$，则称$C$均衡。
+    \end{definition}
+
+    \begin{proposition}
+        复向量空间中每个均衡、吸收凸集都决定了一个半范数。
+    \end{proposition}
+    \begin{proof}
+        吸收$\Rightarrow P_C$是次线性泛函，均衡$\Rightarrow $齐次性。
+    \end{proof}
+
+    \begin{definition}
+        $X$是实向量空间，$M$是闭子空间，
+        称$M$是$X$的极大子空间是指
+        任一$X$的闭子空间$Y$，若满足$M\subsetneqq Y$，则$Y=X$,
+    \end{definition}
+
+    \begin{proposition}
+        $M$是极大子空间$\Leftrightarrow \exists x_0\in X$使得
+        $X=M\oplus {\rm span}\{x_0\}$，也就是${\rm codim\ }M={\rm dim}(X/M)=1$.
+        （习题2.4.8.）
+    \end{proposition}
+    \begin{proof}
+        $(\Leftarrow)$：
+        ${\rm dim}(X/M)=1$，则$\forall x_0\notin M$
+        \begin{equation*}
+            X/M=\{\lambda [x_0]:\lambda\in \K\}
+        \end{equation*}
+        假设存在线性子空间$S$使得$M\subsetneqq S$，则取
+        $x_0\in S\backslash M$，从而
+        \begin{equation*}
+            {\rm span}{x_0}={\rm span}{x_0}\oplus M\subset S
+        \end{equation*}
+        而实际上$[\lambda x_0]=\{ \lambda x_0+m:m\in M \}$，因此
+        \begin{equation*}
+            X
+            =\{ \lambda x_0+m:m\in M,\lambda\in\K \}
+            ={\rm span}\{x_0\}\oplus M\subset S
+        \end{equation*}
+        只能$X=S$，与极大性矛盾。
+
+        $(\Rightarrow )$：取$x_0\notin M$，则
+        \begin{equation*}
+            M\subsetneqq \bigcup_{\lambda\in\K}(ax_0+M)
+            ={\rm span}\{x_0\}\oplus M
+        \end{equation*}
+        从而后者$=X$，所以${\rm dim}(X/M)=1$.
+    \end{proof}
+
+    \begin{definition}
+        超平面是指极大子空间的平移。
+
+        对于$X$上线性泛函$f$和$r\in\R$，
+        \begin{equation*}
+            H_f^r\defeq f^{-1}(\{r\})=\{ x\in X:f(x)=r \}
+        \end{equation*}
+    \end{definition}
+
+    \begin{proposition}
+        $L$是超平面$\Leftrightarrow $存在某个$f$和$r$，使得$L=H_f^r$.
+    \end{proposition}
+    \begin{proof}
+        充分性：注意到$H_f^0={\rm Ker}(f)$，Claim：$H_f^0$是极大子空间。
+        取$x_0\in X\backslash H_f^0$，
+        \begin{align*}
+            f(x-\frac{f(x)}{f(x_0)}x_0)=0,\forall x\in X
+            \Rightarrow& f-\frac{f(x)}{f(x_0)}x_0\in H_f^0,\forall x\in X\\
+            \Rightarrow& X=H_f^0\oplus {\rm span}\{x_0\}
+        \end{align*}
+        Claim得证。令$r\defeq f(x_0)$，则
+        \begin{equation*}
+            x\in H_f^r\Leftrightarrow f(x-x_0)=f(x)-f(x_0)=0
+            \Leftrightarrow x-x_0\in H_f^0\Leftrightarrow x\in H_f^0+x_0
+        \end{equation*}
+        所以$H_f^r$是极大子空间$H_f^0$的平移，为超平面。
+
+        必要性：设$L=M+a$，$M$是极大子空间，那么存在某个$x_0$使得
+        $X=M\oplus {\rm span}\{x_0\}$，令
+        \begin{equation*}
+            f:X\rightarrow \R,x=y+\lambda x_0\mapsto \lambda
+        \end{equation*}
+        于是$f(M)=\{ 0\}$且$f(x_0)=1$，进而
+        $M\subset H_f^0$，由$M$极大$\Rightarrow M=H_f^0$，因此$L=H_f^r{\rm\ with\ }r=1$.
+    \end{proof}
+
+    \begin{proposition}
+        $f\in X^*\Rightarrow \forall r\in \R,H_f^r$是闭超平面。
+    \end{proposition}
+
+    \begin{definition}
+        设$X$是实向量空间，$A,B\subset X$，
+        \begin{enumerate}
+            \item  称$H_f^r$分离$A,B$是指：
+                \begin{equation*}
+                    \fun{sup}{x\in X}f(x)\leqslant r\leqslant \fun{inf}{y\in B}f(y)
+                \end{equation*}
+                或者
+                \begin{equation*}
+                    \fun{sup}{y\in B}f(y)\leqslant r\leqslant \fun{inf}{x\in A}f(x)
+                \end{equation*}
+            \item 称$H_f^r$严格分离$A,B$是指上述不等号严格成立。
+        \end{enumerate}
+    \end{definition}
+
+    \begin{theorem}
+        $X$是实赋范空间，$C$是有内点的凸集，$x_0\notin C\Rightarrow \exists f\in X^*,\exists r\in \R$满足
+        $H_f^r$分离$x_0$和$C$.
+    \end{theorem}
+    \begin{proof}
+        不妨设$0$是$C$的内点，$P_C$是$C$的Minkowski泛函，
+        由习题1.5.1，
+        $P_C$是次线性泛函，并且
+        \begin{equation*}
+            \overline{C}=\{ x\in X:P_C(x)\leqslant 1 \}
+        \end{equation*}
+        $x_0\notin C\Rightarrow P_C(x_0)\geqslant 1$，$0$是$C$的内点
+        $\Rightarrow \exists \varepsilon>0{\rm\ s.t.\ }B(0,\varepsilon)\subset C$，于是
+        \begin{equation*}
+            \forall x\in X,x\neq 0,\varepsilon\frac{x}{||x||}\in \overline{B(0,\varepsilon)}\subset\overline{C}
+        \end{equation*}
+        进而
+        \begin{equation*}
+            P_C(\varepsilon\frac{x}{||x||})\leqslant 1,\forall 0\neq x\in X
+        \end{equation*}
+        也就是
+        \begin{equation*}
+            P_C(x)\leqslant \frac{1}{\varepsilon}||x||,\forall x\in X
+        \end{equation*}
+        
+        令$M={\rm span}\{x_0\}$，定义
+        \begin{equation*}
+            f_0:M\rightarrow\R,x=\lambda x_0\mapsto \lambda P_C(x_0)
+        \end{equation*}
+        则$f_0(x)\leqslant P_C(x),\forall x\in M$，由实HBT可得
+        存在$f:X\rightarrow \R$满足$f|_M=f_0$且$f(x)\leqslant P_C(x),\forall x\in X$，进而
+        \begin{equation*}
+            f(x_0)=f_0(x_0)=P_C(x_0)\geqslant 1,f(x)\leqslant P_C(x)\leqslant 1,\forall x\in C
+        \end{equation*}
+        因此$H_f^1$分离$x_0$和$C$.
+
+        只剩下证明$f\in X^*$，
+        \begin{align*}
+            f(x)\leqslant P_C(x)\leqslant \frac{1}{\varepsilon}||x||,\forall x\in X
+            \Rightarrow & -f(x)\leqslant \frac{1}{\varepsilon}||x||\\
+            \Rightarrow & |f(x)|\leqslant \frac{1}{\varepsilon}||x||,\forall x\in X\\
+            \Rightarrow & f\in X^*
+        \end{align*}
+    \end{proof}
+
+    \begin{theorem}[Hahn-Banach 凸集分离定理]
+        $X$是实赋范空间，$A$是开凸集，$B$是凸集，若$A\cap B=\varnothing$，
+        则存在$H_f^r$闭，并分离$A,B$.
+    \end{theorem}
+    \begin{proof}
+        令$C=A-B$，即
+        \begin{equation*}
+            C=\{ x-y:x\in A,y\in B \}
+            =\bigcup_{y\in B} (A-y)
+        \end{equation*}
+        那么$C$是凸开集，而且$0\notin C$，
+        由定理2.7.6，$H_f^0$分离$C$和$\{0\}$，
+        即存在$f\in X^*$使得
+        \begin{equation*}
+            \fun{sup}{\delta\in C}f(\delta)\leqslant 0=f(0)
+        \end{equation*}
+        而
+        \begin{equation*}
+            \fun{sup}{\delta\in C}f(\delta)
+            =\fun{sup}{x\in A,y\in B}[f(x)-f(y)]
+            =\fun{sup}{x\in A}f(x)-\fun{inf}{y\in B}f(y)
+        \end{equation*}
+        因此
+        \begin{equation*}
+            \fun{sup}{x\in A}f(x)\leqslant r\leqslant \fun{inf}{y\in B}f(y)
+        \end{equation*}
+        这里
+        \begin{equation*}
+            r\defeq \frac{1}{2}[ \fun{sup}{x\in A}f(x)+\fun{inf}{y\in B}f(y) ]
+        \end{equation*}
+    \end{proof}
+
+    \begin{theorem}[Hahn-Banach 凸集分离定理2]
+        $X$是实赋范空间，$A$是闭凸集，$B$是紧凸集，若$A\cap B=\varnothing$，
+        则存在$H_f^r$闭，并严格分离$A,B$.
+    \end{theorem}
+    \begin{proof}
+        $A$闭$B$紧且不交，所以${\rm dist}(A,B)>0$，
+        令$\varepsilon=\frac{1}{4}{\rm dist}(A,B)$，
+        \begin{equation*}
+            A_\varepsilon\defeq A+B(0,\varepsilon),
+            B_\varepsilon\defeq B+B(0,\varepsilon)
+        \end{equation*}
+        这两个都是开凸集且不交，由定理2.7.7可知$\exists f\in X^*,\exists r\in \R$满足
+        \begin{equation*}
+            \fun{sup}{x\in A_\varepsilon}f(x)\leqslant r\leqslant 
+            \fun{inf}{y\in B_\varepsilon}f(y)
+        \end{equation*}
+        所以
+        \begin{equation*}
+            f(x+\varepsilon\delta)\leqslant r\leqslant f(y+\varepsilon\delta),\forall x\in A,\forall y\in B,\forall \delta\in B(0,1)
+        \end{equation*}
+        \begin{align*}
+            \Rightarrow & -f(\delta)\leqslant \frac{f(y)-r}{\varepsilon}\\
+            \Rightarrow & ||f||=\fun{sup}{\delta\in B(0,1)}f(-\delta)\leqslant \frac{f(y)-r}{\varepsilon}\\
+            \Rightarrow & r\leqslant f(y)-\varepsilon||f||,\forall y\in B\\
+            \Rightarrow & r\leqslant \fun{inf}{y\in B}f(y)-\varepsilon||f||<\fun{inf}{y\in B}f(y)
+        \end{align*}
+        同理，
+        \begin{equation*}
+            \fun{sup}{x\in A}f(x)<\fun{sup}{x\in A}f(x)+\varepsilon ||f||\leqslant r
+        \end{equation*}
+    \end{proof}
+\subsection*{应用和推论}
+    \begin{corollary}[Ascoli]
+        $X$是实赋范空间，$C$是闭凸集，若$x_0\notin C$，则
+        \begin{equation*}
+            \exists f\in X^*,\exists r\in \R{\rm\ s.t.\ }
+            \fun{sup}{x\in C}f(x)<r<f(x_0)
+        \end{equation*}
+    \end{corollary}
+
+    \begin{corollary}
+        $X$是实赋范空间，$M$是其子空间，
+        \begin{equation*}
+            \overline{M}\neq X\Leftrightarrow \exists f\in X^*,f\neq 0{\rm\ s.t.\ }f(M)=\{0\}
+        \end{equation*}
+        等价地，
+        \begin{equation*}
+            \overline{M}=X\Leftrightarrow \forall f\in X^*{\rm\ with\ }f(M)=\{0\}\Rightarrow f=0
+        \end{equation*}
+    \end{corollary}
+    \begin{proof}
+        假设存在$x_0\in X\backslash \overline{M}$，由Ascoli，
+        \begin{equation*}
+            \exists f\in X^*,\exists r\in \R{\rm\ s.t.\ }
+            \fun{sup}{x\in\overline{M}}f(x)<r<f(x_0)
+        \end{equation*}
+        进而$f|_{\overline{M}}=0\Rightarrow f(M)=\{0\}$，所以$0<r<f(x_0)$，$f\neq 0$，矛盾。所以$X=\overline{M}$.
+    \end{proof}
+
+    \begin{corollary}[Mazur]
+        $X$是实赋范空间，$C$是开凸集，$F$是线性子流形（子空间的平移），
+        若$C\cap F=\varnothing$，则存在$H_f^r$闭满足$F\subset H_f^r$且
+        $\fun{sup}{x\in C}f(x)\leqslant r$.
+    \end{corollary}
+    \begin{proof}
+        设$F=M+x_0$，$M$是子空间，由分离定理
+        \begin{equation*}
+            \exists f\in X^*,\exists s\in\R
+            {\rm\ s.t.\ }
+            \fun{sup}{x\in C}f(x)\leqslant s\leqslant \fun{inf}{y\in F}f(y)
+            =\fun{inf}{\delta\in M}f(\delta)+f(x_0)
+        \end{equation*}
+        进而
+        \begin{align*}
+            \fun{inf}{\delta\in M}f(\delta)\geqslant s-f(x_0)
+            \Rightarrow & f|_M=0\\
+            \Rightarrow & M\subset H_f^0\\
+            \Rightarrow & F\subset H_f^r{\rm\ with\ }r=f(x_0)
+        \end{align*}
+        同时，
+        \begin{equation*}
+            \fun{sup}{x\in C}f(x)\leqslant s\leqslant f(x_0)=r
+        \end{equation*}
+    \end{proof}
+
+    \begin{definition}
+        称超平面$L=H_f^r$是凸集$C$在$x_0$处的承托超平面是指：
+        $C$完全落在$L$的一侧，且$x_0\in \overline{C}\cap L$，即
+        \begin{equation*}
+            \fun{sup}{x\in C}f(x)\leqslant r=f(x_0)
+        \end{equation*}
+        或者
+        \begin{equation*}
+            \fun{inf}{x\in C}f(x)\geqslant r=f(x_0)
+        \end{equation*}
+    \end{definition}
+
+    \begin{theorem}
+        $X$是实赋范空间，$C$是有内点的闭凸集，$\forall x_0\in \partial C$均有$C$的一个承托超平面。
+    \end{theorem}
+    \begin{proof}
+        令$E=C^\circ$，即$C$的全体内点，$F=\{x_0\}$，由Mazur可得
+        \begin{equation*}
+            \exists f\in X^*,\exists r\in\R{\rm\ s.t.\ }
+            \fun{sup}{x\in E}f(x)\leqslant r{\rm\ and\ }\{x_0\}\subset H_f^r
+        \end{equation*}
+        由连续性
+        \begin{equation*}
+            \fun{sup}{x\in C}f(x)\leqslant r=f(x_0)
+        \end{equation*}
+    \end{proof}
+
+    \begin{example}
+        $C=B(0,r)$，$\forall x_0\in \partial B(0,r)$，均有承托超平面。
+    \end{example}
+    \begin{proof}
+        $\exists f\in X^*,||f||=1$使得$f(x_0)=||x_0||=r$，而
+        \begin{equation*}
+            \fun{sup}{x\in C}f(x)\leqslant ||f||\fun{sup}{x\in C}||x||=r
+        \end{equation*}
+    \end{proof}
+
+    \begin{example}
+        设$\sum_{k=1}^\infty x_k$是Banach空间$X$中绝对收敛级数，
+        $\{y_k\}_{k=1}^\infty$是$\{x_k\}_{k=1}^\infty$
+        的任一重排，则
+        \begin{equation*}
+            \sum_{k=1}^\infty y_k=\sum_{k=1}^\infty x_k
+        \end{equation*}
+    \end{example}
+    \begin{proof}
+        $\forall f\in X^*$，
+        \begin{equation*}
+            \sum_{k=1}^\infty |f(x_k)|\leqslant ||f||\sum_{k=1}^\infty ||x_k||<\infty
+        \end{equation*}
+        于是$\sum_{k=1}^\infty f(x_k)$是$\K$上的绝对收敛级数，
+        重排不变，所以
+        \begin{equation*}
+            \sum_{k=1}^\infty f(y_k)=\sum_{k=1}^\infty f(x_k)
+            \Rightarrow f(\sum_{k=1}^\infty y_k)
+            =f(\sum_{k=1}^\infty x_k)
+            ,\forall f\in X^*
+            \mathop{\Rightarrow}\limits^{ \rm Cor\ 2.7.4 }
+            \sum_{k=1}^\infty y_k=\sum_{k=1}^\infty x_k
+        \end{equation*}
+    \end{proof}
+
+
+\section{对偶空间、自反空间、弱收敛}
+%Lec21
+\subsection{对偶空间}
+    \begin{definition}
+        $X$的对偶空间$X^*$是指$X$上所有线性泛函组成的空间，即
+        \begin{equation*}
+            X^*\defeq \mathcal{L}(X,\K)
+        \end{equation*}
+    \end{definition}    
+
+    回顾：
+    $(X,m,\mu)$是一可测空间，
+    $\Omega$是$X$上可测函数全体，
+    \begin{equation*}
+        L^p=L^p(\Omega,m,\mu)\defeq \{ f\in\Omega:||f||_p=(\int_X |f|^p\d \mu)^\frac{1}{p}<\infty  \}
+    \end{equation*}
+    对于$1\leqslant p\leqslant \infty$，对偶空间$(L^p)^*$是什么？
+    \begin{theorem}[Riesz]
+        设$1\leqslant p<\infty$，则$(L^p)^*=L^{q}$，其中
+        \begin{equation*}
+            q=\left\{ \begin{array}{ll}
+                \frac{p}{p-1}&,1<p<\infty\\
+                \infty&,p=1
+            \end{array} \right.
+        \end{equation*}
+    \end{theorem}
+    \begin{proof}
+        我们希望构造出一个线性等距同构$J:L^q\rightarrow (L^p)^*$，如下：
+        \begin{equation*}
+            \forall g\in L^q,\Lambda_g:L^p\rightarrow \K,f\mapsto \Lambda_g(f)\defeq \int fg
+        \end{equation*}
+        \begin{equation*}
+            J:L^q\rightarrow (L^p)^*,g\mapsto \Lambda_g
+        \end{equation*}
+        需要证明：
+        \begin{enumerate}[$1^\circ$]
+            \item $\Lambda_g\in (L^p)^*$.
+            \item $J$线性。
+            \item $||\Lambda_g||=||g||_q$，即$J$等距。
+            \item $\forall \Lambda\in (L^p)^*$，存在唯一$g\in L^{p'}$使得$\Lambda=\Lambda_g$，即$J$是双射。
+        \end{enumerate}
+        
+        \textbf{Proof of }$1^\circ-3^\circ$：
+        先考虑$1<p<\infty$，
+        \begin{equation*}
+            \forall f\in L^p,|\Lambda_g(f)|=|\int fg|\leqslant ||g||_q\cdot ||f||_p
+        \end{equation*}
+        于是$\Lambda_g\in (L^p)^*$，且$||\Lambda_g||\leqslant ||g||_q$.取
+        \begin{equation*}
+            \tilde{f}\defeq |g|^{q-1}{\rm sgn}(g)
+        \end{equation*}
+        则
+        \begin{align*}
+            \left\{ \begin{array}{ll}
+                |\tilde{f}|^p=|g|^{(q-1)p}=|g|^q\\
+                \tilde{f}\cdot g=|g|^q
+        	\end{array} \right.\Rightarrow& 
+            \left\{ \begin{array}{ll}
+                |\tilde{f}|_p^p=||g||_q^q\\
+                \Lambda_g(\tilde{f})=||g||_q^q
+        	\end{array} \right.\\
+            \Rightarrow&
+            \frac{|\Lambda_g(\tilde{f})|}{||\tilde{f}||_p}
+            =\frac{||g||^q_q}{||g||_q^{\frac{q}{p}}}=
+            ||g||_q^{q(1-\frac{1}{p})}=||g||_q\\
+            \Rightarrow& ||\Lambda_g||\geqslant ||g||_q
+        \end{align*}
+        接下来考虑$p=1$，此时需假设$\mu$是$\sigma$-有限的，不妨设$\mu$有限，
+        由
+        \begin{equation*}
+            |\Lambda_g(f)|\leqslant ||g||_\infty ||f||_1
+        \end{equation*}
+        得$\Lambda_g\in (L^1)^*$且$||\Lambda_g||\leqslant ||g||_\infty$，
+        令
+        \begin{equation*}
+            E_k\defeq \{ t\in\Omega:|g(t)|>||\Lambda_g||+\frac{1}{k} \},
+            f_k\defeq \chi_{E_k}\cdot {\rm sgn}(g)
+        \end{equation*}
+        \begin{align*}
+            \Rightarrow& ||f_k||_1=\int_{E_k} |{\rm sgn}(g)|\d \mu\leqslant \mu(E_k)\\
+            \Rightarrow& ||\Lambda_g||\mu(E_k)\geqslant 
+            ||\Lambda g||\geqslant |\Lambda_g(f_k)|=\int \chi_{E_k}{\rm sgn}(g)g\d \mu=\int_{E_k}|g|\d \mu\geqslant
+            ( ||\Lambda_g||+\frac{1}{k} )\mu(E_k)\\
+            \Rightarrow& \mu(E_k)=0,\forall k\\
+            \Rightarrow& \{ t\in \Omega:|g(t)|>||\Lambda_g|| \}=\bigcup_{k=1}^\infty E_k\mbox{零测}\\
+            \Rightarrow& ||g||_\infty\leqslant ||\Lambda_g||
+        \end{align*}
+
+        \textbf{Proof of }$4^\circ$：
+        以下假设$\Omega=[0,1]$，$\mu=m$，
+        \begin{lemma}
+            设$g\in L^1$，如果存在$C>0$满足
+            \begin{equation*}
+                |\int fg|\leqslant C||f||_p,\forall f\in L^\infty
+            \end{equation*}
+            则$g\in L^q$且$||g||_q\leqslant C$.
+            \begin{proof}
+                
+            \end{proof}
+        \end{lemma}
+        后面也太复杂了，不抄了。
+    \end{proof}
+%Lec22
+    那么，$(L^\infty)^*$是$L^1$吗？答案是否定的。
+    \begin{theorem}
+        $L^1\subsetneqq (L^\infty)^*$.
+    \end{theorem}
+    \begin{proof}
+        对于$\forall g\in L^1$，
+        \begin{equation*}
+            |\Lambda_g(f)|=|\int fg|\leqslant ||g||_1||f||_\infty\Rightarrow\Lambda_g\in (L^\infty)^*
+            \Rightarrow L^1\subset (L^\infty)^*
+        \end{equation*}
+        注意到$C[0,1]$是$L^\infty$的闭子空间，取$f_0\in L^\infty\backslash C[0,1]$，
+        于是$d\defeq {\rm dist}(f_0,C[0,1])>0$，由HBT可知
+        存在$\Lambda\in (L^\infty)^*,||\Lambda||=1$且
+        \begin{equation*}
+            \Lambda(C[0,1])=\{0\},\Lambda(f_0)=d
+        \end{equation*}
+        假设存在$g\in L^1$满足$\Lambda=\Lambda_g$，即
+        \begin{equation*}
+            \Lambda(f)=\int fg,\forall f\in L^\infty
+        \end{equation*}
+        那么对于$f\in C[0,1]$，$\Lambda(f)=\int fg=0$，
+        取$\{ f_n \}_{n=1}^\infty \subset C[0,1]$，
+        满足
+        \begin{equation*}
+            ||f_n-{\rm sgn}(g)||_1\rightarrow 0{\rm\ as\ }n\rightarrow\infty
+        \end{equation*}
+        于是有子列$f_{n_k}\mathop{\rightarrow}\limits^{\rm a.e.} 
+        {\rm sgn}(g)$，由MCT得
+        \begin{equation*}
+            \int |g|=\fun{lim}{k\rightarrow\infty}\int f_{n_k}g=0\Rightarrow g\mathop{=}\limits^{\rm a.e.} 0
+            \Rightarrow \Lambda=\Lambda_g=0
+        \end{equation*}
+        这与$\Lambda(f_0)=d>0$矛盾。
+    \end{proof}
+
+    接下来讨论$C[a,b]$的对偶空间。
+    \begin{definition}
+        对$f:[a,b]\rightarrow \mathbb{C}$和$[a,b]$的划分$P$，定义
+        \begin{equation*}V(f,P)\mathop{=}\limits^{\rm def}\sum_{k=1}^N |f(t_k)-f(t_{k-1})|\end{equation*}
+        如果$\mathop{\rm sup}\limits_{P} V(f,P)<\infty$，则称$f$是有界变差的。
+        \begin{equation*}V_a^b(f)\mathop{=}\limits^{\rm def} \mathop{\rm sup}\limits_{P} V(f,P)\end{equation*}
+        称为$f$在$[a,b]$上的全变差。
+        \begin{equation*}BV[a,b]\mathop{=}\limits^{\rm def}\{ [a,b]\mbox{上的有界变差函数全体} \}\end{equation*}
+
+        我们进一步给出$BV[a,b]$上的范数：
+        \begin{equation*}
+            ||f||_{BV}\defeq |f(a)|+V_a^b(f)
+        \end{equation*}
+        那么$(BV[a,b],||\cdot||_{BV})$是Banach空间，定义：
+        \begin{equation*}
+            BV_0[a,b]\defeq \{ f\in BV[a,b]:f\mbox{在$(a,b)$上右连续，}f(a)=0 \}
+        \end{equation*}
+        那么$BV_0[a,b]$是$BV[a,b]$的闭子空间，也是Banach空间。
+    \end{definition}
+
+    \begin{definition}[Riemann-Stieltjes积分]
+        设$f,g$是$[a,b]$上实值函数，$I\in\R$，
+        对$[a,b]$进行划分：
+        \begin{equation*}
+            \sigma(\Delta,\xi)\defeq \sum_{k=1}^n f(\xi_k)[ g(t_k)-g(t_{k-1}) ]
+        \end{equation*}
+        其中
+        \begin{equation*}
+            \xi=\{\xi_k\}_{k=1}^\infty,\xi_k\in [t_{k-1},t_k]
+        \end{equation*}
+        如果$\sigma(\Delta,\xi)\rightarrow I{\rm\ as\ }||\Delta||\rightarrow 0$，
+        则记
+        \begin{equation*}
+            I=\int_a^b f\d g
+        \end{equation*}
+        称为$f$关于$g$的Riemann-Stieltjes积分，简记为R-S积分。
+    \end{definition}
+
+    \begin{theorem}[Riesz]
+        $C[a,b]^*=BV_0[a,b]$.
+
+        思路：$\forall g\in BV_0[a,b]$，取
+        \begin{equation*}
+            \Lambda_g(f)\defeq \int_a^b f\d g,f\in C[a,b]
+        \end{equation*}
+        证明$g\mapsto \Lambda_g$是线性等距同构。
+    \end{theorem}
+\subsection{自反空间}
+    \begin{definition}
+        $X^{**}=\mathcal{L}(X^*,\K)$，
+        称为$X$的二次对偶或第二共轭空间。
+        
+        设$x\in X$，定义映射：
+        \begin{equation*}
+            x^{**}:X^*\rightarrow \K,f\mapsto f(x)
+        \end{equation*}
+        则
+        \begin{equation*}
+            |x^{**}(f)|=|f(x)|\leqslant ||x||\cdot ||f||,\forall f\in X^*
+        \end{equation*}
+        因此$x^{**}\in X^{**}$且$||x^{**}||\leqslant ||x||$.
+        另一方面由推论2.7.1，存在$f_0\in X^*{\rm\ with\ }||f_0||=1{\rm\ s.t.\ }f_0(x)=||x||$，即
+        \begin{equation*}
+            x^{**}(f_0)=f_0(x)=||x||
+        \end{equation*}
+        于是$||x^{**}||\geqslant |x^{**}(f_0)|/||f_0||=||x||$，
+        于是映射
+        \begin{equation*}
+            i:X\rightarrow X^{**},x\mapsto x^{**}
+        \end{equation*}
+        是线性等距嵌入，
+        称为$X$到$X^{**}$的自然映射或自然嵌入(canonical map).
+    \end{definition}
+
+    \begin{definition}
+        如果自然映射$i$是满射，从而是线性等距同构，则称$X$自反，记作$X^{**}=X$.
+    \end{definition}
+
+    \begin{example}
+        不完备的空间一定不自反、
+        有限维赋范空间一定自反(习题2.5.4)。
+    \end{example}
+
+    \begin{example}
+        Hilbert空间自反。（作业）
+    \end{example}
+    \begin{proof}
+        由 Riesz 表示定理，有等距同构 $\varphi:H\to H^*,x\mapsto\langle\cdot,x\rangle.\varphi$ 诱导了$H^*$ 上的内积 $\langle f,g\rangle=\overline{\langle\varphi^{-1}(f),\varphi^{-1}(g)\rangle}$。对偶空间自然完备，因此$H^*$ 也 
+        是 Hilbert 空间，由 Riesz 表示定理，又有等距同构 $\Phi:H^*\to H^{**},f\mapsto$ $\overline{{\langle\varphi^{-1}(\cdot),\varphi^{-1}(f)\rangle}}.\:计算得$
+        \begin{equation*}
+            \Phi\circ\varphi(x)(f)=\overline{\langle\varphi^{-1}(f),x\rangle}=\langle x,\varphi^{-1}(f)\rangle=f(x),\forall x\in H,f\in H^{*}
+        \end{equation*}
+        故$\Phi\circ\varphi$ 就是 $H\to H^{**}$ 的自然映射 $\phi$, 因此 $\phi$ 也是等距同构，从而$H$自反。
+    \end{proof}
+
+    \begin{theorem}
+        当$1<p<\infty$时，$L^p$自反。
+    \end{theorem}
+    \begin{proof}
+        即证明：$\forall \Lambda\in (L^p)^{**}$，存在$u\in L^p$使得
+        \begin{equation*}
+            \Lambda(f)=f(u),\forall f\in (L^p)^*
+        \end{equation*}
+        这是因为
+        \begin{equation*}
+            i:L^p\rightarrow (L^p)^{**} \mbox{满}
+            \Leftrightarrow \forall \Lambda\in (L^p)^{**},\exists u\in L^p{\rm\ s.t.\ }
+            u^{**}=\Lambda ( \Lambda(f)=u^{**}(f)=f(u) )
+        \end{equation*}
+        回顾定理2.8.1，
+        \begin{equation*}
+            J:L^q\rightarrow (L^p)^*,v\mapsto f_v
+        \end{equation*}
+        是线性等距同构，这里$f_v(u)=\int uv$.取
+        \begin{equation*}
+            \varphi\defeq \Lambda\circ J
+        \end{equation*}
+        则$\varphi\in (L^q)^*=L^p$，
+        存在唯一$u\in L^p$满足$\varphi(v)=\int uv,\forall v\in L^q$.
+        那么对于$\forall f\in (L^p)^*$，令
+        \begin{equation*}
+            v_f\defeq J^{-1}(f)
+        \end{equation*}
+        那么
+        \begin{equation*}
+            \Lambda(f)=\Lambda( J(v_f) )=\varphi(v_f)=\int v_fu=f(u)
+        \end{equation*}
+    \end{proof}
+    
+    \begin{theorem}
+        $C[a,b]$不自反。
+    \end{theorem}
+    \begin{proof}
+        假设自反，则
+        $\forall \Lambda\in C[a,b]^{**}$，存在$u\in C[a,b]$满足
+        \begin{equation*}
+            \Lambda(f)=f(u),\forall f\in C[a,b]^*\tag{*}
+        \end{equation*}
+        根据$C[a,b]^*=BV_0[a,b]$，
+        \begin{equation*}
+            \exists ! v_f\in BV_0[a,b]{\rm\ s.t.\ }
+            f(u)=\int_a^b u\d v_f,\forall u\in C[a,b]{\rm\ and\ }
+            ||v_f||_{BV}=||f||
+        \end{equation*}
+        令$c=\frac{a+b}{2}$，定义
+        \begin{equation*}
+            F_c:C[a,b]^*\rightarrow\R,f\mapsto v_f(c+0)-v_f(c-0)
+        \end{equation*}
+        那么
+        \begin{equation*}
+            |F_c(f)|\leqslant V_a^b (v_f)=||v_f||_{BV}=||f||\Rightarrow F_c\in C[a,b]^{**}
+        \end{equation*}
+        根据(*)，存在$u_c\in C[a,b]$满足
+        \begin{equation*}
+            F_c(f)=f(u_c)=\int_a^b u_c\d v_f,\forall f\in C[a,b]^*
+        \end{equation*}
+        令
+        \begin{equation*}
+            v(f)\defeq \int_a^t u_c(s)\d s
+        \end{equation*}
+        那么$v\in BV_0[a,b]$，令$f_v\defeq J(v)$，这里
+        \begin{equation*}
+            J:BV_0[a,b]\rightarrow C[a,b]^*,v\mapsto f_v,f_v(u)=\int_a^b u \d v_f
+        \end{equation*}
+        $f_v$对应的$v_{f_v}=v$连续，于是$F_c(f_v)=0$，所以
+        \begin{equation*}
+            0=F_c(f_v)=\int_a^b u_c\d v=\int_a^b u_c^2\d t
+        \end{equation*}
+        所以$u_c=0$，进而$F_c=0$，矛盾。
+    \end{proof}
+%Lec23
+    \begin{theorem}[Banach]
+        $X^*$可分$\Rightarrow X$可分。逆命题不成立，例如$L^1$可分但$L^\infty$不可分。
+    \end{theorem}
+    \begin{proof}
+        \textbf{Step1}：证明$X^*$中单位球面$S_1^*$可分。
+        $X^*$可分，取$\{f_n\}_{n=1}^\infty$为其稠密子集，
+        不妨$f_n\neq 0$，令
+        \begin{equation*}
+            g_n\defeq \frac{f_n}{||f_n||}\in S_1^* 
+        \end{equation*}
+        那么对于$\forall g\in S_1^*$，存在$f_{n_k}\rightarrow g$.
+        \begin{align*}
+            \Rightarrow ||g-g_{n_k}||
+            \leqslant & ||g-f_{n_k}||+||f_{n_k}-g_{n_k}||\\
+            =& ||g-f_{n_k}||+||( ||f_{n_k}||-1 )\frac{f_{n_k}}{||f_{n_k}||}||\\
+            =& ||g-f_{n_k}||+\left| ||f_{n_k}||+1 \right|\rightarrow 0{\rm\ as\ }k\rightarrow\infty
+        \end{align*}
+
+        \textbf{Step2}：证明存在$\{x_n\}_{n=1}^\infty\subset X$，
+        其中$\forall ||x_n||=1$，且
+        \begin{equation*}
+            \overline{ {\rm span}\{x_n\}_{n=1}^\infty }=X
+        \end{equation*}
+        注意到
+        \begin{equation*}
+            ||g_n||=\fun{sup}{x\in X,||x||=1}|g_n(x)|=1
+        \end{equation*}
+        所以存在$\{x_n\}_{n=1}^\infty\subset X$，
+        其中$\forall ||x_n||=1$，且$|g_n(x_n)|>\frac{1}{2}$.令$M\defeq {\rm span}\{x_n\}_{n=1}^\infty$，
+        假设$\overline{M}\neq X$，取$x_0\in X\backslash \overline{M}$，由HBT可得
+        \begin{equation*}
+            \exists f\in X^*,||f||=1{\rm\ s.t.\ }f(\overline{M})=\{0\}{\rm\ and\ }
+            f(x_0)={\rm dist}(x_0,\overline{M})>0
+        \end{equation*}
+        于是
+        \begin{equation*}
+            ||g_n-f||= \fun{sup}{x\in X,||x||=1}|g_n(x)-f(x)|>|g_n(x_n)-f(x_n)|=|g_n(x_n)|>\frac{1}{2}
+        \end{equation*}
+        这与Step1矛盾。
+
+        \textbf{Step3}：证明$\overline{ {\rm span}^{\mathbb{Q}}\{x_n\}_{n=1}^\infty }=X$.
+    \end{proof}
+
+    \begin{theorem}
+        当$1\leqslant p<\infty$，$L^p[0,1]$可分。
+    \end{theorem}
+    \begin{proof}
+        \begin{equation*}
+            \left\{ \sum_{k=0}^{2^n-1} r_k\chi_{ [ \frac{k}{2^n},\frac{k+1}{2^n} ) }:r_k\in\Q,n\in\N_0 \right\}
+        \end{equation*}
+        是$L^p[0,1]$的可数稠密子集。
+    \end{proof}
+
+    \begin{theorem}
+        $L^\infty$不可分。
+    \end{theorem}
+    \begin{proof}
+        假设存在稠密子集$\{f_n\}_{n=1}^\infty$，
+        \begin{equation*}
+            \forall t\in (0,1),\exists f_{n_t}\in B(\chi_{[0,t]},\frac{1}{3})
+        \end{equation*}
+        而$t\neq s$时，${\rm dist}(\chi_{[0,t]},\chi_{[0,s]})=1$，
+        因此不同的$B(\chi_{[0,t]},\frac{1}{3})$不相交，所以$\varphi:(0,1)\rightarrow\N,t\mapsto n_t$是单射，
+        于是$(0,1)$可数，矛盾。
+    \end{proof}
+
+    \begin{theorem}
+        $L^1$不自反。
+    \end{theorem}
+    \begin{proof}
+        $(L^1)^*=L^\infty$，假设$L^1$自反，
+        则$(L^\infty)^*\cong L^1$，$L^1$可分
+        $\Rightarrow L^\infty $可分，矛盾。
+    \end{proof}
+
+    \begin{theorem}[共轭算子]
+        $X,Y$是赋范空间，$T\in \L(X,Y)\Rightarrow \exists T^*\in \L( Y^*,X^* )$使得
+        \begin{equation*}
+            (T^* f)(x)=f(Tx),\forall f\in Y^*,\forall x\in X
+        \end{equation*}
+        $T^*$称为$T$的共轭算子。进而映射$*:\L(X,Y)\rightarrow \L(Y^*,X^*),T\mapsto T^*$
+        是一个线性等距嵌入。
+    \end{theorem}
+    \begin{proof}
+        设$f\in Y^*$，定义映射：
+        \begin{equation*}
+            \Lambda_f:X\rightarrow\K,x\mapsto f(Tx)
+        \end{equation*}
+        则
+        \begin{equation*}
+            |\Lambda_f(x)|=|f(Tx)|\leqslant ||f||\cdot ||Tx||\leqslant ||f||\cdot ||T||\cdot ||x||,\forall x\in X
+        \end{equation*}
+        于是$\Lambda_f\in X^*$，且$||\Lambda_f||\leqslant ||f||\cdot||T||$，定义映射
+        \begin{equation*}
+            T^*:Y^*\rightarrow X^*,f\mapsto \Lambda_f
+        \end{equation*}
+        于是$T^*$线性而且$||T^*f||=||\Lambda_f||\leqslant ||T||\cdot ||f||$，
+        从而$T^*$有界且$||T^*||\leqslant ||T||$.
+
+        对于$\forall x\in X$，不妨$x\neq 0$，由HBT，
+        \begin{equation*}
+            \exists f\in Y^*,||f||=1,f(Tx)=||Tx||
+        \end{equation*}
+        于是
+        \begin{equation*}
+            ||Tx||=|f(Tx)|=|(T^*f)(x)|
+            \leqslant ||T^*f||\cdot ||x||\leqslant 
+            ||T^*||\cdot ||f||\cdot ||x||=||T^*||\cdot ||x||
+        \end{equation*}
+        所以$||T||\leqslant ||T^*||$.
+    \end{proof}
+
+    \begin{example}
+        $T:\K^n \rightarrow \K^m,x\mapsto Ax{\rm\ with\ }A=(a_{ij})_{m\times n}$，
+        $T^*:\K^m \rightarrow \K^n,y\mapsto \overline{A^T}y$.
+    \end{example}
+
+    \begin{theorem}[pettis]
+        自反空间的闭子空间自反。
+    \end{theorem}
+    \begin{proof}
+        设$X$自反，$Y$是其闭子空间，只需证明：
+        \begin{equation*}
+            \forall a\in Y^{**},\exists y\in Y{\rm\ s.t.\ }
+            a(f)=f(y),\forall f\in Y^*
+        \end{equation*}
+        定义映射
+        \begin{equation*}
+            T:X^*\rightarrow Y^*,f\mapsto f|_Y
+        \end{equation*}
+        则$T$是有界线性映射，于是取$T^*\in\mathcal{L}(Y^{**},X^{**})$满足
+        \begin{equation*}
+            (T^*a)(f)=a(Tf),\forall f\in X^*
+        \end{equation*}
+        $X$自反，所以自然映射$i_X$是满射，$T^*a\in X^{**}\Rightarrow \exists y\in X{\rm\ s.t.\ }T^*a=y^{**}$，
+        所以
+        \begin{equation*}
+            (T^*a)(f)=y^{**}(f)=f(y),\forall f\in X^*
+        \end{equation*}
+
+        下面证明$y\in Y$，假设不然，则存在$\tilde{f}\in X^*$使得
+        $\tilde{f}(Y)=0$，
+        \begin{equation*}
+            T(\tilde{f})=\tilde{f}|_Y=0\Rightarrow \tilde{f}(y)
+            =(T^*a)(\tilde{f})=a(T(\tilde{f}))=0
+        \end{equation*}
+        这与$\tilde{f}(y)={\rm dist}(y,Y)>0$矛盾。
+
+        最后说明：$a(f)=f(y),\forall f\in Y^*$.
+        对于$\forall f\in Y^*$，由HBT，
+        存在$F\in X^*$使得$f=TF$，
+        所以
+        \begin{equation*}
+            a(f)=a(TF)=( T^*a )(F)=F(y)=f(y)
+        \end{equation*}
+    \end{proof}
+%Lec24
+\subsection{弱收敛}
+    \begin{definition}
+        $X$是赋范空间，称$\{ x_n \}_{n=1}^\infty \subset X$弱收敛于$x_0\in X$是指：
+        \begin{equation*}
+            f(x_n)\rightarrow f(x_0),\forall f\in X^*
+        \end{equation*}
+        记为$x_n\mathop{\rightarrow}\limits^{w} x_0$或者$x_n\rightarrow x_0$，称
+        $x_0$为$\{ x_n \}_{n=1}^\infty $的弱极限。
+
+        依范数拓扑收敛即为强收敛。
+    \end{definition}
+    \begin{proposition}
+        强收敛$\Rightarrow $弱收敛。
+    \end{proposition}
+    \begin{proof}
+        \begin{equation*}
+            ||x_n-x_0||\rightarrow 0\Rightarrow |f(x_n)-f(x_0)|=| f(x_n-x_0) |
+            \leqslant ||f||\cdot ||x_n-x_0||\rightarrow 0,\forall f\in X^*
+        \end{equation*}
+    \end{proof}
+
+    \begin{example}
+        $X=L^2(\Pi)$， $e_k(t)\defeq \e^{ -2\pi \i kt },k\in \Z$，则
+        $e_k\mathop{\rightarrow}\limits^{w} 0{\rm\ as\ }|k|\rightarrow\infty$.即：
+        \begin{equation*}
+            \forall f\in X^*,\exists v\in L^2(\Pi){\rm\ s.t.\ }
+            f(u)=\int_{\Pi} uv,u\in L^2(\Pi)
+        \end{equation*}
+        因此
+        \begin{equation*}
+            f(e_k)=\int_0^1 v(t) \e^{-2\pi \i kt}\d t=\hat{v}(k)\rightarrow 0{\rm\ as\ }|k|\rightarrow\infty
+        \end{equation*}
+    \end{example}
+
+    \begin{theorem}
+        ${\rm dim}X<\infty\Rightarrow$弱收敛与强收敛等价。
+    \end{theorem}
+    \begin{proof}
+        设${\rm dim}(X)=m$，设$\{e_1,\cdots,e_m\}$是$X$的一组基，由HBT（习题2.4.7）知存在
+        对偶基$f_1,\cdots,f_m\in X^*$满足
+        \begin{equation*}
+            f_k(e_j)=\delta_{kj},1\leqslant k,j\leqslant m
+        \end{equation*}
+        设$x_n\wto x_0$，即
+        \begin{equation*}
+            \sum_{j=1}^m \alpha_j^{(n)}e_j\wto \sum_{j=1}^m \alpha_j^{(0)}e_j
+        \end{equation*}
+        于是
+        \begin{equation*}
+            f_j(x_n)\rightarrow f_k(x_0),k=1,2,\cdots,m
+        \end{equation*}
+        因此$||x_n-x_0||_{\infty}\rightarrow 0{\rm\ with\ }||x||_{\infty}=\fun{max}{1\leqslant k\leqslant m}|\alpha_i|$，
+        由有限维空间范数等价可得$||x_n-x_0||\rightarrow 0$.
+    \end{proof}
+
+    \begin{theorem}[Mazur]
+        $x_n\mathop{\rightarrow}\limits^{w} x_0\Rightarrow x_0\in \overline{ {\rm conv}( \{ x_n \}_{n=1}^\infty ) }$
+    \end{theorem}
+    \begin{proof}
+        令$C=\overline{ {\rm conv}( \{ x_n \}_{n=1}^\infty ) }$，假设$x_0\notin C$，则
+        由Ascoli，存在$f\in X^*,\exists \alpha\in\R$使得
+        \begin{equation*}
+            \fun{sup}{x\in C}f(x)<\alpha<f(x_0)
+        \end{equation*}
+        $\Rightarrow f(x_n)<\alpha <f(x_0),n=1,2,\cdots$，
+        与$f(x_n)\rightarrow f(x_0)$矛盾。
+    \end{proof}
+
+    \begin{definition}
+        称$\{f_n\}_{n=1}^\infty \subset X^*$弱*收敛于$f\in X^*$是指
+        \begin{equation*}
+            f_n(x)\rightarrow f(x),\forall x\in X
+        \end{equation*}
+        记作$f_n\mathop{\rightarrow}\limits^{w^*}f $.
+    \end{definition}
+    $X^*$中，强收敛$\Rightarrow $弱收敛$\Rightarrow $弱*收敛。
+    \begin{align*}
+        f_n\mathop{\rightarrow}\limits^{w} f
+        \mathop{\Leftrightarrow}\limits^{\rm def}& \Lambda(f_n)\rightarrow \Lambda(f),\forall \Lambda\in X^{**}\\
+        \Rightarrow& x^{**}(f_n)\rightarrow x^{**}(f),\forall x\in X\\
+        \Leftrightarrow& f_n(x)\rightarrow f(x),\forall x\in X\\
+        \mathop{\Leftrightarrow}\limits^{\rm def}& f_n\mathop{\rightarrow}\limits^{w^*}f
+    \end{align*}
+
+    \begin{proposition}
+        $X$自反$\Rightarrow X^*$中弱*收敛与弱收敛等价。
+    \end{proposition}
+
+    \begin{theorem}
+        $X$是度量空间，
+        \begin{equation*}
+            x_n\mathop{\rightarrow}\limits^{w} x_n
+            \Leftrightarrow
+            \left\{ \begin{array}{l}
+                \fun{sup}{n}||x_n||<\infty\\
+                \exists \mathcal{F}\mathop{\subset }^{\rm dense} X^*{\rm\ s.t.\ }
+                f(x_n)\rightarrow f(x_0),\forall f\in\mathcal{F}
+            \end{array} \right.
+        \end{equation*}
+    \end{theorem}
+    \begin{proof}
+        \begin{align*}
+            x_n\wto x_0\Leftrightarrow& f(x_n)\rightarrow f(x_0),\forall f\in X^*\\
+            \Leftrightarrow& x_n^{**}(f)\rightarrow x_0^{**}(f),\forall f\in X^*\\
+            \mathop{\Rightarrow}\limits^{\rm B-S}&
+            \left\{ \begin{array}{ll}
+                \fun{sup}{n}||x_n^{**}||<\infty\\
+                \exists \mathcal{F}\mathop{\subset}\limits^{\rm dense}X^*{\rm\ s.t.\ }
+                x_n^{**}(f)\rightarrow x_0^{**}(f),\forall f\in\mathcal{F}
+            \end{array} \right.
+        \end{align*}
+    \end{proof}
+
+    \begin{theorem}
+        $X$是Banach空间，则
+        \begin{equation*}
+            f_k\mathop{\rightarrow}\limits^{w^*} f
+            \Leftrightarrow
+            \left\{ \begin{array}{l}
+                \fun{sup}{n}||f_n||<\infty\\
+                \exists M\mathop{\subset }^{\rm dense} X{\rm\ s.t.\ }
+                f_n(x)\rightarrow f(x),\forall x\in M
+            \end{array} \right.
+        \end{equation*}
+    \end{theorem}
+
+    \begin{definition}
+        称$M\subset X$弱列紧是指$M$中任一序列均有弱收敛子列；
+        称$\mathcal{F}\subset X^*$弱*列紧是指$\mathcal{F}$中任一序列均有弱*收敛子列。
+    \end{definition}
+
+    \begin{theorem}[可分Banach-Alaoglu]
+        $X$可分$\Rightarrow X^*$中有界集弱*列紧。
+    \end{theorem}
+    \begin{proof}
+        设$\{f_n\}_{n=1}^\infty\subset X^*$有界，记$C=\fun{sup}{n}||f_n||$，
+        $X$可分$\Rightarrow \exists \{x_n\}_{n=1}^\infty\mathop{\subset}\limits^{\rm dense}X$.
+
+        对于$\forall m$，$\{f_n(x_m)\}_{n=1}^\infty$是有界数列，有收敛子列，
+        由对角线法，$\{f_n\}_{n=1}^\infty$有子列
+        $\{f_{n_k}\}_{k=1}^\infty$使得
+        $\{f_{n_k}(x_m)\}_{k=1}^\infty$收敛，Claim：
+        \begin{equation*}
+            \exists f\in X^*{\rm\ s.t.\ }f_{n_k}\w*to f
+        \end{equation*}
+        对于$\forall x\in X,\forall \varepsilon>0$，存在$x_m\in \{x_n\}_{n=1}^\infty{\rm\ s.t.\ }||x-x_m||<\frac{\varepsilon}{3C}$，于是
+        \begin{equation*}
+            |f_{n_{k+p}}(x)-f_{n_k}(x)|
+            \leqslant 
+            |f_{n_{k+p}}(x)-f_{n_{k+p}}(x_m)|
+            +|f_{n_{k+p}}(x_m)-f_{n_{k}}(x_m)|
+            +|f_{n_{k}}(x_m)-f_{n_{k}}(x)|<\varepsilon,k\mbox{充分大，}\forall p
+        \end{equation*}
+        第一项$\leqslant C||x-x_m||<\frac{\varepsilon}{3}$，
+        第二项在$k$充分大时$<\frac{\varepsilon}{3}$，
+        第三项$\leqslant C||x_m-x||<\frac{\varepsilon}{3}$.
+
+        所以$f(x)\defeq \fun{lim}{k\rightarrow\infty}f_{n_k}(x)$存在，
+        且
+        \begin{equation*}
+            |f(x)|\leqslant \fun{sup}{n}|f_n(x)|\leqslant \fun{sup}{n}||f_n||\cdot ||x||
+        \end{equation*}
+        所以$f\in X^*$且$f_{n_k}\w*to f$.
+    \end{proof}
+
+    \begin{theorem}[Alaoglu]
+        $X$是赋范空间，$X^*$中单位闭球是弱*紧的。
+    \end{theorem}
+
+    \begin{theorem}[Eberlein-Smulian]
+        $X$是自反空间，则
+        \begin{enumerate}
+            \item $X$中有界集弱列紧；
+            \item $X$中闭单位球弱自列紧。
+        \end{enumerate}
+    \end{theorem}
+    \begin{proof}
+        对于1，只需证明：$\forall R,\overline{B(0,R)}$弱列紧。
+        令$Y\defeq \overline{ {\rm span}\{x_n\}_{n=1}^\infty }$，为闭子空间，
+        由定理2.8.11(Pettis)知$Y$自反，同时因为$Y$可分，所以$Y^{**}=Y$可分，
+        由定理2.8.6(Banach)知$Y^*$可分，再由定理2.8.16(可分B-A)知
+        $Y^{**}$中有界集弱*列紧，所以
+        \begin{align*}
+            ||x_n^{**}||\leqslant R\Rightarrow& \{x_n^{**}\}_{n=1}^\infty \mbox{有子列}x_{n_k}^{**}\w*to x_0^{**}\in Y^{**}\\
+            \Rightarrow& \forall f\in Y^*,f(x_{n_k})=x_{n_k}^{**}(f)\rightarrow x_0^{**}(f)=f(x_0)\\
+            \Rightarrow& \forall F\in X^*,F(x_{n_k})
+            =(F|_Y)(x_{n_k})\rightarrow
+            (F|_Y)(x_0)=F(x_0)\\
+            \Rightarrow& x_{n_k}\wto x_0
+        \end{align*}
+
+        对于2，
+        \begin{equation*}
+            x_{n_k}\wto \mathop{\Rightarrow }\limits^{\rm Ex\ 2.5.4}
+            ||x_0||\leqslant \fun{liminf}{k\rightarrow\infty}||x_{n_k}||\leqslant R
+        \end{equation*}
+    \end{proof}
+
+
+
+
