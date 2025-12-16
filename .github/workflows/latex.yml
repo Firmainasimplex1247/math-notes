@@ -9,27 +9,36 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      
-      - name: Debug - list files
-        run: |
-          pwd
-          ls -la
-          ls -la tex
-          ls -la tex/Functional_Analysis
-      
-      - name: Compile Functional Analysis (XeLaTeX)
-        uses: xu-cheng/latex-action@v4
+      - uses: actions/checkout@v4
+
+      - name: Compile Functional Analysis
+        uses: xu-cheng/latex-action@v3
         with:
-          root_file: tex/Functional_Analysis/Functional_Analysis.tex
+          root_file: Functional_Analysis.tex
+          working_directory: tex/Functional_Analysis
           latexmk_use_xelatex: true
-          args: -interaction=nonstopmode -file-line-error
+          args: -f -interaction=nonstopmode -file-line-error
+          cache: true
 
       - name: Upload PDF artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Functional-Analysis-PDF
           path: tex/Functional_Analysis/Functional_Analysis.pdf
+          if-no-files-found: ignore
+          
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Functional-Analysis-Logs
+          path: |
+            tex/Functional_Analysis/Functional_Analysis.log
+            tex/Functional_Analysis/Functional_Analysis.fls
+            tex/Functional_Analysis/Functional_Analysis.fdb_latexmk
+            tex/Functional_Analysis/Functional_Analysis.bcf
+            tex/Functional_Analysis/Functional_Analysis.out
+            tex/Functional_Analysis/Functional_Analysis.toc
+          if-no-files-found: ignore
