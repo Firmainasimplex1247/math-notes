@@ -1,11 +1,7 @@
 name: Build LaTeX (Functional Analysis)
 
 on:
-  push:
-    paths:
-      - "tex/Functional_Analysis/**"
-    # 如果你不希望 workflow 文件改动也自动触发，就不要把它放到 paths 里
-  workflow_dispatch:
+  workflow_dispatch: # 只能手动触发编译
 
 concurrency:
   group: latex-${{ github.ref }}
