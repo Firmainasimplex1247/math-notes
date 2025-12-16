@@ -142,6 +142,8 @@ jobs:
 
       - name: Compile ${{ matrix.subject }}
         uses: xu-cheng/latex-action@v3
+        env:
+          TEXINPUTS: "../../template//:../../template/figures//:./:"
         with:
           working_directory: ${{ matrix.working_directory }}
           root_file: ${{ matrix.root_file }}
