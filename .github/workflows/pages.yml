@@ -1,0 +1,80 @@
+name: Build & Deploy Pages (PDF Viewer)
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "tex/**"
+      - "template/**"
+      - "fig/**"
+      - ".github/workflows/pages.yml"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 用 TeX Live + latexmk（最稳），并缓存
+      - name: Compile PDFs
+        uses: xu-cheng/latex-action@v3
+        with:
+          working_directory: tex/Functional_Analysis
+          root_file: Functional_Analysis.tex
+          latexmk_use_xelatex: true
+          args: -f -interaction=nonstopmode -file-line-error
+          cache: true
+
+      - name: Prepare site
+        run: |
+          mkdir -p site/pdf
+          cp tex/Functional_Analysis/Functional_Analysis.pdf site/pdf/Functional_Analysis.pdf
+
+          cat > site/index.html <<'EOF'
+          <!doctype html>
+          <html lang="zh">
+          <head>
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <title>My Notes</title>
+            <style>
+              body{font-family:system-ui,Segoe UI,Arial;margin:24px;max-width:960px}
+              a{color:#0969da;text-decoration:none}
+              a:hover{text-decoration:underline}
+              .card{border:1px solid #ddd;border-radius:12px;padding:16px;margin:12px 0}
+            </style>
+          </head>
+          <body>
+            <h1>My Notes</h1>
+
+            <div class="card">
+              <h2>Functional Analysis</h2>
+              <p>
+                <a href="pdf/Functional_Analysis.pdf">Open PDF</a>
+              </p>
+              <p style="color:#666">提示：浏览器可直接预览 PDF，也可下载。</p>
+            </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
