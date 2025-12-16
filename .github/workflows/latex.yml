@@ -4,15 +4,21 @@ on:
   push:
     paths:
       - "tex/Functional_Analysis/**"
-      - ".github/workflows/latex.yml"
+    # 如果你不希望 workflow 文件改动也自动触发，就不要把它放到 paths 里
+  workflow_dispatch:
+
+concurrency:
+  group: latex-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compile Functional Analysis
+      - name: Compile Functional Analysis (XeLaTeX via latexmk)
         uses: xu-cheng/latex-action@v3
         with:
           root_file: Functional_Analysis.tex
@@ -21,39 +27,40 @@ jobs:
           args: -f -interaction=nonstopmode -file-line-error
           cache: true
 
-      - name: Debug list outputs
-        if: always()
+      # 只在失败时输出调试信息，避免每次成功也刷屏
+      - name: Debug (only on failure)
+        if: failure()
         run: |
           echo "=== PWD ==="
           pwd
-          echo "=== tree (top 3 levels) ==="
-          find . -maxdepth 3 -type f | sed 's|^\./||'
-          echo "=== logs ==="
-          find . -type f -name "*.log" -o -name "*.fls" -o -name "*.fdb_latexmk" || true
-      - name: Search Palatino in repo
-        run: |
-          grep -Rni "Palatino Linotype" .
-    
+          echo "=== ls tex/Functional_Analysis ==="
+          ls -la tex/Functional_Analysis || true
+          echo "=== find logs in tex/Functional_Analysis ==="
+          find tex/Functional_Analysis -maxdepth 2 -type f \( -name "*.log" -o -name "*.fls" -o -name "*.fdb_latexmk" -o -name "*.bcf" -o -name "*.blg" -o -name "*.bbl" -o -name "*.out" -o -name "*.toc" \) -print || true
+          echo "=== Search Palatino (only on failure) ==="
+          grep -Rni "Palatino Linotype" tex/Functional_Analysis || true
+
       - name: Upload PDF artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Functional-Analysis-PDF
           path: tex/Functional_Analysis/Functional_Analysis.pdf
-          if-no-files-found: ignore
-          
-      - name: Upload build logs (grab all)
+          if-no-files-found: warn
+
+      # 日志只收集这本书目录内的，避免把整个 repo 的东西都打包进去（更快、更干净）
+      - name: Upload build logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Functional-Analysis-Logs
           path: |
-            **/*.log
-            **/*.fls
-            **/*.fdb_latexmk
-            **/*.bcf
-            **/*.blg
-            **/*.bbl
-            **/*.out
-            **/*.toc
+            tex/Functional_Analysis/*.log
+            tex/Functional_Analysis/*.fls
+            tex/Functional_Analysis/*.fdb_latexmk
+            tex/Functional_Analysis/*.bcf
+            tex/Functional_Analysis/*.blg
+            tex/Functional_Analysis/*.bbl
+            tex/Functional_Analysis/*.out
+            tex/Functional_Analysis/*.toc
           if-no-files-found: warn
