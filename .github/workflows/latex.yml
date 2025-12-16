@@ -1,62 +1,132 @@
-name: Build LaTeX (Functional Analysis)
+name: Build LaTeX (changed subjects)
 
 on:
-  workflow_dispatch: # 只能手动触发
-
-concurrency:
-  group: latex-${{ github.ref }}
-  cancel-in-progress: true
+  push:
+    paths:
+      - "tex/**"
+      - "template/**"
+      - ".github/workflows/latex.yml"
+  workflow_dispatch:
+    inputs:
+      subject:
+        description: "Optional: compile only one subject folder name (e.g., Functional_Analysis)"
+        required: false
+        default: ""
 
 jobs:
-  build:
+  detect:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: set-matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # 1) 手动触发：如果指定了 subject，就只编译这一门
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.subject }}" ]; then
+            subj="${{ inputs.subject }}"
+            root="tex/${subj}/${subj}.tex"
+            if [ ! -f "$root" ]; then
+              echo "::error::Cannot find root file: $root"
+              exit 1
+            fi
+            echo "matrix={\"include\":[{\"subject\":\"$subj\",\"root\":\"$root\"}]}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # 2) push：计算 diff 范围
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.sha }}"
+
+          # 首次 push / before 为空时兜底
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            RANGE="$AFTER"
+          else
+            RANGE="$BEFORE..$AFTER"
+          fi
+
+          echo "Diff range: $RANGE"
+          CHANGED="$(git diff --name-only $RANGE || true)"
+          echo "$CHANGED"
+
+          # 3) 如果 template 变了：编译全部学科
+          if echo "$CHANGED" | grep -qE '^template/'; then
+            echo "Template changed -> compile ALL subjects"
+            SUBJECTS="$(ls -1 tex | tr '\n' ' ')"
+          else
+            # 否则只编译变更涉及到的 tex/<subject>/...
+            SUBJECTS="$(echo "$CHANGED" | awk -F/ '/^tex\//{print $2}' | sort -u | tr '\n' ' ')"
+          fi
+
+          # 若没有任何学科变更，给空矩阵（build job 会跳过）
+          if [ -z "$SUBJECTS" ]; then
+            echo "No subject changes detected."
+            echo "matrix={\"include\":[]}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # 4) 组装 matrix（每个 subject 对应一个 root）
+          JSON='{"include":['
+          first=1
+          for subj in $SUBJECTS; do
+            root="tex/${subj}/${subj}.tex"
+            if [ ! -f "$root" ]; then
+              echo "::warning::Skip ${subj}: cannot find ${root}"
+              continue
+            fi
+            if [ $first -eq 0 ]; then JSON+=","
+            else first=0
+            fi
+            JSON+="{\"subject\":\"${subj}\",\"root\":\"${root}\"}"
+          done
+          JSON+="]}"
+
+          echo "matrix=$JSON" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: detect
+    if: ${{ fromJson(needs.detect.outputs.matrix).include[0] != null }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compile Functional Analysis (XeLaTeX via latexmk)
+      - name: Compile ${{ matrix.subject }}
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: Functional_Analysis.tex
-          working_directory: tex/Functional_Analysis
+          root_file: ${{ matrix.root }}
           latexmk_use_xelatex: true
           args: -f -interaction=nonstopmode -file-line-error
           cache: true
 
-      # 只在失败时输出调试信息，避免每次成功也刷屏
-      - name: Debug (only on failure)
-        if: failure()
-        run: |
-          echo "=== PWD ==="
-          pwd
-          echo "=== ls tex/Functional_Analysis ==="
-          ls -la tex/Functional_Analysis || true
-          echo "=== find logs in tex/Functional_Analysis ==="
-          find tex/Functional_Analysis -maxdepth 2 -type f \( -name "*.log" -o -name "*.fls" -o -name "*.fdb_latexmk" -o -name "*.bcf" -o -name "*.blg" -o -name "*.bbl" -o -name "*.out" -o -name "*.toc" \) -print || true
-          echo "=== Search Palatino (only on failure) ==="
-          grep -Rni "Palatino Linotype" tex/Functional_Analysis || true
-
       - name: Upload PDF artifact
-        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Functional-Analysis-PDF
-          path: tex/Functional_Analysis/Functional_Analysis.pdf
-          if-no-files-found: warn
+          name: PDF-${{ matrix.subject }}
+          path: ${{ format('tex/{0}/{0}.pdf', matrix.subject) }}
+          if-no-files-found: error
 
-      # 日志只收集这本书目录内的，避免把整个 repo 的东西都打包进去（更快、更干净）
       - name: Upload build logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Functional-Analysis-Logs
+          name: Logs-${{ matrix.subject }}
           path: |
-            tex/Functional_Analysis/*.log
-            tex/Functional_Analysis/*.fls
-            tex/Functional_Analysis/*.fdb_latexmk
-            tex/Functional_Analysis/*.bcf
-            tex/Functional_Analysis/*.blg
-            tex/Functional_Analysis/*.bbl
-            tex/Functional_Analysis/*.out
-            tex/Functional_Analysis/*.toc
+            tex/${{ matrix.subject }}/**/*.log
+            tex/${{ matrix.subject }}/**/*.fls
+            tex/${{ matrix.subject }}/**/*.fdb_latexmk
+            tex/${{ matrix.subject }}/**/*.bcf
+            tex/${{ matrix.subject }}/**/*.bbl
+            tex/${{ matrix.subject }}/**/*.blg
+            tex/${{ matrix.subject }}/**/*.out
+            tex/${{ matrix.subject }}/**/*.toc
           if-no-files-found: warn
