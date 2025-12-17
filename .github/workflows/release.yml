@@ -1,42 +1,197 @@
-name: Release PDFs
+name: Release LaTeX PDFs (manual select)
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_dispatch:
+    inputs:
+      subjects:
+        description: "Space or comma-separated subjects, e.g. Functional_Analysis,Stochastic_Process"
+        required: true
+        type: string
+      tag:
+        description: "Release tag, e.g. v2025.12.17"
+        required: true
+        type: string
+      title:
+        description: "Release title"
+        required: true
+        type: string
+      body:
+        description: "Release notes (markdown)"
+        required: false
+        type: string
+        default: ""
 
 permissions:
-  contents: write
+  contents: write  # 必须：创建 release + 上传 assets
 
 jobs:
-  release:
+  plan:
+    name: Build plan
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      subjects: ${{ steps.plan.outputs.subjects }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Make matrix from input subjects
+        id: plan
+        shell: bash
+        run: |
+          set -euo pipefail
+          RAW="${{ inputs.subjects }}"
+          # 支持逗号/空格混写
+          RAW="$(echo "$RAW" | tr ',' ' ' | tr -s ' ')"
+
+          declare -a ITEMS=()
+          declare -a SUBJECTS=()
+
+          for s in $RAW; do
+            wd="tex/$s"
+            root="$wd/$s.tex"
+            if [[ ! -d "$wd" ]]; then
+              echo "::warning::Subject dir not found: $wd (skip)"
+              continue
+            fi
+            if [[ ! -f "$root" ]]; then
+              # 兜底：找目录下第一份 .tex
+              root="$(find "$wd" -maxdepth 1 -type f -name '*.tex' | head -n 1 || true)"
+            fi
+            if [[ -z "$root" ]]; then
+              echo "::warning::No root .tex found under $wd (skip)"
+              continue
+            fi
+
+            ITEMS+=("{\"subject\":\"$s\",\"working_directory\":\"$wd\",\"root_file\":\"$(basename "$root")\"}")
+            SUBJECTS+=("$s")
+          done
+
+          if [[ "${#ITEMS[@]}" == "0" ]]; then
+            echo "::error::No valid subjects to build."
+            exit 1
+          fi
+
+          JSON="{\"include\":["
+          for i in "${!ITEMS[@]}"; do
+            [[ "$i" -gt 0 ]] && JSON+=","
+            JSON+="${ITEMS[$i]}"
+          done
+          JSON+="]}"
+
+          echo "matrix=$JSON" >> "$GITHUB_OUTPUT"
+          echo "subjects=${SUBJECTS[*]}" >> "$GITHUB_OUTPUT"
+
+          {
+            echo "## Release plan"
+            echo ""
+            echo "**Will build:** ${SUBJECTS[*]}"
+            echo "**Tag:** ${{ inputs.tag }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  build:
+    name: Build PDFs
+    needs: plan
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compile Functional Analysis
+      - name: Show plan
+        run: |
+          echo "Subject: ${{ matrix.subject }}"
+          echo "Working dir: ${{ matrix.working_directory }}"
+          echo "Root file: ${{ matrix.root_file }}"
+
+      # 关键：完全复用你 latex.yml 的编译方式
+      - name: Compile ${{ matrix.subject }}
         uses: xu-cheng/latex-action@v3
+        env:
+          TEXINPUTS: "../../template//:../../template/figures//:./:"
         with:
-          working_directory: tex/Functional_Analysis
-          root_file: Functional_Analysis.tex
+          working_directory: ${{ matrix.working_directory }}
+          root_file: ${{ matrix.root_file }}
           latexmk_use_xelatex: true
-          args: -f -interaction=nonstopmode -file-line-error
+          args: -pdfxe -interaction=nonstopmode -file-line-error -f
           cache: true
 
-      - name: Create GitHub Release and upload PDF
-        uses: softprops/action-gh-release@v2
+      # 把 PDF 汇总到 dist/，方便 release job 收集
+      - name: Collect PDF to dist
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          src="${{ matrix.working_directory }}/${{ matrix.subject }}.pdf"
+          if [[ -f "$src" ]]; then
+            cp -f "$src" "dist/${{ matrix.subject }}.pdf"
+          else
+            echo "::warning::PDF not found: $src"
+          fi
+
+      - name: Upload PDF artifact (${{ matrix.subject }})
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          # 标题
-          name: Functional_Analysis_${{ github.ref_name }}
+          name: ReleasePDF-${{ matrix.subject }}
+          path: dist/${{ matrix.subject }}.pdf
+          if-no-files-found: warn
 
-          # release 页面正文说明
-          body: |
-            Functional Analysis notes PDF release.
-            Tag: ${{ github.ref_name }}
+      - name: Upload build logs (${{ matrix.subject }})
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ReleaseLogs-${{ matrix.subject }}
+          path: |
+            ${{ matrix.working_directory }}/*.log
+            ${{ matrix.working_directory }}/*.fls
+            ${{ matrix.working_directory }}/*.fdb_latexmk
+            ${{ matrix.working_directory }}/*.bcf
+            ${{ matrix.working_directory }}/*.blg
+            ${{ matrix.working_directory }}/*.bbl
+            ${{ matrix.working_directory }}/*.out
+            ${{ matrix.working_directory }}/*.toc
+          if-no-files-found: warn
 
-          # 不要自动生成 release notes（避免混入 commit summary）
-          generate_release_notes: false
+  release:
+    name: Create/Update Release and upload PDFs
+    needs: [plan, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all PDF artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dl
 
-          # 只上传 PDF 作为 asset
-          files: |
-            tex/Functional_Analysis/Functional_Analysis.pdf
+      - name: Gather PDFs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          find dl -name "*.pdf" -print -exec cp -f {} dist/ \;
+          echo "Collected PDFs:"
+          ls -lah dist
+          test -n "$(ls -A dist 2>/dev/null)"
+
+      - name: Create or update release, upload assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="${{ inputs.tag }}"
+          TITLE="${{ inputs.title }}"
+          BODY="${{ inputs.body }}"
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG exists; overwrite assets."
+          else
+            gh release create "$TAG" --title "$TITLE" --notes "$BODY"
+          fi
+
+          for f in dist/*.pdf; do
+            gh release upload "$TAG" "$f" --clobber
+          done
